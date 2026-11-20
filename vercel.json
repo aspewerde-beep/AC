@@ -5,7 +5,9 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/index", "destination": "/", "permanent": true }
+    { "source": "/index", "destination": "/", "statusCode": 301 },
+    { "source": "/index.html", "destination": "/", "statusCode": 301 },
+    { "source": "/index.php", "destination": "/", "statusCode": 301 }
   ],
   "rewrites": [
     { "source": "/baslangic", "destination": "/" },

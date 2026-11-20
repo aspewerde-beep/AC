@@ -8,21 +8,46 @@
   <meta name="description" content="465_AC kurulum rehberi: server.cfg ayarları, ACE bypass yetkisi, modül aksiyonları, yetkili komutları ve exports API dokümantasyonu.">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#020203">
-  <link rel="canonical" href="https://465.lol/docs">
+  <link rel="canonical" href="https://www.465.lol/docs">
+  <link rel="alternate" hreflang="tr" href="https://www.465.lol/docs">
+  <link rel="alternate" hreflang="x-default" href="https://www.465.lol/docs">
+  <link rel="alternate" type="application/rss+xml" title="465 AC Güncellemeler" href="https://www.465.lol/feed.xml">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <meta property="og:type" content="article">
   <meta property="og:title" content="465 AC Dokümantasyon — Kurulum &amp; Referans | 465.lol">
   <meta property="og:description" content="FiveM sunucunuzda 465_AC kurulumu, komutlar ve Web API rehberi.">
-  <meta property="og:image" content="https://465.lol/assets/logo-465.jpg">
-  <link rel="stylesheet" href="assets/app.min.css?v=8">
+  <meta property="og:url" content="https://www.465.lol/docs">
+  <meta property="og:image" content="https://www.465.lol/assets/logo-465.jpg">
+  <link rel="stylesheet" href="assets/app.min.css?v=9">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "465 AC",
-    "url": "https://465.lol/",
-    "logo": "https://465.lol/assets/logo-465.png",
-    "image": "https://465.lol/assets/logo-465.jpg"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "465 AC",
+        "url": "https://www.465.lol/",
+        "logo": "https://www.465.lol/assets/logo-465.png",
+        "image": "https://www.465.lol/assets/logo-465.jpg"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Ana Sayfa",
+            "item": "https://www.465.lol/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Dokümantasyon",
+            "item": "https://www.465.lol/docs"
+          }
+        ]
+      }
+    ]
   }
   </script>
 </head>
@@ -125,11 +150,11 @@ local profile = exports['465_AC']:LookupPlayer(discordId)</pre>
 
   <footer class="footer">
     <div class="container footer-bottom" style="border-top:0;padding-top:0;">
-      <span>© 2026 <strong>465 AC</strong> (<a href="https://465.lol/" style="color:var(--text-muted)">https://465.lol/</a>)</span>
+      <span>© 2026 <strong>465 AC</strong> (<a href="https://www.465.lol/" style="color:var(--text-muted)">https://www.465.lol/</a>)</span>
       <a href="/" style="color:var(--accent-bright);">← Ana Sayfaya Dön</a>
     </div>
   </footer>
 
-  <script src="assets/app.min.js?v=8" defer></script>
+  <script src="assets/app.min.js?v=9" defer></script>
 </body>
 </html>
