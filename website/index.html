@@ -26,7 +26,7 @@
   <meta name="twitter:description" content="0.00ms resmon hedefli FiveM anti-cheat, server-side combat guard, anti-crasher ve web panel.">
   <meta name="twitter:image" content="https://465.lol/assets/logo-465.jpg">
 
-  <link rel="stylesheet" href="assets/app.min.css?v=6">
+  <link rel="stylesheet" href="assets/app.min.css?v=8">
 
   <script type="application/ld+json">
   {
@@ -99,7 +99,6 @@
       <nav class="nav-links" id="primaryNavLinks" aria-label="Ana Menü">
         <a href="/nasil-calisir" data-route="nasil-calisir" data-nav="nasil-calisir" data-i18n="nav_how">Nasıl Çalışır</a>
         <a href="/yapilandirma" data-route="yapilandirma" data-nav="yapilandirma" data-i18n="nav_config">Yapılandırma</a>
-        <a href="/demo" data-i18n="nav_demo">Canlı Demo</a>
         <a href="/guvence" data-route="guvence" data-nav="guvence" data-i18n="nav_guarantee">Güvence</a>
         <a href="/sss" data-route="sss" data-nav="sss" data-i18n="nav_faq">SSS</a>
       </nav>
@@ -132,9 +131,6 @@
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     </a>
     <div class="dock-divider"></div>
-    <a href="/demo" class="dock-btn" title="Canlı Demo Paneli">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-    </a>
     <a href="/docs" class="dock-btn" title="Dokümantasyon &amp; Destek">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </a>
@@ -170,10 +166,7 @@
 
       <div class="hero-cta hero-anim-4">
         <a href="/nasil-calisir" data-route="nasil-calisir" class="btn btn-white btn-lg" data-i18n="hero_btn_explore">Nasıl çalışır ↓</a>
-        <a href="/demo" class="btn btn-dark btn-lg">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          <span data-i18n="hero_btn_support">Canlı Demo Paneli ↗</span>
-        </a>
+        <a href="/docs" class="btn btn-dark btn-lg" data-i18n="hero_btn_docs">Dokümantasyon ↗</a>
       </div>
 
       <div class="hero-trust-pills hero-anim-5">
@@ -475,7 +468,6 @@
         <div>
           <h4>DOKÜMANTASYON</h4>
           <ul>
-            <li><a href="/demo">Canlı Demo Paneli</a></li>
             <li><a href="/docs">Kurulum Rehberi</a></li>
             <li><a href="/docs">Exports &amp; Web API</a></li>
             <li><a href="/nasil-calisir" data-route="nasil-calisir">Nasıl Çalışır?</a></li>
@@ -506,19 +498,6 @@
     </div>
   </footer>
 
-  <div class="modal-backdrop" id="previewModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="if(event.target===this) closePreviewModal()">
-    <div class="modal-box">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <div>
-          <strong id="modalTitle" style="font-size:17px;">465 AC Canlı Panel Önizlemesi</strong>
-          <div style="font-size:12px;color:var(--text-dim);">Modül bazlı off / log / kick / ban aksiyonlarını test edin (demo)</div>
-        </div>
-        <button type="button" class="btn btn-dark btn-sm" onclick="closePreviewModal()">Kapat ✕</button>
-      </div>
-      <div class="grid-2" id="modalControlsGrid" style="gap:12px;"></div>
-    </div>
-  </div>
-
-  <script src="assets/app.min.js?v=6" defer></script>
+  <script src="assets/app.min.js?v=8" defer></script>
 </body>
 </html>
