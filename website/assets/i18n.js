@@ -1,143 +1,119 @@
 /* =========================================================================
-   465 AC (https://465.lol/) - TR / EN Çoklu Dil ve Ortak Arayüz Yardımcıları
+   465 AC (https://465.lol/) - TR / EN Çoklu Dil ve Scroll-Spy Yardımcıları
    ========================================================================= */
 
 const I18N_465 = {
   tr: {
-    promo: '🚀 <strong>465 AC v4.2</strong> çıktı! Açılış kampanyası: <span class="code-chip">465LAUNCH</span> koduyla tüm planlarda %30 indirim.',
-    nav_features: "Özellikler",
-    nav_preview: "Panel Demoları",
-    nav_modules: "Korumalar",
-    nav_tools: "Ücretsiz Araçlar",
-    nav_docs: "Dokümantasyon",
-    nav_pricing: "Fiyatlandırma",
-    nav_start: "Hemen Başla",
+    nav_catalog: "Korumalar",
+    nav_config: "Yapılandırma",
+    nav_guarantee: "Güvence",
+    nav_faq: "SSS",
+    nav_tools: "465 Tools ↗",
 
-    hero_badge: "465 AC v4.2 • Server-Side Öncelikli Koruma",
-    hero_title_1: "FiveM Sunucunu ",
-    hero_title_2: "Gerçek Zamanlı Zırhla",
-    hero_title_3: " Koru.",
-    hero_desc: "Sunucu taraflı hasar doğrulama, akıllı bölge muafiyetleri (Exclude Zones), anti-crasher ağ filtreleri ve tarayıcı tabanlı canlı yönetim paneli — ekstra veritabanı veya karmaşık kurulum gerekmeden.",
-    hero_cta_plans: "Planları İncele",
-    hero_cta_demo: "Canlı Paneli Dene",
-    hero_cta_tools: "Ücretsiz Araçlar (Profiler & Crash)",
-    metric_resmon_val: "0.00 - 0.01ms",
-    metric_resmon_lbl: "Hedef İstemci Resmon",
-    metric_modules_val: "30+ Modül",
-    metric_modules_lbl: "Off / Log / Kick / Ban",
-    metric_tools_val: "%100 Ücretsiz",
-    metric_tools_lbl: "Profiler & Crash Analizi",
+    hero_pill: "FiveM için geliştirildi",
+    hero_h1_top: "Sunucunu ileri taşıyan",
+    hero_h1_bot: "FiveM koruması.",
+    hero_sub: "Sunucu taraflı savaş doğrulama, temiz yapılandırma ve düşük kaynak tüketimi. Oyuncularına hilesiz ve akıcı bir deneyim sun.",
+    hero_btn_explore: "Paketleri keşfet ↓",
+    hero_btn_support: "Satış öncesi destek",
+    trust_1: "Anında kurulum",
+    trust_2: "0.00ms Resmon",
+    trust_3: "Kurulum desteği",
+    scroll_cue: "KEŞFET",
 
-    trust_1: "Sunucu Taraflı Otorite",
-    trust_2: "OneSync Infinity Uyumlu",
-    trust_3: "ESX / QBCore / Qbox",
-    trust_4: "Discord Webhook & SS",
-    trust_5: "Dahili Web Dashboard",
+    cat_eyebrow: "KATALOG",
+    cat_title_1: "Sunucuna güç katan ",
+    cat_title_2: "korumalar",
+    cat_search: "Paket veya modül ara…",
 
-    feat_kicker: "NEDEN 465 AC?",
-    feat_title: "Masum Oyuncuyu Değil, Hileyi Durduran Mimari",
-    feat_sub: "Çoğu anti-cheat hatalı banlarla topluluğunu yorar. 465 AC modül bazlı eylem seçimi ve güvenli bölge kurallarıyla sıfır sürtünme hedefler.",
+    how_eyebrow: "NASIL ÇALIŞIR",
+    how_s1_t: "Paketini seç",
+    how_s1_d: "Katalogdan sunucuna uygun koruma ve istihbarat paketini seç; canlı modül önizlemelerini incele.",
+    how_s2_t: "Tek satırda kur",
+    how_s2_d: "465_AC klasörünü resources içine atıp server.cfg'ye ekle; harici veritabanı kurmadan dakikalar içinde çalıştır.",
+    how_s3_t: "Canlı yönet & koru",
+    how_s3_d: "Tarayıcı panelinden modülleri off/log/kick/ban olarak ayarla, Discord webhook üzerinden anlık bildirim al.",
 
-    f1_t: "Modül Bazlı Aksiyon (Off / Log / Kick / Ban)",
-    f1_d: "Her koruma modülünü ayrı ayrı yönetin. Yeni sunucularda riskli tespitleri 'log' modunda izleyip kesin hilelere anında 'ban' verin.",
-    f2_t: "Sunucu Seviyesi Combat Guard",
-    f2_d: "weaponDamageEvent ile aşırı silah/yumruk hasarını, imkansız menzili (Magic Bullet) ve saniyelik hasar spamını istemciye güvenmeden sunucuda iptal edin.",
-    f3_t: "Exclude Zones & Object Whitelist",
-    f3_d: "Pillbox Hastanesi, Legion Square veya admin adası gibi bölgeleri muaf tutun; telefon, defter ve RP objelerinin silinmesini önleyin.",
-    f4_t: "Crasher & Spam Savunması",
-    f4_d: "entityCreating, explosionEvent, ptFxEvent ve clearPedTasksEvent filtreleriyle toplu obje/araç basma ve FPS düşürme saldırılarını durdurun.",
-    f5_t: "465 İstihbarat & Lookup",
-    f5_d: "Bağlanan oyuncuların lisans, Discord, Steam ve HWID belirteçlerini eşleştirerek alt hesap (ban evasion) ve risk puanı analizi yapın.",
-    f6_t: "Sıfır Bağımlılıklı Web Panel",
-    f6_d: "Node.js veya harici veritabanı kurmadan doğrudan FiveM HTTP sunucusu üzerinden ayar değiştirin, log izleyin ve haritayı temizleyin.",
+    cfg_eyebrow: "KOLAY YAPILANDIRMA",
+    cfg_title_1: "Kod bilmeden ",
+    cfg_title_2: "dakikalar içinde ",
+    cfg_title_3: "ayarla",
+    cfg_desc: "Her koruma modülünün davranışı açık ve okunaklı yapılandırma dosyalarıyla değiştirilir. Neyin ne işe yaradığı satırında yazar.",
+    cfg_b1: "Modül bazlı off / log / kick / ban aksiyon seçimi",
+    cfg_b2: "Exclude Zones ve Object Whitelist ile sıfır false-ban",
+    cfg_b3: "Takıldığın yerde Discord'dan destek ve kurulum yardımı",
 
-    prev_kicker: "İNTERAKTİF ÖNİZLEME",
-    prev_title: "Yönetim Paneli ve Oyun İçi /465ac Deneyimi",
-    prev_sub: "Aşağıdaki örnek önizleme sekmesinden 465 AC yönetim ekranlarını canlı olarak test edebilirsiniz (demo verisidir).",
+    rev_eyebrow: "MÜŞTERİ YORUMLARI",
+    rev_title_1: "Sunucu sahipleri ",
+    rev_title_2: "ne diyor?",
 
-    mod_kicker: "KORUMA MATRİSİ",
-    mod_title: "Tüm Tehditlere Karşı Katmanlı Savunma",
-    mod_sub: "Kategorilere göre filtreleyin ve her modülün varsayılan çalışma modunu inceleyin.",
+    gua_eyebrow: "GÜVENCE",
+    gua_title_1: "Satın aldıktan sonra da ",
+    gua_title_2: "yanındayız",
+    g1_t: "Kaynak dostu kod",
+    g1_d: "Her modül düşük CPU ve bellek tüketimi gözetilerek yazıldı. İstemcide 0.00–0.01ms hedefler.",
+    g2_t: "Sunucu taraflı otorite",
+    g2_d: "Hasar, patlama, obje basma ve mesafe kontrolleri istemciye güvenmeden doğrudan sunucuda doğrulanır.",
+    g3_t: "Sürekli destek",
+    g3_d: "Kurulumda veya false-ban ayarlamasında sorun yaşadığında ekibimiz birebir yapılandırma desteği verir.",
 
-    eco_kicker: "465 TOOLS EKOSİSTEMİ",
-    eco_title: "Tüm FiveM Sunucuları İçin Ücretsiz Araçlar",
-    eco_sub: "465 AC müşterisi olmanıza gerek yok — tüm dosyalar kendi tarayıcınızda işlenir, hiçbir sunucuya yüklenmez.",
-
-    price_kicker: "LİSANSLAMA & PLANLAR",
-    price_title: "Sunucunun Büyüklüğüne Uygun Planı Seç",
-    price_sub: "Tüm planlarda tam koruma paketi, Discord webhook entegrasyonu ve düzenli güncellemeler dahildir.",
-
-    faq_kicker: "SIK SORULAN SORULAR",
-    faq_title: "Aklındaki Soruları Hızlıca Yanıtlayalım",
-    faq_sub: "Kurulum, performans, false-ban önlemleri ve lisanslama hakkında bilmen gerekenler."
+    faq_eyebrow: "SIKÇA SORULAN SORULAR"
   },
   en: {
-    promo: '🚀 <strong>465 AC v4.2</strong> is out! Launch promo: 30% OFF any plan with code <span class="code-chip">465LAUNCH</span>.',
-    nav_features: "Features",
-    nav_preview: "Panel Demo",
-    nav_modules: "Protections",
-    nav_tools: "Free Tools",
-    nav_docs: "Documentation",
-    nav_pricing: "Pricing",
-    nav_start: "Get Started",
+    nav_catalog: "Protections",
+    nav_config: "Configuration",
+    nav_guarantee: "Guarantee",
+    nav_faq: "FAQ",
+    nav_tools: "465 Tools ↗",
 
-    hero_badge: "465 AC v4.2 • Server-Side First Defense",
-    hero_title_1: "Armor Your FiveM Server ",
-    hero_title_2: "In Real Time",
-    hero_title_3: ".",
-    hero_desc: "Server-authoritative combat verification, smart Exclude Zones, anti-crasher network filters, and a built-in web management panel — with zero external database or Node.js setup required.",
-    hero_cta_plans: "View Plans",
-    hero_cta_demo: "Try Live Demo",
-    hero_cta_tools: "Free Tools (Profiler & Crash)",
-    metric_resmon_val: "0.00 - 0.01ms",
-    metric_resmon_lbl: "Target Client Resmon",
-    metric_modules_val: "30+ Modules",
-    metric_modules_lbl: "Off / Log / Kick / Ban",
-    metric_tools_val: "100% Free",
-    metric_tools_lbl: "Profiler & Crash Analyzer",
+    hero_pill: "Built for FiveM",
+    hero_h1_top: "FiveM security that",
+    hero_h1_bot: "pushes your server.",
+    hero_sub: "Server-authoritative combat verification, clean Lua configuration, and ultra-low resource usage. Give your community a smooth, cheat-free experience.",
+    hero_btn_explore: "Explore packages ↓",
+    hero_btn_support: "Pre-sales support",
+    trust_1: "Instant setup",
+    trust_2: "0.00ms Resmon",
+    trust_3: "Setup assistance",
+    scroll_cue: "EXPLORE",
 
-    trust_1: "Server-Authoritative",
-    trust_2: "OneSync Infinity Ready",
-    trust_3: "ESX / QBCore / Qbox",
-    trust_4: "Discord Webhook & SS",
-    trust_5: "Built-in Web Dashboard",
+    cat_eyebrow: "CATALOG",
+    cat_title_1: "Protections that ",
+    cat_title_2: "power your server",
+    cat_search: "Search package or module…",
 
-    feat_kicker: "WHY 465 AC?",
-    feat_title: "Built to Stop Cheaters, Never Innocent Players",
-    feat_sub: "Most anti-cheats hurt your player base with false bans. 465 AC combines per-module actions with safe zone rules for zero friction.",
+    how_eyebrow: "HOW IT WORKS",
+    how_s1_t: "Choose your package",
+    how_s1_d: "Pick the protection suite tailored to your player count and review live module controls before deploying.",
+    how_s2_t: "Deploy in one line",
+    how_s2_d: "Drop 465_AC into your resources folder and ensure it in server.cfg — no external database or Node.js required.",
+    how_s3_t: "Monitor & protect live",
+    how_s3_d: "Switch any module between off/log/kick/ban from the built-in web panel and receive instant Discord alerts.",
 
-    f1_t: "Per-Module Actions (Off / Log / Kick / Ban)",
-    f1_d: "Configure every detection independently. Run sensitive checks in 'log' mode on launch while instantly banning indisputable exploits.",
-    f2_t: "Server-Side Combat Guard",
-    f2_d: "Intercept weaponDamageEvent on the server to cancel modified weapon/melee damage, impossible range hits, and rapid damage spam.",
-    f3_t: "Exclude Zones & Object Whitelist",
-    f3_d: "Exempt Pillbox Hospital, Legion Square, or staff islands from teleport/noclip triggers and protect roleplay props like phones and badges.",
-    f4_t: "Crasher & Spam Defense",
-    f4_d: "Filter entityCreating, explosionEvent, ptFxEvent, and clearPedTasksEvent to stop mass prop spawns and FPS crash attempts.",
-    f5_t: "465 Intelligence & Lookup",
-    f5_d: "Correlate FiveM licenses, Discord IDs, Steam IDs, and HWID tokens on connect to surface alt accounts and ban evasion risk scores.",
-    f6_t: "Zero-Dependency Web Dashboard",
-    f6_d: "Toggle protections, inspect live detection feeds, unban players, and run map cleanups directly through FXServer's HTTP handler.",
+    cfg_eyebrow: "EASY CONFIGURATION",
+    cfg_title_1: "Configure in minutes ",
+    cfg_title_2: "without coding",
+    cfg_title_3: "",
+    cfg_desc: "Every detection's behavior is controlled through clean, well-documented config files. Every option is explained inline.",
+    cfg_b1: "Per-module off / log / kick / ban action modes",
+    cfg_b2: "Exclude Zones & Object Whitelist prevent false bans",
+    cfg_b3: "Direct Discord setup help whenever you need it",
 
-    prev_kicker: "INTERACTIVE PREVIEW",
-    prev_title: "Explore the Web Dashboard & /465ac Panel",
-    prev_sub: "Test the interactive preview tabs below to see how 465 AC manages rules, zones, and player intelligence (demo data).",
+    rev_eyebrow: "TESTIMONIALS",
+    rev_title_1: "What server owners ",
+    rev_title_2: "are saying",
 
-    mod_kicker: "DETECTION MATRIX",
-    mod_title: "Layered Defense Against Modern Exploits",
-    mod_sub: "Filter protections by category and inspect each module's default enforcement mode.",
+    gua_eyebrow: "GUARANTEE",
+    gua_title_1: "With you even ",
+    gua_title_2: "after launch",
+    g1_t: "Resource-friendly code",
+    g1_d: "Written with minimal loops and low CPU footprint, targeting 0.00–0.01ms idle resmon on clients.",
+    g2_t: "Server-side authority",
+    g2_d: "Weapon damage, explosions, entity spawns, and range checks are validated server-side instead of trusting clients.",
+    g3_t: "Ongoing support",
+    g3_d: "If you ever run into setup issues or false-positive tuning, our team helps you dial in your config directly.",
 
-    eco_kicker: "465 TOOLS ECOSYSTEM",
-    eco_title: "Free Browser Utilities for Every Server Owner",
-    eco_sub: "No license required — all files are parsed locally inside your browser and never uploaded anywhere.",
-
-    price_kicker: "PLANS & LICENSING",
-    price_title: "Pick the Right Plan for Your Community",
-    price_sub: "Every plan includes full server-side protections, Discord alerts, web panel access, and continuous updates.",
-
-    faq_kicker: "FREQUENTLY ASKED QUESTIONS",
-    faq_title: "Answers Before You Deploy",
-    faq_sub: "Everything you need to know about installation, resmon usage, false-ban prevention, and licensing."
+    faq_eyebrow: "FREQUENTLY ASKED QUESTIONS"
   }
 };
 
@@ -156,18 +132,17 @@ function apply465Lang(lang) {
 
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    if (dict[key] !== undefined) {
-      el.innerHTML = dict[key];
-    }
+    if (dict[key] !== undefined) el.textContent = dict[key];
+  });
+
+  document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-ph");
+    if (dict[key] !== undefined) el.placeholder = dict[key];
   });
 
   document.querySelectorAll("[data-lang-btn]").forEach((btn) => {
     btn.classList.toggle("active", btn.getAttribute("data-lang-btn") === lang);
   });
-
-  if (typeof window.on465LangChange === "function") {
-    window.on465LangChange(lang);
-  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -176,8 +151,34 @@ document.addEventListener("DOMContentLoaded", () => {
   const mobBtn = document.getElementById("mobileNavToggle");
   const navLinks = document.getElementById("primaryNavLinks");
   if (mobBtn && navLinks) {
-    mobBtn.addEventListener("click", () => {
-      navLinks.classList.toggle("open");
-    });
+    mobBtn.addEventListener("click", () => navLinks.classList.toggle("open"));
   }
+
+  // Scroll-to-top visibility + Scroll-Spy for top navbar & left floating dock
+  const scrollBtn = document.getElementById("scrollTopBtn");
+  const trackedSections = Array.from(document.querySelectorAll("[data-section-id]"));
+  const dockItems = Array.from(document.querySelectorAll(".left-dock [data-dock]"));
+  const topNavItems = Array.from(document.querySelectorAll(".nav-links [data-nav]"));
+
+  function updateScrollState() {
+    if (scrollBtn) {
+      scrollBtn.classList.toggle("visible", window.scrollY > 420);
+    }
+
+    if (!trackedSections.length) return;
+    let activeId = trackedSections[0].getAttribute("data-section-id");
+    const offset = window.scrollY + 220;
+
+    for (const sec of trackedSections) {
+      if (sec.offsetTop <= offset) {
+        activeId = sec.getAttribute("data-section-id");
+      }
+    }
+
+    dockItems.forEach((d) => d.classList.toggle("active", d.getAttribute("data-dock") === activeId));
+    topNavItems.forEach((n) => n.classList.toggle("active", n.getAttribute("data-nav") === activeId));
+  }
+
+  window.addEventListener("scroll", updateScrollState, { passive: true });
+  updateScrollState();
 });

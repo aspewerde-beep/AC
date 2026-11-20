@@ -9,21 +9,19 @@
 <body>
   <div class="bg-grid"></div>
 
-  <header class="navbar">
-    <div class="container navbar-inner">
+  <!-- Üst Floating Pill Navbar -->
+  <div class="navbar-wrap">
+    <header class="navbar-pill">
       <a href="index.html" class="brand">
-        <div class="brand-mark">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-        </div>
-        <span>465 <span style="color:var(--accent)">AC</span></span>
-        <span class="brand-tag">TOOLS</span>
+        <span class="brand-code">&lt;/&gt;</span>
+        <span>465</span>
+        <span class="brand-sub">Tools</span>
       </a>
 
       <nav class="nav-links" id="primaryNavLinks">
         <a href="index.html">Ana Sayfa</a>
-        <a href="tools.html" class="active">Ücretsiz Araçlar</a>
+        <a href="tools.html" class="active">Araçlar</a>
         <a href="docs.html">Dokümantasyon</a>
-        <a href="index.html#pricing">Fiyatlandırma</a>
       </nav>
 
       <div class="nav-actions">
@@ -31,23 +29,23 @@
           <button type="button" data-lang-btn="tr" class="active" onclick="set465Lang('tr')">TR</button>
           <button type="button" data-lang-btn="en" onclick="set465Lang('en')">EN</button>
         </div>
-        <a href="index.html#pricing" class="btn btn-primary btn-sm">465 AC Al</a>
+        <a href="index.html#moduller" class="btn btn-white btn-sm">465 AC ↗</a>
         <button type="button" class="mobile-toggle" id="mobileNavToggle" aria-label="Menu">☰</button>
       </div>
-    </div>
-  </header>
+    </header>
+  </div>
 
-  <main class="container" style="padding: 48px 20px 80px;">
+  <main class="container" style="padding: 56px 24px 80px;">
     <div style="max-width:760px;margin-bottom:36px;">
-      <span class="badge"><span class="dot-pulse"></span> %100 Tarayıcı İçi • Dosyalar Hiçbir Sunucuya Yüklenmez</span>
-      <h1 style="font-size:clamp(28px,4vw,42px);margin:14px 0 10px;letter-spacing:-0.025em;">465 Tools — FiveM Teşhis Merkezi</h1>
+      <div class="hero-badge" style="margin-bottom:16px;"><span class="hero-badge-dot"></span> %100 Tarayıcı İçi • Dosyalar Sunucuya Yüklenmez</div>
+      <h1 style="font-size:clamp(28px,4vw,44px);margin:0 0 10px;letter-spacing:-0.03em;">465 Tools — FiveM Teşhis Merkezi</h1>
       <p style="color:var(--text-muted);margin:0;">Sunucu lagı, crash dump hataları ve FXServer build kontrolleri için ücretsiz yardımcı araçlar.</p>
 
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;">
-        <a href="#profiler" class="btn btn-secondary btn-sm">📊 Profiler Viewer</a>
-        <a href="#crashdump" class="btn btn-secondary btn-sm">💥 Crash Analyzer</a>
-        <a href="#artifacts" class="btn btn-secondary btn-sm">⚙️ FXServer Artifacts</a>
-        <a href="#scanner" class="btn btn-secondary btn-sm">🔍 Scanner PIN Portalı</a>
+        <a href="#profiler" class="btn btn-dark btn-sm">Profiler Viewer</a>
+        <a href="#crashdump" class="btn btn-dark btn-sm">Crash Analyzer</a>
+        <a href="#artifacts" class="btn btn-dark btn-sm">FXServer Artifacts</a>
+        <a href="#scanner" class="btn btn-dark btn-sm">Scanner PIN</a>
       </div>
     </div>
 
@@ -60,7 +58,7 @@
             Sunucu konsolunda veya F8'de <code>profiler record 500</code> → <code>profiler saveJSON profile.json</code> çalıştırıp JSON dosyasını bırakın.
           </p>
         </div>
-        <button type="button" class="btn btn-secondary btn-sm" onclick="loadSampleProfiler()">Örnek Profil Yükle</button>
+        <button type="button" class="btn btn-dark btn-sm" onclick="loadSampleProfiler()">Örnek Profil Yükle</button>
       </div>
 
       <div class="dropzone" id="profilerDropzone" onclick="document.getElementById('profilerFileInput').click()">
@@ -73,7 +71,7 @@
         <div class="grid-4" style="margin-bottom:16px;" id="profilerStatsGrid"></div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
           <strong style="font-size:14px;">En Maliyetli Çağrılar / Sıcak Noktalar (Top Hotspots)</strong>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="copyProfilerSummary()">Discord Özetini Kopyala</button>
+          <button type="button" class="btn btn-dark btn-sm" onclick="copyProfilerSummary()">Discord Özetini Kopyala</button>
         </div>
         <div class="table-wrap">
           <table>
@@ -96,16 +94,16 @@
           </p>
         </div>
         <div style="display:flex;gap:8px;">
-          <button type="button" class="btn btn-secondary btn-sm" onclick="fillSampleCrash('pool')">Örnek: Pool Full</button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="fillSampleCrash('gpu')">Örnek: GPU / D3D</button>
+          <button type="button" class="btn btn-dark btn-sm" onclick="fillSampleCrash('pool')">Örnek: Pool Full</button>
+          <button type="button" class="btn btn-dark btn-sm" onclick="fillSampleCrash('gpu')">Örnek: GPU / D3D</button>
         </div>
       </div>
 
       <textarea id="crashInput" class="input" rows="5" placeholder="Örn: [14829] FiveM_b2802_GTAProcess.exe!rage::fwArchetype... veya ERR_GFX_D3D_INIT veya CitizenFX_SubProcess_game..."></textarea>
       <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
-        <button type="button" class="btn btn-primary" onclick="analyzeCrash()">Hatayı Analiz Et</button>
+        <button type="button" class="btn btn-white" onclick="analyzeCrash()">Hatayı Analiz Et</button>
         <input type="file" id="crashFileInput" accept=".txt,.log" style="display:none">
-        <button type="button" class="btn btn-secondary" onclick="document.getElementById('crashFileInput').click()">.log / .txt Dosyası Yükle</button>
+        <button type="button" class="btn btn-dark" onclick="document.getElementById('crashFileInput').click()">.log / .txt Dosyası Yükle</button>
       </div>
 
       <div id="crashResult" style="display:none;margin-top:18px;" class="card"></div>
@@ -119,7 +117,7 @@
       </p>
       <div style="display:flex;gap:10px;max-width:440px;">
         <input type="number" id="artifactBuildInput" class="input" placeholder="Örn: 9500 veya 11500" value="11200">
-        <button type="button" class="btn btn-primary" onclick="checkArtifact()">Kontrol Et</button>
+        <button type="button" class="btn btn-white" onclick="checkArtifact()">Kontrol Et</button>
       </div>
       <div id="artifactResult" style="margin-top:16px;"></div>
     </section>
@@ -133,14 +131,14 @@
             Şüpheli oyuncu taraması için tek kullanımlık PIN üretme ve oyun içi <code>/465ac_scan</code> kaydı oluşturma arayüzü.
           </p>
         </div>
-        <span class="sim-badge">Konsept Arayüz</span>
+        <span class="fw-tag">Konsept Arayüz</span>
       </div>
 
       <div class="grid-2">
         <div class="card" style="padding:18px;">
           <div style="font-size:12px;color:var(--text-dim);margin-bottom:6px;">TEK KULLANIMLIK TARAMA PIN'İ</div>
           <div id="scannerPinBox" style="font-family:var(--font-mono);font-size:32px;font-weight:800;letter-spacing:0.18em;color:#fff;margin-bottom:14px;">465-829</div>
-          <button type="button" class="btn btn-primary btn-sm" onclick="generateScannerPin()">Yeni PIN Oluştur</button>
+          <button type="button" class="btn btn-white btn-sm" onclick="generateScannerPin()">Yeni PIN Oluştur</button>
         </div>
         <div class="card" style="padding:18px;">
           <div style="font-size:12px;color:var(--text-dim);margin-bottom:6px;">TARAMA SONRASI OYUN İÇİ KAYIT</div>

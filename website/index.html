@@ -3,39 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>465 AC — Advanced FiveM Anti-Cheat & Security Suite | 465.lol</title>
-  <meta name="description" content="465 AC protects your FiveM server with real-time server-side detection, per-module actions, exclude zones, Discord alerts, and a built-in web dashboard.">
+  <title>465 AC — FiveM Anti-Cheat & Security Suite | 465.lol</title>
+  <meta name="description" content="Sunucunu ileri taşıyan FiveM koruması. Sunucu taraflı savaş doğrulama, temiz yapılandırma, 0.00ms resmon ve 465.lol ücretsiz teşhis araçları.">
   <link rel="stylesheet" href="assets/app.css">
 </head>
 <body>
   <div class="bg-grid"></div>
 
-  <!-- Duyuru Bandı -->
-  <div class="promo-bar" data-i18n="promo">
-    🚀 <strong>465 AC v4.2</strong> çıktı! Açılış kampanyası: <span class="code-chip">465LAUNCH</span> koduyla tüm planlarda %30 indirim.
-  </div>
-
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="container navbar-inner">
+  <!-- Üst Floating Pill Navbar -->
+  <div class="navbar-wrap">
+    <header class="navbar-pill">
       <a href="index.html" class="brand">
-        <div class="brand-mark">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            <path d="m9 12 2 2 4-4"/>
-          </svg>
-        </div>
-        <span>465 <span style="color:var(--accent)">AC</span></span>
-        <span class="brand-tag">465.lol</span>
+        <span class="brand-code">&lt;/&gt;</span>
+        <span>465</span>
+        <span class="brand-sub">AC</span>
       </a>
 
       <nav class="nav-links" id="primaryNavLinks">
-        <a href="#features" data-i18n="nav_features">Özellikler</a>
-        <a href="#preview" data-i18n="nav_preview">Panel Demoları</a>
-        <a href="#detections" data-i18n="nav_modules">Korumalar</a>
-        <a href="tools.html" data-i18n="nav_tools">Ücretsiz Araçlar</a>
-        <a href="docs.html" data-i18n="nav_docs">Dokümantasyon</a>
-        <a href="#pricing" data-i18n="nav_pricing">Fiyatlandırma</a>
+        <a href="#moduller" data-nav="moduller" data-i18n="nav_catalog">Korumalar</a>
+        <a href="#yapilandirma" data-nav="yapilandirma" data-i18n="nav_config">Yapılandırma</a>
+        <a href="#guvence" data-nav="guvence" data-i18n="nav_guarantee">Güvence</a>
+        <a href="#sss" data-nav="sss" data-i18n="nav_faq">SSS</a>
       </nav>
 
       <div class="nav-actions">
@@ -43,776 +31,645 @@
           <button type="button" data-lang-btn="tr" class="active" onclick="set465Lang('tr')">TR</button>
           <button type="button" data-lang-btn="en" onclick="set465Lang('en')">EN</button>
         </div>
-        <a href="#pricing" class="btn btn-primary btn-sm" data-i18n="nav_start">Hemen Başla</a>
-        <button type="button" class="mobile-toggle" id="mobileNavToggle" aria-label="Menu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-          </svg>
-        </button>
+        <a href="tools.html" class="btn btn-dark btn-sm" data-i18n="nav_tools">465 Tools ↗</a>
+        <button type="button" class="mobile-toggle" id="mobileNavToggle" aria-label="Menu">☰</button>
       </div>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container hero-grid">
-      <div>
-        <span class="badge">
-          <span class="dot-pulse"></span>
-          <span data-i18n="hero_badge">465 AC v4.2 • Server-Side Öncelikli Koruma</span>
-        </span>
-
-        <h1>
-          <span data-i18n="hero_title_1">FiveM Sunucunu </span><span class="grad" data-i18n="hero_title_2">Gerçek Zamanlı Zırhla</span><span data-i18n="hero_title_3"> Koru.</span>
-        </h1>
-
-        <p class="hero-desc" data-i18n="hero_desc">
-          Sunucu taraflı hasar doğrulama, akıllı bölge muafiyetleri (Exclude Zones), anti-crasher ağ filtreleri ve tarayıcı tabanlı canlı yönetim paneli — ekstra veritabanı veya karmaşık kurulum gerekmeden.
-        </p>
-
-        <div class="hero-cta">
-          <a href="#pricing" class="btn btn-primary btn-lg" data-i18n="hero_cta_plans">Planları İncele</a>
-          <a href="#preview" class="btn btn-secondary btn-lg" data-i18n="hero_cta_demo">Canlı Paneli Dene</a>
-          <a href="tools.html" class="btn btn-ghost btn-lg" data-i18n="hero_cta_tools">Ücretsiz Araçlar →</a>
-        </div>
-
-        <div class="hero-metrics">
-          <div class="hero-metric">
-            <strong data-i18n="metric_resmon_val">0.00 - 0.01ms</strong>
-            <span data-i18n="metric_resmon_lbl">Hedef İstemci Resmon</span>
-          </div>
-          <div class="hero-metric">
-            <strong data-i18n="metric_modules_val">30+ Modül</strong>
-            <span data-i18n="metric_modules_lbl">Off / Log / Kick / Ban</span>
-          </div>
-          <div class="hero-metric">
-            <strong data-i18n="metric_tools_val">%100 Ücretsiz</strong>
-            <span data-i18n="metric_tools_lbl">Profiler & Crash Analizi</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sağ Örnek Terminal Akışı -->
-      <div class="terminal-card">
-        <div class="terminal-head">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div class="terminal-dots"><span></span><span></span><span></span></div>
-            <span>465_AC • combat-guard.lua</span>
-          </div>
-          <span class="sim-badge" id="simLabel">Örnek Akış</span>
-        </div>
-        <div class="terminal-body">
-          <div style="display:flex;justify-content:space-between;align-items:center;color:var(--text-dim);font-size:11px;padding-bottom:10px;border-bottom:1px solid var(--border);">
-            <span>RESOURCE: <strong style="color:#fff">465_AC</strong></span>
-            <span>ACE: <strong style="color:#6ee7b7">465ac.bypass</strong></span>
-            <span>TOKEN: <strong style="color:#a5b4fc">465AC-VALID</strong></span>
-          </div>
-          <div class="log-feed" id="heroLogFeed"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Uyumluluk Şeridi -->
-  <div class="trust-strip">
-    <div class="container trust-items">
-      <div class="trust-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <span data-i18n="trust_1">Sunucu Taraflı Otorite</span>
-      </div>
-      <div class="trust-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <span data-i18n="trust_2">OneSync Infinity Uyumlu</span>
-      </div>
-      <div class="trust-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        <span data-i18n="trust_3">ESX / QBCore / Qbox</span>
-      </div>
-      <div class="trust-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span data-i18n="trust_4">Discord Webhook & SS</span>
-      </div>
-      <div class="trust-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        <span data-i18n="trust_5">Dahili Web Dashboard</span>
-      </div>
-    </div>
+    </header>
   </div>
 
-  <!-- Özellikler -->
-  <section class="section" id="features">
+  <!-- Sol Sabit Bölüm Dock'u -->
+  <aside class="left-dock" aria-label="Section Navigation">
+    <a href="#baslangic" class="dock-btn active" data-dock="baslangic" title="Başlangıç">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </a>
+    <a href="#moduller" class="dock-btn" data-dock="moduller" title="Katalog">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    </a>
+    <a href="#nasil-calisir" class="dock-btn" data-dock="nasil-calisir" title="Nasıl Çalışır">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+    </a>
+    <a href="#yapilandirma" class="dock-btn" data-dock="yapilandirma" title="Yapılandırma">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </a>
+    <a href="#guvence" class="dock-btn" data-dock="guvence" title="Güvence">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </a>
+    <a href="#sss" class="dock-btn" data-dock="sss" title="SSS">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </a>
+    <div class="dock-divider"></div>
+    <a href="docs.html" class="dock-btn" title="Dokümantasyon & Destek">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </a>
+  </aside>
+
+  <!-- Sağ Alt Yukarı Çık Butonu -->
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Yukarı çık">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+  </button>
+
+  <!-- 1. HERO (Eğik Watermark + Tek Sütun Ortalanmış) -->
+  <section class="hero" id="baslangic" data-section-id="baslangic">
+    <div class="hero-watermark" aria-hidden="true">
+      <div class="hero-wm-row"><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span></div>
+      <div class="hero-wm-row"><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span></div>
+      <div class="hero-wm-row"><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span></div>
+      <div class="hero-wm-row"><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span></div>
+      <div class="hero-wm-row"><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span><span>&lt;/&gt; 465</span></div>
+    </div>
+
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      <span data-i18n="hero_pill">FiveM için geliştirildi</span>
+    </div>
+
+    <h1>
+      <span data-i18n="hero_h1_top">Sunucunu ileri taşıyan</span><br>
+      <span class="silver-grad" data-i18n="hero_h1_bot">FiveM koruması.</span>
+    </h1>
+
+    <p class="hero-sub" data-i18n="hero_sub">
+      Sunucu taraflı savaş doğrulama, temiz yapılandırma ve düşük kaynak tüketimi. Oyuncularına hilesiz ve akıcı bir deneyim sun.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#moduller" class="btn btn-white btn-lg" data-i18n="hero_btn_explore">Paketleri keşfet ↓</a>
+      <button type="button" class="btn btn-dark btn-lg" onclick="openPreviewModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span data-i18n="hero_btn_support">Canlı Panel Önizlemesi</span>
+      </button>
+    </div>
+
+    <div class="hero-trust-pills">
+      <span class="trust-pill">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span data-i18n="trust_1">Anında kurulum</span>
+      </span>
+      <span class="trust-pill">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span data-i18n="trust_2">0.00ms Resmon</span>
+      </span>
+      <span class="trust-pill">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span data-i18n="trust_3">Kurulum desteği</span>
+      </span>
+    </div>
+
+    <a href="#moduller" class="scroll-cue">
+      <span data-i18n="scroll_cue">KEŞFET</span>
+      <span>↓</span>
+    </a>
+  </section>
+
+  <!-- 2. KATALOG & ÜRÜNLER -->
+  <section class="section" id="moduller" data-section-id="moduller">
     <div class="container">
       <div class="section-head">
-        <span class="section-kicker" data-i18n="feat_kicker">NEDEN 465 AC?</span>
-        <h2 data-i18n="feat_title">Masum Oyuncuyu Değil, Hileyi Durduran Mimari</h2>
-        <p data-i18n="feat_sub">Çoğu anti-cheat hatalı banlarla topluluğunu yorar. 465 AC modül bazlı eylem seçimi ve güvenli bölge kurallarıyla sıfır sürtünme hedefler.</p>
+        <div class="eyebrow" data-i18n="cat_eyebrow">KATALOG</div>
+        <h2>
+          <span data-i18n="cat_title_1">Sunucuna güç katan </span><br>
+          <span class="silver-grad" data-i18n="cat_title_2">korumalar</span>
+        </h2>
+        <div class="counter-sub" id="catalogCounter">3 / 3 ürün</div>
+      </div>
+
+      <!-- Arama & Filtre Çubuğu -->
+      <div class="filter-bar">
+        <div class="filter-tabs">
+          <button type="button" class="filter-pill active" onclick="filterCatalog('all', this)">Tümü</button>
+          <button type="button" class="filter-pill" onclick="filterCatalog('server', this)">SUNUCU</button>
+          <button type="button" class="filter-pill" onclick="filterCatalog('intel', this)">İSTİHBARAT</button>
+          <button type="button" class="filter-pill" onclick="filterCatalog('free', this)">ÜCRETSİZ</button>
+        </div>
+        <div class="search-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="catalogSearch" placeholder="Paket veya modül ara…" data-i18n-ph="cat_search" oninput="renderCatalog()">
+        </div>
+      </div>
+
+      <!-- 3 Sütun Ürün Kartları -->
+      <div class="grid-3" id="catalogGrid"></div>
+    </div>
+  </section>
+
+  <!-- 3. NASIL ÇALIŞIR (Timeline + 3D Krom Logo) -->
+  <section class="section" id="nasil-calisir" data-section-id="nasil-calisir">
+    <div class="container">
+      <div class="eyebrow left" data-i18n="how_eyebrow">NASIL ÇALIŞIR</div>
+
+      <div class="how-grid">
+        <div class="timeline">
+          <div class="tl-step">
+            <span class="tl-dot"></span>
+            <span class="tl-num">01</span>
+            <h3 data-i18n="how_s1_t">Paketini seç</h3>
+            <p data-i18n="how_s1_d">Katalogdan sunucuna uygun koruma ve istihbarat paketini seç; canlı modül önizlemelerini incele.</p>
+            <div class="tag-row">
+              <span class="fw-tag">465_AC</span>
+              <span class="fw-tag">Modül Seçici</span>
+            </div>
+          </div>
+
+          <div class="tl-step">
+            <span class="tl-dot"></span>
+            <span class="tl-num">02</span>
+            <h3 data-i18n="how_s2_t">Tek satırda kur</h3>
+            <p data-i18n="how_s2_d">465_AC klasörünü resources içine atıp server.cfg'ye ekle; harici veritabanı kurmadan dakikalar içinde çalıştır.</p>
+            <div class="tag-row">
+              <span class="fw-tag">ensure 465_AC</span>
+              <span class="fw-tag">465ac.bypass</span>
+            </div>
+          </div>
+
+          <div class="tl-step">
+            <span class="tl-dot"></span>
+            <span class="tl-num">03</span>
+            <h3 data-i18n="how_s3_t">Canlı yönet &amp; koru</h3>
+            <p data-i18n="how_s3_d">Tarayıcı panelinden modülleri off/log/kick/ban olarak ayarla, Discord webhook üzerinden anlık bildirim al.</p>
+            <div class="tag-row">
+              <span class="fw-tag">Web Dashboard</span>
+              <span class="fw-tag">Discord Webhook</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Metalik Krom </> Emblem -->
+        <div class="chrome-stage" aria-hidden="true">
+          <div class="chrome-halo"></div>
+          <svg width="310" height="310" viewBox="0 0 320 320" fill="none">
+            <defs>
+              <linearGradient id="chromeMetal" x1="30" y1="20" x2="290" y2="300" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="28%" stop-color="#8b8b96"/>
+                <stop offset="52%" stop-color="#f4f4f6"/>
+                <stop offset="76%" stop-color="#3a3a44"/>
+                <stop offset="100%" stop-color="#d4d4dc"/>
+              </linearGradient>
+              <linearGradient id="ringGrad" x1="0" y1="0" x2="320" y2="320" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="rgba(255,255,255,0.55)"/>
+                <stop offset="50%" stop-color="rgba(255,255,255,0.08)"/>
+                <stop offset="100%" stop-color="rgba(255,255,255,0.35)"/>
+              </linearGradient>
+              <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#ffffff" flood-opacity="0.16"/>
+              </filter>
+            </defs>
+            <ellipse cx="160" cy="160" rx="134" ry="86" transform="rotate(-24 160 160)" stroke="url(#ringGrad)" stroke-width="2"/>
+            <ellipse cx="160" cy="160" rx="110" ry="110" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 6"/>
+            <g filter="url(#softGlow)">
+              <!-- < -->
+              <path d="M116 116L62 160L116 204" stroke="url(#chromeMetal)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- / -->
+              <path d="M178 96L142 224" stroke="url(#chromeMetal)" stroke-width="20" stroke-linecap="round"/>
+              <!-- > -->
+              <path d="M204 116L258 160L204 204" stroke="url(#chromeMetal)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <text x="160" y="276" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" letter-spacing="4">465.LOL</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. KOLAY YAPILANDIRMA (macOS Dark IDE Mockup) -->
+  <section class="section" id="yapilandirma" data-section-id="yapilandirma">
+    <div class="container config-grid">
+      <div>
+        <div class="eyebrow left" data-i18n="cfg_eyebrow">KOLAY YAPILANDIRMA</div>
+        <h2 class="section-title-left">
+          <span data-i18n="cfg_title_1">Kod bilmeden </span><span class="silver-grad" data-i18n="cfg_title_2">dakikalar içinde </span><span data-i18n="cfg_title_3">ayarla</span>
+        </h2>
+        <p style="font-size:14.5px;color:var(--text-muted);margin:0;" data-i18n="cfg_desc">
+          Her koruma modülünün davranışı açık ve okunaklı yapılandırma dosyalarıyla değiştirilir. Neyin ne işe yaradığı satırında yazar.
+        </p>
+
+        <ul class="check-list">
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
+            <span data-i18n="cfg_b1">Modül bazlı off / log / kick / ban aksiyon seçimi</span>
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
+            <span data-i18n="cfg_b2">Exclude Zones ve Object Whitelist ile sıfır false-ban</span>
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
+            <span data-i18n="cfg_b3">Takıldığın yerde Discord'dan destek ve kurulum yardımı</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- macOS Lua Editör Penceresi -->
+      <div class="ide-window">
+        <div class="ide-titlebar">
+          <div style="display:flex;align-items:center;height:100%;">
+            <div class="ide-dots"><span></span><span></span><span></span></div>
+            <div class="ide-tabs">
+              <button type="button" class="ide-tab active" onclick="switchIdeTab('config', this)">config.lua</button>
+              <button type="button" class="ide-tab" onclick="switchIdeTab('server', this)">server.cfg</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-dark btn-sm" style="padding:4px 10px;font-size:11px;" onclick="copyIdeCode()" id="ideCopyBtn">Kopyala</button>
+        </div>
+
+        <pre class="ide-code" id="ideCodeView"></pre>
+
+        <div class="ide-statusbar">
+          <span>● Kaydedildi</span>
+          <span id="ideLangLabel">Lua &nbsp; UTF-8</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. MÜŞTERİ YORUMLARI -->
+  <section class="section" id="yorumlar">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow" data-i18n="rev_eyebrow">MÜŞTERİ YORUMLARI</div>
+        <h2>
+          <span data-i18n="rev_title_1">Sunucu sahipleri </span><span class="silver-grad" data-i18n="rev_title_2">ne diyor?</span>
+        </h2>
+      </div>
+
+      <div class="grid-3" id="reviewsGrid">
+        <div class="card review-card">
+          <div>
+            <div class="review-meta" style="margin-bottom:12px;">
+              <div class="avatar-circle">A</div>
+              <div>
+                <div style="font-size:13.5px;font-weight:700;">Arda K.</div>
+                <div style="font-size:11.5px;color:var(--text-dim);">@ardarp</div>
+              </div>
+            </div>
+            <div class="stars">★★★★★</div>
+            <p style="font-size:13px;color:var(--text-soft);margin:10px 0 0;">
+              Kurulum 5 dakika sürdü. Riskli modülleri log modunda açıp test ettik, false-ban yaşamadık. Resmon gerçekten 0.01ms civarında kalıyor.
+            </p>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim);">Discord'da paylaşıldı · Örnek Geri Bildirim</div>
+        </div>
+
+        <div class="card review-card">
+          <div>
+            <div class="review-meta" style="margin-bottom:12px;">
+              <div class="avatar-circle">B</div>
+              <div>
+                <div style="font-size:13.5px;font-weight:700;">Bora T.</div>
+                <div style="font-size:11.5px;color:var(--text-dim);">@boradev</div>
+              </div>
+            </div>
+            <div class="stars">★★★★★</div>
+            <p style="font-size:13px;color:var(--text-soft);margin:10px 0 0;">
+              Exclude Zones ve Object Whitelist hayat kurtardı. Hastanede revive sonrası oyuncuların atılması tamamen bitti, web paneli çok pratik.
+            </p>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim);">Discord'da paylaşıldı · Örnek Geri Bildirim</div>
+        </div>
+
+        <div class="card review-card">
+          <div>
+            <div class="review-meta" style="margin-bottom:12px;">
+              <div class="avatar-circle">E</div>
+              <div>
+                <div style="font-size:13.5px;font-weight:700;">Emre Y.</div>
+                <div style="font-size:11.5px;color:var(--text-dim);">@emre_v</div>
+              </div>
+            </div>
+            <div class="stars">★★★★★</div>
+            <p style="font-size:13px;color:var(--text-soft);margin:10px 0 0;">
+              465.lol üzerindeki ücretsiz Profiler Viewer ve Crash Analyzer araçlarını bile tek başına her gün kullanıyoruz. Çok temiz iş.
+            </p>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim);">Discord'da paylaşıldı · Örnek Geri Bildirim</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. GÜVENCE -->
+  <section class="section" id="guvence" data-section-id="guvence">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow" data-i18n="gua_eyebrow">GÜVENCE</div>
+        <h2>
+          <span data-i18n="gua_title_1">Satın aldıktan sonra da </span><span class="silver-grad" data-i18n="gua_title_2">yanındayız</span>
+        </h2>
       </div>
 
       <div class="grid-3">
-        <div class="card feature-card">
-          <div class="icon-box">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+        <div class="card guarantee-card">
+          <div class="sq-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
           </div>
-          <h3 data-i18n="f1_t">Modül Bazlı Aksiyon (Off / Log / Kick / Ban)</h3>
-          <p data-i18n="f1_d">Her koruma modülünü ayrı ayrı yönetin. Yeni sunucularda riskli tespitleri 'log' modunda izleyip kesin hilelere anında 'ban' verin.</p>
+          <h3 style="margin:0 0 8px;font-size:17px;" data-i18n="g1_t">Kaynak dostu kod</h3>
+          <p style="margin:0;font-size:13.5px;color:var(--text-muted);" data-i18n="g1_d">Her modül düşük CPU ve bellek tüketimi gözetilerek yazıldı. İstemcide 0.00–0.01ms hedefler.</p>
         </div>
 
-        <div class="card feature-card">
-          <div class="icon-box indigo">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
+        <div class="card guarantee-card">
+          <div class="sq-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <h3 data-i18n="f2_t">Sunucu Seviyesi Combat Guard</h3>
-          <p data-i18n="f2_d">weaponDamageEvent ile aşırı silah/yumruk hasarını, imkansız menzili (Magic Bullet) ve saniyelik hasar spamını istemciye güvenmeden sunucuda iptal edin.</p>
+          <h3 style="margin:0 0 8px;font-size:17px;" data-i18n="g2_t">Sunucu taraflı otorite</h3>
+          <p style="margin:0;font-size:13.5px;color:var(--text-muted);" data-i18n="g2_d">Hasar, patlama, obje basma ve mesafe kontrolleri istemciye güvenmeden doğrudan sunucuda doğrulanır.</p>
         </div>
 
-        <div class="card feature-card">
-          <div class="icon-box emerald">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+        <div class="card guarantee-card">
+          <div class="sq-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           </div>
-          <h3 data-i18n="f3_t">Exclude Zones & Object Whitelist</h3>
-          <p data-i18n="f3_d">Pillbox Hastanesi, Legion Square veya admin adası gibi bölgeleri muaf tutun; telefon, defter ve RP objelerinin silinmesini önleyin.</p>
-        </div>
-
-        <div class="card feature-card">
-          <div class="icon-box amber">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          </div>
-          <h3 data-i18n="f4_t">Crasher & Spam Savunması</h3>
-          <p data-i18n="f4_d">entityCreating, explosionEvent, ptFxEvent ve clearPedTasksEvent filtreleriyle toplu obje/araç basma ve FPS düşürme saldırılarını durdurun.</p>
-        </div>
-
-        <div class="card feature-card">
-          <div class="icon-box indigo">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
-          <h3 data-i18n="f5_t">465 İstihbarat & Lookup</h3>
-          <p data-i18n="f5_d">Bağlanan oyuncuların lisans, Discord, Steam ve HWID belirteçlerini eşleştirerek alt hesap (ban evasion) ve risk puanı analizi yapın.</p>
-        </div>
-
-        <div class="card feature-card">
-          <div class="icon-box emerald">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </div>
-          <h3 data-i18n="f6_t">Sıfır Bağımlılıklı Web Panel</h3>
-          <p data-i18n="f6_d">Node.js veya harici veritabanı kurmadan doğrudan FiveM HTTP sunucusu üzerinden ayar değiştirin, log izleyin ve haritayı temizleyin.</p>
+          <h3 style="margin:0 0 8px;font-size:17px;" data-i18n="g3_t">Sürekli destek</h3>
+          <p style="margin:0;font-size:13.5px;color:var(--text-muted);" data-i18n="g3_d">Kurulumda veya false-ban ayarlamasında sorun yaşadığında ekibimiz birebir yapılandırma desteği verir.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Canlı İnteraktif Panel Önizlemesi -->
-  <section class="section" id="preview" style="background: rgba(255,255,255,0.012); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <!-- 7. SSS -->
+  <section class="section" id="sss" data-section-id="sss">
     <div class="container">
       <div class="section-head">
-        <span class="section-kicker" data-i18n="prev_kicker">İNTERAKTİF ÖNİZLEME</span>
-        <h2 data-i18n="prev_title">Yönetim Paneli ve Oyun İçi /465ac Deneyimi</h2>
-        <p data-i18n="prev_sub">Aşağıdaki örnek önizleme sekmesinden 465 AC yönetim ekranlarını canlı olarak test edebilirsiniz (demo verisidir).</p>
-      </div>
-
-      <div class="demo-tabs">
-        <button type="button" class="demo-tab active" onclick="switchDemoTab('dashboard', this)">Web Yönetim Paneli</button>
-        <button type="button" class="demo-tab" onclick="switchDemoTab('ingame', this)">Oyun İçi /465ac (F5)</button>
-        <button type="button" class="demo-tab" onclick="switchDemoTab('lookup', this)">465 Lookup & İstihbarat</button>
-        <button type="button" class="demo-tab" onclick="switchDemoTab('zones', this)">Exclude Zones Haritası</button>
-      </div>
-
-      <div class="demo-window">
-        <div class="demo-topbar">
-          <div style="display:flex;align-items:center;gap:10px;font-family:var(--font-mono);">
-            <span class="dot-pulse"></span>
-            <strong>https://465.lol/dashboard</strong>
-            <span style="color:var(--text-dim)">• Demo Önizleme</span>
-          </div>
-          <span class="sim-badge" id="demoActionFeedback">Hazır</span>
-        </div>
-
-        <div class="demo-body">
-          <!-- Tab 1: Web Dashboard -->
-          <div class="demo-pane active" id="pane-dashboard">
-            <div class="grid-4" style="margin-bottom:20px;">
-              <div class="card" style="padding:14px;">
-                <div style="font-size:11px;color:var(--text-dim);">AKTİF MODÜL</div>
-                <div style="font-size:22px;font-weight:800;font-family:var(--font-mono);color:var(--emerald);" id="demoActiveCount">6 / 6</div>
-              </div>
-              <div class="card" style="padding:14px;">
-                <div style="font-size:11px;color:var(--text-dim);">BAN MODU</div>
-                <div style="font-size:22px;font-weight:800;font-family:var(--font-mono);color:var(--accent);" id="demoBanCount">3</div>
-              </div>
-              <div class="card" style="padding:14px;">
-                <div style="font-size:11px;color:var(--text-dim);">LOG MODU</div>
-                <div style="font-size:22px;font-weight:800;font-family:var(--font-mono);color:var(--sky);" id="demoLogCount">2</div>
-              </div>
-              <div class="card" style="padding:14px;">
-                <div style="font-size:11px;color:var(--text-dim);">KICK MODU</div>
-                <div style="font-size:22px;font-weight:800;font-family:var(--font-mono);color:var(--amber);" id="demoKickCount">1</div>
-              </div>
-            </div>
-            <div class="grid-2" id="demoControlsGrid"></div>
-          </div>
-
-          <!-- Tab 2: In-Game Panel -->
-          <div class="demo-pane" id="pane-ingame">
-            <div class="grid-2">
-              <div class="card" style="padding:18px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-                  <strong style="font-size:14px;">Aktif Oyuncu Denetimi (/465ac)</strong>
-                  <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">F5 Docked</span>
-                </div>
-                <div class="table-wrap">
-                  <table>
-                    <thead><tr><th>ID</th><th>Oyuncu</th><th>Ping</th><th>Aksiyon</th></tr></thead>
-                    <tbody>
-                      <tr>
-                        <td style="font-family:var(--font-mono)">12</td>
-                        <td>Kaan_V</td>
-                        <td>34ms</td>
-                        <td><button class="btn btn-secondary btn-sm" onclick="triggerDemoFeedback('ID 12 izlemeye alındı (Spectate)')">İzle</button> <button class="btn btn-primary btn-sm" onclick="triggerDemoFeedback('ID 12 için /465ac_check çalıştırıldı')">Kontrol</button></td>
-                      </tr>
-                      <tr>
-                        <td style="font-family:var(--font-mono)">27</td>
-                        <td>Mert_RP</td>
-                        <td>48ms</td>
-                        <td><button class="btn btn-secondary btn-sm" onclick="triggerDemoFeedback('ID 27 yanına ışınlanıldı')">Git</button> <button class="btn btn-primary btn-sm" onclick="triggerDemoFeedback('ID 27 için /465ac_kick önizlendi')">Kick</button></td>
-                      </tr>
-                      <tr>
-                        <td style="font-family:var(--font-mono)">41</td>
-                        <td>Guest_904</td>
-                        <td>112ms</td>
-                        <td><button class="btn btn-secondary btn-sm" onclick="triggerDemoFeedback('ID 41 istihbarat skoru: 45/100')">Lookup</button> <button class="btn btn-primary btn-sm" onclick="triggerDemoFeedback('ID 41 yasaklama önizlendi')">Ban</button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="card" style="padding:18px;display:flex;flex-direction:column;justify-content:space-between;gap:14px;">
-                <div>
-                  <strong style="font-size:14px;">Harita Temizleme (/465ac_clear)</strong>
-                  <p style="font-size:12.5px;color:var(--text-muted);margin:6px 0 14px;">Whitelist objelerine ve içindeki oyunculara dokunmadan haritadaki kalıntıları tek tıkla silin.</p>
-                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                    <button class="btn btn-secondary" onclick="triggerDemoFeedback('Boş araçlar temizlendi (Simülasyon: 14 araç)')">Boş Araçları Sil</button>
-                    <button class="btn btn-secondary" onclick="triggerDemoFeedback('Sahipsiz NPC\'ler temizlendi (Simülasyon: 28 ped)')">NPC\'leri Sil</button>
-                    <button class="btn btn-secondary" onclick="triggerDemoFeedback('Yabancı objeler silindi (Whitelist korundu)')">Yabancı Objeler</button>
-                    <button class="btn btn-primary" onclick="triggerDemoFeedback('Tam harita temizliği tamamlandı')">Tam Temizlik</button>
-                  </div>
-                </div>
-                <pre class="code-block">/465ac_protect AntiAimbot log
-/465ac_clear all
-/465ac_stats</pre>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tab 3: Lookup -->
-          <div class="demo-pane" id="pane-lookup">
-            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
-              <input type="text" class="input" id="demoLookupInput" value="discord:8841209341120041" placeholder="Discord ID, License veya İsim girin..." style="flex:1;min-width:220px;">
-              <button class="btn btn-primary" onclick="runDemoLookup()">465 Lookup Sorgula</button>
-            </div>
-            <div class="card" style="padding:18px;" id="demoLookupResult"></div>
-          </div>
-
-          <!-- Tab 4: Exclude Zones -->
-          <div class="demo-pane" id="pane-zones">
-            <p style="font-size:13px;color:var(--text-muted);margin:0 0 14px;">Hastane revive noktaları veya admin adasında ışınlanma/noclip false-ban riskini önlemek için bölge muafiyeti kurallarını yönetin:</p>
-            <div class="grid-3" id="demoZonesGrid"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Koruma Modülleri Matrisi -->
-  <section class="section" id="detections">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-kicker" data-i18n="mod_kicker">KORUMA MATRİSİ</span>
-        <h2 data-i18n="mod_title">Tüm Tehditlere Karşı Katmanlı Savunma</h2>
-        <p data-i18n="mod_sub">Kategorilere göre filtreleyin ve her modülün varsayılan çalışma modunu inceleyin.</p>
-      </div>
-
-      <div class="filter-pills">
-        <button type="button" class="filter-pill active" onclick="filterModules('all', this)">Tümü</button>
-        <button type="button" class="filter-pill" onclick="filterModules('combat', this)">Savaş & Aimbot</button>
-        <button type="button" class="filter-pill" onclick="filterModules('physics', this)">Hareket & Fizik</button>
-        <button type="button" class="filter-pill" onclick="filterModules('crash', this)">Crasher & Troll</button>
-        <button type="button" class="filter-pill" onclick="filterModules('system', this)">Sistem & Native</button>
-      </div>
-
-      <div class="grid-3" id="modulesMatrixGrid"></div>
-    </div>
-  </section>
-
-  <!-- Ücretsiz Araçlar Ekosistemi -->
-  <section class="section" id="tools" style="background: rgba(255,255,255,0.012); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-kicker" data-i18n="eco_kicker">465 TOOLS EKOSİSTEMİ</span>
-        <h2 data-i18n="eco_title">Tüm FiveM Sunucuları İçin Ücretsiz Araçlar</h2>
-        <p data-i18n="eco_sub">465 AC müşterisi olmanıza gerek yok — tüm dosyalar kendi tarayıcınızda işlenir, hiçbir sunucuya yüklenmez.</p>
-      </div>
-
-      <div class="grid-4">
-        <a href="tools.html#profiler" class="card feature-card">
-          <div class="icon-box indigo">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          </div>
-          <h3>465 Profiler Viewer</h3>
-          <p>FiveM <code>profile.json</code> kaydınızı tarayıcıda analiz edip darboğaz ve yüksek hitch karelerini görün.</p>
-          <span style="font-size:12.5px;color:var(--accent-hover);font-weight:600;margin-top:auto;">Aracı Aç →</span>
-        </a>
-
-        <a href="tools.html#crashdump" class="card feature-card">
-          <div class="icon-box">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          </div>
-          <h3>465 Crash Analyzer</h3>
-          <p>FiveM crash hatalarını yapıştırın; pool taşması, GPU sürücüsü veya script kaynaklı çözümü görün.</p>
-          <span style="font-size:12.5px;color:var(--accent-hover);font-weight:600;margin-top:auto;">Aracı Aç →</span>
-        </a>
-
-        <a href="tools.html#artifacts" class="card feature-card">
-          <div class="icon-box emerald">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
-          </div>
-          <h3>465 Artifacts Kontrol</h3>
-          <p>FXServer build numaranızı girin; önerilen sürüm ve bilinen güvenlik açıklarını kontrol edin.</p>
-          <span style="font-size:12.5px;color:var(--accent-hover);font-weight:600;margin-top:auto;">Aracı Aç →</span>
-        </a>
-
-        <a href="tools.html#scanner" class="card feature-card">
-          <div class="icon-box amber">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h3>465 Scanner Portal</h3>
-          <p>Şüpheli oyuncular için tek kullanımlık tarama PIN'i üretin ve SS sonuçlarını profilde saklayın.</p>
-          <span style="font-size:12.5px;color:var(--accent-hover);font-weight:600;margin-top:auto;">Aracı Aç →</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Fiyatlandırma -->
-  <section class="section" id="pricing">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-kicker" data-i18n="price_kicker">LİSANSLAMA & PLANLAR</span>
-        <h2 data-i18n="price_title">Sunucunun Büyüklüğüne Uygun Planı Seç</h2>
-        <p data-i18n="price_sub">Tüm planlarda tam koruma paketi, Discord webhook entegrasyonu ve düzenli güncellemeler dahildir.</p>
-
-        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
-          <div class="billing-toggle">
-            <button type="button" class="active" onclick="setBilling('monthly', this)">Aylık</button>
-            <button type="button" onclick="setBilling('yearly', this)">Yıllık <span class="save-badge">-35%</span></button>
-            <button type="button" onclick="setBilling('lifetime', this)">Ömür Boyu</button>
-          </div>
-
-          <div style="display:flex;gap:8px;align-items:center;max-width:340px;width:100%;">
-            <input type="text" id="promoInput" class="input" placeholder="İndirim kodu (örn: 465LAUNCH)" style="padding:8px 12px;font-size:12.5px;">
-            <button type="button" class="btn btn-secondary btn-sm" onclick="applyPromo()">Uygula</button>
-          </div>
-          <div id="promoMsg" style="font-size:12px;color:var(--emerald);min-height:18px;"></div>
-        </div>
-      </div>
-
-      <div class="grid-3">
-        <!-- Starter -->
-        <div class="card pricing-card">
-          <div>
-            <h3 style="margin:0;font-size:18px;">Starter</h3>
-            <p style="margin:4px 0 0;font-size:13px;color:var(--text-muted);">Yeni açılan ve orta ölçekli RP sunucuları için.</p>
-            <div class="price-num" data-plan="starter">$25<span> / ay</span></div>
-            <ul class="pricing-list">
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 1 FiveM Sunucu IP Lisansı</li>
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Tüm Server-Side & Client Modülleri</li>
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Dahili Web Yönetim Paneli</li>
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Discord Webhook + Screenshot</li>
-            </ul>
-          </div>
-          <a href="docs.html" class="btn btn-secondary" style="width:100%;">Starter ile Başla</a>
-        </div>
-
-        <!-- Pro -->
-        <div class="card pricing-card featured">
-          <span class="popular-tag">EN POPÜLER</span>
-          <div>
-            <h3 style="margin:0;font-size:18px;">Pro Ultimate</h3>
-            <p style="margin:4px 0 0;font-size:13px;color:var(--text-muted);">Yüksek oyunculu sunucular için tam istihbarat paketi.</p>
-            <div class="price-num" data-plan="pro">$45<span> / ay</span></div>
-            <ul class="pricing-list">
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 2 Sunucu (Ana + Test) Lisansı</li>
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 465 Intelligence (Alt Hesap & Risk Skoru)</li>
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Exclude Zones & Object Whitelist</li>
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 7/24 Öncelikli Ticket & Config Kurulumu</li>
-            </ul>
-          </div>
-          <a href="docs.html" class="btn btn-primary" style="width:100%;">Pro Planı Seç</a>
-        </div>
-
-        <!-- Enterprise -->
-        <div class="card pricing-card">
-          <div>
-            <h3 style="margin:0;font-size:18px;">Enterprise Network</h3>
-            <p style="margin:4px 0 0;font-size:13px;color:var(--text-muted);">Çoklu sunucu ağları ve özel geliştirme desteği.</p>
-            <div class="price-num" data-plan="enterprise">$95<span> / ay</span></div>
-            <ul class="pricing-list">
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 5+ Sunucuda Paylaşımlı Global Banlist</li>
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Özel Script / Event Whitelist Desteği</li>
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Kripto (USDT / BTC) & Kart Ödeme</li>
-              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Birebir False-Ban Sıfırlama Denetimi</li>
-            </ul>
-          </div>
-          <a href="docs.html" class="btn btn-secondary" style="width:100%;">İletişime Geç</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SSS -->
-  <section class="section" id="faq">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-kicker" data-i18n="faq_kicker">SIK SORULAN SORULAR</span>
-        <h2 data-i18n="faq_title">Aklındaki Soruları Hızlıca Yanıtlayalım</h2>
-        <p data-i18n="faq_sub">Kurulum, performans, false-ban önlemleri ve lisanslama hakkında bilmen gerekenler.</p>
+        <div class="eyebrow" data-i18n="faq_eyebrow">SIKÇA SORULAN SORULAR</div>
       </div>
 
       <div class="faq-list">
-        <div class="faq-item open">
-          <button type="button" class="faq-q" onclick="toggleFaq(this)">
-            <span>465 AC harici veritabanı (MySQL) veya Node.js gerektirir mi?</span>
-            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="faq-item">
+          <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            <span>465 AC harici veritabanı veya Node.js gerektirir mi?</span>
+            <span class="faq-plus">+</span>
           </button>
           <div class="faq-a">
-            Hayır. Resource olarak sunucuya eklediğinizde (`ensure 465_AC`) web paneli doğrudan FXServer'ın kendi HTTP altyapısından çalışır; banlar, oyuncu geçmişi ve canlı ayarlar JSON dosyalarında tutulur.
+            Hayır. Resource olarak sunucuya eklediğinizde web paneli doğrudan FXServer'ın kendi HTTP sunucusu üzerinden çalışır; banlar ve oyuncu geçmişi JSON dosyalarında saklanır.
           </div>
         </div>
 
         <div class="faq-item">
-          <button type="button" class="faq-q" onclick="toggleFaq(this)">
-            <span>Medkit, revive veya hastane ışınlanmalarında yanlış ban (false-ban) atar mı?</span>
-            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            <span>Hangi framework'lerle uyumlu?</span>
+            <span class="faq-plus">+</span>
           </button>
           <div class="faq-a">
-            Riskli tespitler varsayılan olarak sadece <strong>"log"</strong> modundadır. Ayrıca spawn/revive sonrası koruma süresi (Grace Period) ve Pillbox / Legion gibi <strong>Exclude Zones</strong> bölgeleri sayesinde masum oyuncular banlanmaz.
+            QBCore, QBox, ESX ve Standalone tüm OneSync FiveM sunucularıyla uyumludur. Exclude Zones ve grace period ayarları tüm paketlere kolayca uyarlanır.
           </div>
         </div>
 
         <div class="faq-item">
-          <button type="button" class="faq-q" onclick="toggleFaq(this)">
-            <span>Yetkilileri muaf (bypass) yapmak için ne yapmalıyım?</span>
-            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            <span>Yanlış yasaklama (false-ban) olmaması için nasıl önlem alındı?</span>
+            <span class="faq-plus">+</span>
           </button>
           <div class="faq-a">
-            `server.cfg` dosyanıza `add_ace group.admin 465ac.bypass allow` satırını eklemeniz yeterlidir. Yetkili grupları tüm testlerde ve admin menü kullanımında muaf tutulur.
+            Riskli tespitler varsayılan olarak sadece <code>log</code> modundadır. İstediğiniz her modülü <code>off</code>, <code>log</code>, <code>kick</code> veya <code>ban</code> şeklinde ayarlayabilirsiniz.
           </div>
         </div>
 
         <div class="faq-item">
-          <button type="button" class="faq-q" onclick="toggleFaq(this)">
-            <span>Profiler ve Crash Dump araçları ücretsiz mi?</span>
-            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            <span>Profiler ve Crash Analyzer araçları gerçekten ücretsiz mi?</span>
+            <span class="faq-plus">+</span>
           </button>
           <div class="faq-a">
-            Evet, <a href="tools.html" style="color:var(--accent-hover);text-decoration:underline;">465 Tools</a> sayfasındaki Profiler Viewer, Crash Analyzer ve Artifacts kontrol aracı tüm FiveM sunucuları için %100 ücretsizdir ve veriler tarayıcınızdan dışarı çıkmaz.
+            Evet, <a href="tools.html" style="text-decoration:underline;color:#fff;">465 Tools</a> sayfasındaki araçlar tüm FiveM geliştiricileri için ücretsizdir ve dosyalar tarayıcınızdan dışarı çıkmaz.
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- 8. FOOTER -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div>
           <div class="brand" style="margin-bottom:12px;">
-            <div class="brand-mark">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <span>465 <span style="color:var(--accent)">AC</span></span>
+            <span class="brand-code">&lt;/&gt;</span>
+            <span>465</span>
+            <span class="brand-sub">AC</span>
           </div>
-          <p style="font-size:13px;color:var(--text-muted);max-width:300px;margin:0;">
-            FiveM sunucuları için gerçek zamanlı sunucu taraflı koruma, istihbarat ve yönetim ekosistemi — <strong>https://465.lol/</strong>
+          <p style="font-size:13px;color:var(--text-muted);margin:0;max-width:260px;">
+            FiveM toplulukları için kullanımı kolay, güvenli ve düşük kaynak tüketimli koruma ekosistemi.
           </p>
         </div>
+
         <div>
-          <h4>Ürün</h4>
+          <h4>MAĞAZA</h4>
           <ul>
-            <li><a href="#features">Özellikler</a></li>
-            <li><a href="#preview">Panel Demoları</a></li>
-            <li><a href="#detections">Koruma Modülleri</a></li>
-            <li><a href="#pricing">Fiyatlandırma</a></li>
+            <li><a href="#moduller">Paketler &amp; Korumalar</a></li>
+            <li><a href="#guvence">Güvence</a></li>
+            <li><a href="#sss">SSS</a></li>
+            <li><a href="tools.html">465 Tools Platformu</a></li>
           </ul>
         </div>
+
         <div>
-          <h4>Araçlar</h4>
+          <h4>DOKÜMAN &amp; ARAÇLAR</h4>
           <ul>
+            <li><a href="docs.html">Kurulum Rehberi</a></li>
+            <li><a href="docs.html#api">Exports &amp; Web API</a></li>
             <li><a href="tools.html#profiler">Profiler Viewer</a></li>
             <li><a href="tools.html#crashdump">Crash Analyzer</a></li>
-            <li><a href="tools.html#artifacts">FXServer Artifacts</a></li>
-            <li><a href="tools.html#scanner">465 Scanner Portal</a></li>
           </ul>
         </div>
+
         <div>
-          <h4>Kaynaklar</h4>
-          <ul>
-            <li><a href="docs.html">Kurulum & Komutlar</a></li>
-            <li><a href="docs.html#api">Web API & Exports</a></li>
-            <li><a href="https://465.lol/" target="_blank" rel="noopener">465.lol Ana Sayfa</a></li>
-          </ul>
+          <h4>TOPLULUK</h4>
+          <div class="discord-box">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+              <div style="width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,0.06);display:grid;place-items:center;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div>
+                <div style="font-size:13.5px;font-weight:700;">465 AC Discord</div>
+                <div style="font-size:11.5px;color:var(--text-dim);">Destek, duyuru ve topluluk</div>
+              </div>
+            </div>
+            <a href="https://465.lol/" target="_blank" rel="noopener" class="btn btn-dark btn-sm" style="width:100%;">465.lol'e Git ↗</a>
+          </div>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <span>© 2026 <strong>465 AC</strong> (<a href="https://465.lol/" style="color:var(--text-muted)">https://465.lol/</a>). Tüm hakları saklıdır.</span>
-        <span style="font-family:var(--font-mono);">v4.2.0 • Built for FiveM OneSync</span>
+        <span>© 2026 465 AC (https://465.lol/). Tüm hakları saklıdır.</span>
+        <span class="dmca-badge">✓ PROTECTED BY 465.LOL</span>
       </div>
     </div>
   </footer>
 
+  <!-- İnteraktif Canlı Panel & Modül Demo Modalı -->
+  <div class="modal-backdrop" id="previewModal" onclick="if(event.target===this) closePreviewModal()">
+    <div class="modal-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div>
+          <strong style="font-size:17px;">465 AC Canlı Panel Önizlemesi</strong>
+          <div style="font-size:12px;color:var(--text-dim);">Modül bazlı off / log / kick / ban aksiyonlarını test edin (demo)</div>
+        </div>
+        <button type="button" class="btn btn-dark btn-sm" onclick="closePreviewModal()">Kapat ✕</button>
+      </div>
+      <div class="grid-2" id="modalControlsGrid" style="gap:12px;"></div>
+    </div>
+  </div>
+
   <script src="assets/i18n.js"></script>
   <script>
-    // 1. Hero örnek tespit akışı
-    const sampleFeed = [
-      { player: "ID 14 • M_Kaya", reason: "AntiBlacklistedWeapons (WEAPON_RPG)", action: "ban" },
-      { player: "ID 33 • Guest_09", reason: "AntiImpossibleDamage (Magic Bullet 410m)", action: "ban" },
-      { player: "ID 08 • Berkay", reason: "AntiAimbot (Snap 28.4°)", action: "log" },
-      { player: "ID 21 • User_88", reason: "AntiCrasher (ptFxEvent Spam)", action: "kick" },
-      { player: "ID 05 • Emir", reason: "AntiHoneypotEvents (AdminMenu:giveCash)", action: "ban" }
-    ];
-    let feedIdx = 0;
-
-    function pushHeroLog() {
-      const container = document.getElementById("heroLogFeed");
-      if (!container) return;
-      const item = sampleFeed[feedIdx % sampleFeed.length];
-      feedIdx++;
-      const now = new Date().toTimeString().slice(0, 8);
-      const row = document.createElement("div");
-      row.className = "log-row";
-      row.innerHTML = `
-        <div>
-          <div style="color:#fff;font-weight:600;">${item.player}</div>
-          <div style="color:var(--text-muted);font-size:11px;">${item.reason}</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span style="color:var(--text-dim);font-size:10.5px;">${now}</span>
-          <span class="pill-action pill-${item.action}">${item.action}</span>
-        </div>
-      `;
-      container.prepend(row);
-      while (container.children.length > 4) container.lastChild.remove();
-    }
-    for (let i = 0; i < 4; i++) pushHeroLog();
-    setInterval(pushHeroLog, 3200);
-
-    // 2. Demo sekme yönetimi
-    function switchDemoTab(id, btn) {
-      document.querySelectorAll(".demo-tab").forEach((b) => b.classList.remove("active"));
-      document.querySelectorAll(".demo-pane").forEach((p) => p.classList.remove("active"));
-      btn.classList.add("active");
-      document.getElementById("pane-" + id).classList.add("active");
-    }
-
-    function triggerDemoFeedback(msg) {
-      const el = document.getElementById("demoActionFeedback");
-      el.textContent = msg;
-      el.style.borderColor = "rgba(16,185,129,0.5)";
-      el.style.color = "#6ee7b7";
-    }
-
-    // 3. Demo Web Panel Modül Kontrolü
-    const demoModules = [
-      { key: "AntiGodmode", label: "Native GodMode", mode: "ban" },
-      { key: "AntiNoclip", label: "Uçma / Noclip", mode: "ban" },
-      { key: "AntiBlacklistedWeapons", label: "Yasaklı Ağır Silahlar", mode: "ban" },
-      { key: "AntiLegitGodmode", label: "Fast Health Regen", mode: "log" },
-      { key: "AntiAimbot", label: "Aimbot Snap Analizi", mode: "log" },
-      { key: "AntiParticleSpam", label: "Partikül Crasher", mode: "kick" }
+    // 1. Katalog Ürün Kartları
+    const catalogProducts = [
+      {
+        id: "core",
+        cat: "server",
+        badgeLeft: "465_AC",
+        badgeRight: "v4.2 Core",
+        tags: ["QBCore", "QBox", "ESX", "OneSync"],
+        title: "465 AC Core Protection",
+        checks: ["Sunucu taraflı Combat Guard & Anti-Crasher", "Modül bazlı off / log / kick / ban", "Dahili Web Yönetim Paneli + Discord Webhook"],
+        priceLabel: "AYLIK LİSANS",
+        price: "$25,00",
+        actionText: "İncele",
+        ctaText: "Kurulum",
+        ctaHref: "docs.html"
+      },
+      {
+        id: "pro",
+        cat: "intel",
+        badgeLeft: "INTELLIGENCE",
+        badgeRight: "Önerilen",
+        tags: ["QBCore", "ESX", "Standalone", "OneSync"],
+        title: "465 AC Pro + Intelligence",
+        checks: ["Alt hesap (Ban Evasion) ve risk puanlama", "Exclude Zones & Object Whitelist desteği", "2 Sunucu IP lisansı + 7/24 öncelikli destek"],
+        priceLabel: "AYLIK LİSANS",
+        price: "$45,00",
+        actionText: "İncele",
+        ctaText: "Kurulum",
+        ctaHref: "docs.html"
+      },
+      {
+        id: "tools",
+        cat: "free",
+        badgeLeft: "ÜCRETSİZ",
+        badgeRight: "Tarayıcı İçi",
+        tags: ["Standalone", "Client", "Server"],
+        title: "465 Tools Suite (Profiler & Crash)",
+        checks: ["FiveM profile.json tarayıcı içi analizi", "Crash dump & pool hatası çözümleyici", "FXServer Artifacts güvenlik kontrolü"],
+        priceLabel: "AÇIK ERİŞİM",
+        price: "$0,00",
+        actionText: "Aracı Aç",
+        ctaText: "Başlat",
+        ctaHref: "tools.html"
+      }
     ];
 
-    function renderDemoControls() {
-      const grid = document.getElementById("demoControlsGrid");
-      grid.innerHTML = "";
-      let active = 0, ban = 0, log = 0, kick = 0;
-
-      demoModules.forEach((m, idx) => {
-        if (m.mode !== "off") active++;
-        if (m.mode === "ban") ban++;
-        if (m.mode === "log") log++;
-        if (m.mode === "kick") kick++;
-
-        const card = document.createElement("div");
-        card.className = "card module-item";
-        card.innerHTML = `
-          <div>
-            <h4>${m.label}</h4>
-            <code>Config.Protections.${m.key} = "${m.mode}"</code>
-          </div>
-          <div class="action-seg">
-            ${["off", "log", "kick", "ban"].map((opt) =>
-              `<button type="button" class="${m.mode === opt ? "sel-" + opt : ""}" onclick="setDemoMode(${idx}, '${opt}')">${opt}</button>`
-            ).join("")}
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-
-      document.getElementById("demoActiveCount").textContent = `${active} / ${demoModules.length}`;
-      document.getElementById("demoBanCount").textContent = ban;
-      document.getElementById("demoLogCount").textContent = log;
-      document.getElementById("demoKickCount").textContent = kick;
-    }
-
-    function setDemoMode(idx, mode) {
-      demoModules[idx].mode = mode;
-      renderDemoControls();
-      triggerDemoFeedback(`${demoModules[idx].key} → ${mode.toUpperCase()}`);
-    }
-    renderDemoControls();
-
-    // 4. Demo Lookup
-    function runDemoLookup() {
-      const q = document.getElementById("demoLookupInput").value.trim() || "discord:8841209341120041";
-      const box = document.getElementById("demoLookupResult");
-      box.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
-          <div>
-            <div style="font-size:16px;font-weight:800;">Örnek Profil: <span style="color:var(--accent-hover)">${q}</span></div>
-            <div style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);margin-top:3px;">license:9f8a1c302e4b... • steam:11000011a4f21</div>
-          </div>
-          <span class="pill-action pill-kick" style="font-size:11.5px;padding:4px 10px;">RİSK PUANI: 65 / 100</span>
-        </div>
-        <div class="grid-3" style="gap:10px;font-size:12.5px;">
-          <div class="card" style="padding:12px;">
-            <div style="color:var(--text-dim);font-size:11px;">İLİŞKİLİ YAN HESAP</div>
-            <strong style="color:#fcd34d;">1 Hesap Eşleşti (IP)</strong>
-          </div>
-          <div class="card" style="padding:12px;">
-            <div style="color:var(--text-dim);font-size:11px;">GEÇMİŞ BAN DURUMU</div>
-            <strong style="color:#fca5a5;">Aktif Yasak Yok (Temiz)</strong>
-          </div>
-          <div class="card" style="padding:12px;">
-            <div style="color:var(--text-dim);font-size:11px;">HARİCİ SS NOTU</div>
-            <strong style="color:#6ee7b7;">CLEAN (/465ac_scan)</strong>
-          </div>
-        </div>
-      `;
-      triggerDemoFeedback("Örnek lookup sorgusu güncellendi");
-    }
-    runDemoLookup();
-
-    // 5. Demo Exclude Zones
-    const demoZones = [
-      { name: "Pillbox Hastanesi", coords: "298.6, -584.5, 43.2", radius: "55m", active: true },
-      { name: "Legion Square Spawn", coords: "195.1, -933.8, 30.6", radius: "65m", active: true },
-      { name: "Admin / Yetkili Adası", coords: "-1037.0, -2737.0, 20.0", radius: "120m", active: true }
-    ];
-    function renderZones() {
-      const g = document.getElementById("demoZonesGrid");
-      g.innerHTML = "";
-      demoZones.forEach((z, idx) => {
-        const el = document.createElement("div");
-        el.className = "card";
-        el.style.padding = "16px";
-        el.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <strong style="font-size:14px;">${z.name}</strong>
-            <span class="pill-action ${z.active ? "pill-log" : "pill-off"}">${z.active ? "MUAF" : "KAPALI"}</span>
-          </div>
-          <div style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);margin-bottom:12px;">vector3(${z.coords}) • r=${z.radius}</div>
-          <button class="btn btn-secondary btn-sm" style="width:100%;" onclick="demoZones[${idx}].active=!demoZones[${idx}].active;renderZones();triggerDemoFeedback('${z.name} güncellendi')">
-            ${z.active ? "Muafiyeti Duraklat" : "Muafiyeti Aç"}
-          </button>
-        `;
-        g.appendChild(el);
-      });
-    }
-    renderZones();
-
-    // 6. Koruma Modülleri Matrisi
-    const allModules = [
-      { key: "AntiImpossibleDamage", cat: "combat", mode: "ban", desc: "Sunucu tarafında menzil aşımı (Magic Bullet) ve aşırı silah hasarını iptal eder." },
-      { key: "AntiDamageModifier", cat: "combat", mode: "ban", desc: "Silah/yumruk hasar çarpanı (One-Shot Kill) hilelerini engeller." },
-      { key: "AntiMassKill", cat: "combat", mode: "log", desc: "Kısa sürede çok sayıda farklı oyuncuya hasar veren toplu öldürme hilelerini izler." },
-      { key: "AntiAimbot", cat: "combat", mode: "log", desc: "Ateş anında olağandışı kamera açısı sıçramalarını analiz eder." },
-      { key: "AntiBlacklistedWeapons", cat: "combat", mode: "ban", desc: "RPG, Minigun, Railgun gibi yasaklı ağır silahları siler ve işlem yapar." },
-      { key: "AntiGodmode", cat: "physics", mode: "ban", desc: "Native ölümsüzlük ve hasar almazlık bayraklarını yakalar." },
-      { key: "AntiLegitGodmode", cat: "physics", mode: "log", desc: "Spawn/revive koruması dışında aniden fulle çekilen can hilelerini izler." },
-      { key: "AntiNoclip", cat: "physics", mode: "ban", desc: "Havada süzülme ve yetkisiz uçma hareketlerini engeller." },
-      { key: "AntiLaunchPlayer", cat: "physics", mode: "kick", desc: "Dikey Z-ekseninde anormal fırlatma ivmesini sıfırlar." },
-      { key: "AntiEntitySpam", cat: "crash", mode: "ban", desc: "entityCreating ile toplu obje/araç spawn edip sunucu çökertmeyi engeller." },
-      { key: "AntiExplosionSpam", cat: "crash", mode: "ban", desc: "Yasaklı patlama türlerini ve patlama spamını sunucuda iptal eder." },
-      { key: "AntiParticleSpam", cat: "crash", mode: "kick", desc: "FPS düşürmeye yönelik ptFxEvent efekt spamını keser." },
-      { key: "AntiHoneypotEvents", cat: "system", mode: "ban", desc: "Hile menülerinin tetiklediği sahte sunucu eventlerini anında yakalar." },
-      { key: "AntiResourceStop", cat: "system", mode: "ban", desc: "İstemcide anti-cheat kaynağını durdurma girişimini yakalar." },
-      { key: "AntiThreadFreeze", cat: "system", mode: "kick", desc: "Heartbeat zaman aşımı ile AC döngüsü dondurulan istemcileri atar." }
-    ];
-
-    function filterModules(cat, btn) {
+    let activeCat = "all";
+    function filterCatalog(cat, btn) {
+      activeCat = cat;
       document.querySelectorAll(".filter-pill").forEach((p) => p.classList.remove("active"));
       btn.classList.add("active");
-      const grid = document.getElementById("modulesMatrixGrid");
-      grid.innerHTML = "";
-      allModules.filter((m) => cat === "all" || m.cat === cat).forEach((m) => {
-        const el = document.createElement("div");
-        el.className = "card module-item";
-        el.innerHTML = `
+      renderCatalog();
+    }
+
+    function renderCatalog() {
+      const q = (document.getElementById("catalogSearch").value || "").toLowerCase().trim();
+      const filtered = catalogProducts.filter((p) => {
+        const catOk = activeCat === "all" || p.cat === activeCat;
+        const textOk = !q || p.title.toLowerCase().includes(q) || p.checks.some((c) => c.toLowerCase().includes(q));
+        return catOk && textOk;
+      });
+
+      document.getElementById("catalogCounter").textContent = `${filtered.length} / ${catalogProducts.length} ürün`;
+      const grid = document.getElementById("catalogGrid");
+      grid.innerHTML = filtered.map((p) => `
+        <article class="card product-card">
           <div>
-            <h4>${m.key}</h4>
-            <p>${m.desc}</p>
+            <div class="product-thumb">
+              <span class="thumb-badge-left">${p.badgeLeft}</span>
+              <span class="thumb-badge-right">${p.badgeRight}</span>
+              <svg viewBox="0 0 400 225" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+                <rect x="24" y="42" width="352" height="156" rx="12" fill="rgba(10,16,30,0.85)" stroke="rgba(56,189,248,0.28)"/>
+                <rect x="40" y="58" width="96" height="10" rx="5" fill="rgba(255,255,255,0.22)"/>
+                <rect x="40" y="82" width="150" height="44" rx="8" fill="rgba(56,189,248,0.12)" stroke="rgba(56,189,248,0.25)"/>
+                <rect x="202" y="82" width="158" height="44" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+                <polyline points="44,172 95,156 142,164 196,138 250,148 310,130 356,136" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="tag-row">
+              ${p.tags.map((t) => `<span class="fw-tag">${t}</span>`).join("")}
+            </div>
+            <h3>${p.title}</h3>
+            <ul class="product-checks">
+              ${p.checks.map((c) => `<li><span>✓</span><span>${c}</span></li>`).join("")}
+            </ul>
           </div>
-          <span class="pill-action pill-${m.mode}">${m.mode}</span>
-        `;
-        grid.appendChild(el);
-      });
+          <div class="product-footer">
+            <div>
+              <span class="price-label">${p.priceLabel}</span>
+              <span class="price-val">${p.price}</span>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button type="button" class="btn btn-dark btn-sm" onclick="${p.id === "tools" ? "location.href='tools.html'" : "openPreviewModal()"}">${p.actionText}</button>
+              <a href="${p.ctaHref}" class="btn btn-white btn-sm">${p.ctaText}</a>
+            </div>
+          </div>
+        </article>
+      `).join("");
     }
-    filterModules("all", document.querySelector(".filter-pill"));
+    renderCatalog();
 
-    // 7. Fiyatlandırma & Promo
-    const basePrices = { starter: 25, pro: 45, enterprise: 95 };
-    let currentBilling = "monthly";
-    let promoDiscount = 0;
-
-    function updatePrices() {
-      const mult = currentBilling === "yearly" ? 7.8 : (currentBilling === "lifetime" ? 18 : 1);
-      const suffix = currentBilling === "yearly" ? " / yıl" : (currentBilling === "lifetime" ? " tek sefer" : " / ay");
-      document.querySelectorAll("[data-plan]").forEach((el) => {
-        const plan = el.getAttribute("data-plan");
-        let val = Math.round(basePrices[plan] * mult);
-        if (promoDiscount > 0) val = Math.round(val * (1 - promoDiscount));
-        el.innerHTML = `$${val}<span>${suffix}</span>`;
-      });
-    }
-
-    function setBilling(mode, btn) {
-      currentBilling = mode;
-      document.querySelectorAll(".billing-toggle button").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      updatePrices();
-    }
-
-    function applyPromo() {
-      const code = document.getElementById("promoInput").value.trim().toUpperCase();
-      const msg = document.getElementById("promoMsg");
-      if (code === "465LAUNCH") {
-        promoDiscount = 0.30;
-        msg.style.color = "var(--emerald)";
-        msg.textContent = "✓ 465LAUNCH uygulandı: %30 indirim aktif!";
-      } else if (code === "") {
-        promoDiscount = 0;
-        msg.textContent = "";
-      } else {
-        promoDiscount = 0;
-        msg.style.color = "var(--accent-hover)";
-        msg.textContent = "Geçersiz promosyon kodu (ör: 465LAUNCH).";
+    // 2. macOS IDE Tabs
+    const ideSnippets = {
+      config: {
+        lang: "Lua  UTF-8",
+        raw: `Config = {}\n\n-- 465 AC Web ve Discord Ayarları\nConfig.ServerName  = '465 AC Server'\nConfig.AceBypass   = '465ac.bypass'\n\n-- Modül Bazlı Aksiyonlar: 'off' | 'log' | 'kick' | 'ban'\nConfig.Protections = {\n  AntiGodmode        = 'ban',\n  AntiNoclip         = 'ban',\n  AntiLegitGodmode   = 'log',\n  AntiAimbot         = 'log',\n}\n\nConfig.ExcludeZones = {\n  { label = 'Pillbox', coords = vec3(298.6, -584.5, 43.2), radius = 55.0 }\n}`,
+        html: `<span class="ln">1</span><span class="kw">Config</span> = {}\n<span class="ln">2</span>\n<span class="ln">3</span><span class="cm">-- 465 AC Web ve Discord Ayarları</span>\n<span class="ln">4</span>Config.ServerName = <span class="str">'465 AC Server'</span>\n<span class="ln">5</span>Config.AceBypass  = <span class="str">'465ac.bypass'</span>\n<span class="ln">6</span>\n<span class="ln">7</span><span class="cm">-- Modül Bazlı: 'off' | 'log' | 'kick' | 'ban'</span>\n<span class="ln">8</span>Config.Protections = {\n<span class="ln">9</span>  AntiGodmode      = <span class="str">'ban'</span>,\n<span class="ln">10</span> AntiNoclip       = <span class="str">'ban'</span>,\n<span class="ln">11</span> AntiLegitGodmode = <span class="str">'log'</span>,\n<span class="ln">12</span> AntiAimbot       = <span class="str">'log'</span>,\n<span class="ln">13</span>}\n<span class="ln">14</span>\n<span class="ln">15</span>Config.ExcludeZones = { { label = <span class="str">'Pillbox'</span>, radius = <span class="kw">55.0</span> } }`
+      },
+      server: {
+        lang: "CFG  UTF-8",
+        raw: `# OneSync zorunludur\nset onesync on\n\n# 465 AC başlatma\nensure 465_AC\n\n# Yetkili muafiyeti\nadd_ace group.admin 465ac.bypass allow`,
+        html: `<span class="ln">1</span><span class="cm"># OneSync zorunludur</span>\n<span class="ln">2</span><span class="kw">set</span> onesync on\n<span class="ln">3</span>\n<span class="ln">4</span><span class="cm"># 465 AC başlatma</span>\n<span class="ln">5</span><span class="kw">ensure</span> 465_AC\n<span class="ln">6</span>\n<span class="ln">7</span><span class="cm"># Yetkili muafiyeti</span>\n<span class="ln">8</span><span class="kw">add_ace</span> group.admin <span class="str">465ac.bypass</span> allow`
       }
-      updatePrices();
+    };
+    let currentIdeTab = "config";
+    function switchIdeTab(tab, btn) {
+      currentIdeTab = tab;
+      document.querySelectorAll(".ide-tab").forEach((t) => t.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("ideCodeView").innerHTML = ideSnippets[tab].html;
+      document.getElementById("ideLangLabel").textContent = ideSnippets[tab].lang;
+    }
+    switchIdeTab("config", document.querySelector(".ide-tab"));
+
+    function copyIdeCode() {
+      navigator.clipboard.writeText(ideSnippets[currentIdeTab].raw).then(() => {
+        const b = document.getElementById("ideCopyBtn");
+        b.textContent = "Kopyalandı ✓";
+        setTimeout(() => { b.textContent = "Kopyala"; }, 1800);
+      });
     }
 
-    // 8. FAQ
-    function toggleFaq(btn) {
-      btn.parentElement.classList.toggle("open");
+    // 3. Canlı Panel Modalı
+    const modalModules = [
+      { key: "AntiGodmode", mode: "ban" },
+      { key: "AntiNoclip", mode: "ban" },
+      { key: "AntiBlacklistedWeapons", mode: "ban" },
+      { key: "AntiLegitGodmode", mode: "log" },
+      { key: "AntiAimbot", mode: "log" },
+      { key: "AntiParticleSpam", mode: "kick" }
+    ];
+    function renderModalControls() {
+      document.getElementById("modalControlsGrid").innerHTML = modalModules.map((m, idx) => `
+        <div class="card" style="padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+          <code style="font-family:var(--font-mono);font-size:12px;">${m.key}</code>
+          <div class="action-seg">
+            ${["off", "log", "kick", "ban"].map((opt) =>
+              `<button type="button" class="${m.mode === opt ? "sel-" + opt : ""}" onclick="modalModules[${idx}].mode='${opt}';renderModalControls()">${opt}</button>`
+            ).join("")}
+          </div>
+        </div>
+      `).join("");
+    }
+    function openPreviewModal() {
+      renderModalControls();
+      document.getElementById("previewModal").classList.add("open");
+    }
+    function closePreviewModal() {
+      document.getElementById("previewModal").classList.remove("open");
     }
   </script>
 </body>

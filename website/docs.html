@@ -9,21 +9,19 @@
 <body>
   <div class="bg-grid"></div>
 
-  <header class="navbar">
-    <div class="container navbar-inner">
+  <!-- Üst Floating Pill Navbar -->
+  <div class="navbar-wrap">
+    <header class="navbar-pill">
       <a href="index.html" class="brand">
-        <div class="brand-mark">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-        </div>
-        <span>465 <span style="color:var(--accent)">AC</span></span>
-        <span class="brand-tag">DOCS</span>
+        <span class="brand-code">&lt;/&gt;</span>
+        <span>465</span>
+        <span class="brand-sub">Docs</span>
       </a>
 
       <nav class="nav-links" id="primaryNavLinks">
         <a href="index.html">Ana Sayfa</a>
-        <a href="tools.html">Ücretsiz Araçlar</a>
+        <a href="tools.html">Araçlar</a>
         <a href="docs.html" class="active">Dokümantasyon</a>
-        <a href="index.html#pricing">Fiyatlandırma</a>
       </nav>
 
       <div class="nav-actions">
@@ -31,15 +29,15 @@
           <button type="button" data-lang-btn="tr" class="active" onclick="set465Lang('tr')">TR</button>
           <button type="button" data-lang-btn="en" onclick="set465Lang('en')">EN</button>
         </div>
-        <a href="index.html#pricing" class="btn btn-primary btn-sm">465 AC Al</a>
+        <a href="index.html#moduller" class="btn btn-white btn-sm">465 AC ↗</a>
         <button type="button" class="mobile-toggle" id="mobileNavToggle" aria-label="Menu">☰</button>
       </div>
-    </div>
-  </header>
+    </header>
+  </div>
 
-  <main class="container" style="padding: 48px 20px 80px; max-width: 940px;">
-    <span class="badge"><span class="dot-pulse"></span> Dokümantasyon • 465_AC</span>
-    <h1 style="font-size:clamp(28px,4vw,40px);margin:14px 0 10px;letter-spacing:-0.025em;">Kurulum & Referans Rehberi</h1>
+  <main class="container" style="padding: 56px 24px 80px; max-width: 940px;">
+    <div class="hero-badge" style="margin-bottom:16px;"><span class="hero-badge-dot"></span> Dokümantasyon • 465_AC</div>
+    <h1 style="font-size:clamp(28px,4vw,42px);margin:0 0 10px;letter-spacing:-0.03em;">Kurulum &amp; Referans Rehberi</h1>
     <p style="color:var(--text-muted);margin:0 0 32px;">465 AC'yi FiveM sunucunuza kurma, ACE yetkilerini bağlama, modül modlarını yönetme ve komut listesi.</p>
 
     <!-- 1. Kurulum -->
