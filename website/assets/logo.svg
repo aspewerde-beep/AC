@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <!-- Fırçalanmış metalik gümüş -> koyu adaçayı/zümrüt krom geçişi -->
+    <linearGradient id="metal465" x1="16" y1="16" x2="104" y2="114" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#c9cfd2"/>
+      <stop offset="32%" stop-color="#6f787a"/>
+      <stop offset="68%" stop-color="#3c4c48"/>
+      <stop offset="100%" stop-color="#5a887a"/>
+    </linearGradient>
+
+    <!-- Sol üst parlak beyaz yansıma -->
+    <radialGradient id="bloomTopLeft" cx="0.33" cy="0.24" r="0.34">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.98"/>
+      <stop offset="44%" stop-color="#ffffff" stop-opacity="0.62"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Orta iç tepe noktasındaki hafif parlama -->
+    <radialGradient id="bloomCenter" cx="0.50" cy="0.36" r="0.14">
+      <stop offset="0%" stop-color="#fff8ea" stop-opacity="0.72"/>
+      <stop offset="65%" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <clipPath id="shield465">
+      <!-- Sol dış kanat -->
+      <path d="M12 18 H29 L50 56.5 L41 72 L12 18 Z"/>
+      <!-- Sol üst iç üçgen -->
+      <path d="M33 18 H50 L60.5 37.5 L52 52.5 L33 18 Z"/>
+      <!-- Sağ V gövde + geometrik 4 kesimi -->
+      <path d="M75 18 H93 L72 56 H76 L97 18 H116 L64 114 L43 75 H60 L64 82 L70 70.5 H47 L75 18 Z"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#shield465)">
+    <rect x="0" y="0" width="128" height="128" fill="url(#metal465)"/>
+    <rect x="0" y="0" width="128" height="128" fill="url(#bloomTopLeft)"/>
+    <rect x="0" y="0" width="128" height="128" fill="url(#bloomCenter)"/>
+  </g>
+</svg>
