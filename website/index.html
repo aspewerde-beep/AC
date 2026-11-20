@@ -35,7 +35,7 @@
   <meta name="twitter:description" content="0.00ms resmon hedefli FiveM anti-cheat: sunucu taraflı doğrulama ve canlı web paneli.">
   <meta name="twitter:image" content="https://www.465.lol/assets/logo-465.jpg">
 
-  <link rel="stylesheet" href="assets/app.min.css?v=9">
+  <link rel="stylesheet" href="assets/app.min.css?v=10">
 
   <script type="application/ld+json">
   {
@@ -498,21 +498,37 @@
 
   <footer class="footer">
     <div class="container">
+      <div class="footer-cta-band">
+        <div>
+          <div class="eyebrow left" style="margin-bottom:0;">FIVEM SUNUCU GÜVENLİĞİ</div>
+          <h3>Sunucunu kurumsal korumaya taşı.</h3>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <a href="/docs" class="btn btn-white btn-sm">Kurulum Rehberi ↗</a>
+          <a href="/yapilandirma" data-route="yapilandirma" class="btn btn-dark btn-sm">Yapılandırmayı İncele</a>
+        </div>
+      </div>
+
       <div class="footer-grid">
         <div>
-          <div class="brand" style="margin-bottom:12px;">
-            <img src="assets/logo.svg" alt="465 AC Logo" width="22" height="22" style="display:block;">
-            <span>465</span>
-            <span class="brand-sub">AC</span>
+          <div class="footer-brand-logo">
+            <img src="assets/logo-465.png" alt="465 AC Şeffaf Logo" width="30" height="26">
+            <strong style="font-size:17px;letter-spacing:-0.02em;">465 AC</strong>
+            <span class="footer-brand-tag">SECURITY</span>
           </div>
-          <p style="font-size:13px;color:var(--text-muted);margin:0;max-width:260px;">
-            FiveM toplulukları için kullanımı kolay, güvenli ve düşük kaynak tüketimli koruma ekosistemi.
+          <p style="font-size:13px;color:var(--text-muted);margin:0;max-width:290px;line-height:1.65;">
+            FiveM FXServer toplulukları için 0.00ms resmon hedefli, sunucu taraflı anti-cheat ve dahili yönetim altyapısı.
           </p>
+          <div class="footer-status">
+            <span class="hero-badge-dot"></span>
+            <span>OneSync Ready • FXServer HTTP Aktif</span>
+          </div>
         </div>
 
         <div>
-          <h4>BÖLÜMLER</h4>
+          <h4>MİMARİ</h4>
           <ul>
+            <li><a href="/baslangic" data-route="baslangic">Başlangıç</a></li>
             <li><a href="/nasil-calisir" data-route="nasil-calisir">Nasıl Çalışır?</a></li>
             <li><a href="/yapilandirma" data-route="yapilandirma">Kolay Yapılandırma</a></li>
             <li><a href="/guvence" data-route="guvence">Güvence</a></li>
@@ -524,35 +540,48 @@
           <h4>DOKÜMANTASYON</h4>
           <ul>
             <li><a href="/docs">Kurulum Rehberi</a></li>
+            <li><a href="/docs">Modül Aksiyonları</a></li>
+            <li><a href="/docs">Yetkili Komutları</a></li>
             <li><a href="/docs">Exports &amp; Web API</a></li>
-            <li><a href="/nasil-calisir" data-route="nasil-calisir">Nasıl Çalışır?</a></li>
           </ul>
         </div>
 
         <div>
-          <h4>TOPLULUK</h4>
-          <div class="discord-box">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-              <div style="width:34px;height:34px;border-radius:9px;background:rgba(140,203,178,0.08);border:1px solid rgba(140,203,178,0.18);color:var(--accent-bright);display:grid;place-items:center;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <h4>KURUMSAL ALTYAPI</h4>
+          <div class="footer-hub-card">
+            <div style="display:flex;align-items:center;gap:11px;">
+              <div class="sq-icon" style="width:38px;height:38px;margin-bottom:0;border-radius:10px;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               </div>
               <div>
-                <div style="font-size:13.5px;font-weight:700;">465 AC Discord</div>
-                <div style="font-size:11.5px;color:var(--text-dim);">Destek, duyuru ve topluluk</div>
+                <div style="font-size:13.5px;font-weight:700;color:#fff;">465 AC Web &amp; Destek</div>
+                <div style="font-size:11.5px;color:var(--text-dim);">Kurulum, whitelist &amp; konfigürasyon</div>
               </div>
             </div>
-            <a href="https://www.465.lol/" target="_blank" rel="noopener noreferrer" class="btn btn-dark btn-sm" style="width:100%;">www.465.lol ↗</a>
+            <div class="footer-specs">
+              <div class="footer-spec-pill">0.00ms Resmon</div>
+              <div class="footer-spec-pill">No External DB</div>
+              <div class="footer-spec-pill">QBCore / ESX</div>
+              <div class="footer-spec-pill">Server-Side</div>
+            </div>
+            <a href="/docs" class="btn btn-dark btn-sm" style="width:100%;">Dokümantasyonu Aç ↗</a>
           </div>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <span>© 2026 465 AC (https://www.465.lol/). Tüm hakları saklıdır.</span>
-        <span class="dmca-badge">✓ PROTECTED BY WWW.465.LOL</span>
+        <span>© 2026 <strong>465 AC</strong> (<a href="https://www.465.lol/" style="color:var(--text-muted)">www.465.lol</a>) · Tüm hakları saklıdır.</span>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
+          <div class="footer-legal-links">
+            <a href="/sitemap.xml">Sitemap</a>
+            <a href="/feed.xml">RSS</a>
+          </div>
+          <span class="dmca-badge">✓ PROTECTED BY WWW.465.LOL</span>
+        </div>
       </div>
     </div>
   </footer>
 
-  <script src="assets/app.min.js?v=9" defer></script>
+  <script src="assets/app.min.js?v=10" defer></script>
 </body>
 </html>
