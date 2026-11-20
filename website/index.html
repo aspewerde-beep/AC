@@ -7,7 +7,7 @@
   <meta name="description" content="465 AC, FiveM sunucuları için geliştirilmiş 0.00ms resmon hedefli FiveM anti-cheat (FiveM antichat) sistemidir. Sunucu taraflı combat guard, anti-noclip, anti-aimbot, anti-crasher ve canlı web yönetim paneli.">
   <meta name="keywords" content="FiveM anti-cheat, FiveM antichat, FiveM anticheat, FiveM hile koruma, FiveM AC, 465 AC, 465.lol, server-side anticheat, FiveM anti crasher, FiveM anti noclip, ESX anticheat, QBCore anticheat">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
-  <meta name="theme-color" content="#070709">
+  <meta name="theme-color" content="#060707">
   <link rel="canonical" href="https://465.lol/">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 
@@ -91,15 +91,15 @@
 
   <div class="navbar-wrap">
     <header class="navbar-pill">
-      <a href="index.html" class="brand" aria-label="465 AC Ana Sayfa">
+      <a href="/" data-route="baslangic" class="brand" aria-label="465 AC Ana Sayfa">
         <img src="assets/logo.svg" alt="465 AC FiveM Anti-Cheat Logo" width="32" height="32" style="display:block;">
       </a>
 
       <nav class="nav-links" id="primaryNavLinks" aria-label="Ana Menü">
-        <a href="#nasil-calisir" data-nav="nasil-calisir" data-i18n="nav_how">Nasıl Çalışır</a>
-        <a href="#yapilandirma" data-nav="yapilandirma" data-i18n="nav_config">Yapılandırma</a>
-        <a href="#guvence" data-nav="guvence" data-i18n="nav_guarantee">Güvence</a>
-        <a href="#sss" data-nav="sss" data-i18n="nav_faq">SSS</a>
+        <a href="/nasil-calisir" data-route="nasil-calisir" data-nav="nasil-calisir" data-i18n="nav_how">Nasıl Çalışır</a>
+        <a href="/yapilandirma" data-route="yapilandirma" data-nav="yapilandirma" data-i18n="nav_config">Yapılandırma</a>
+        <a href="/guvence" data-route="guvence" data-nav="guvence" data-i18n="nav_guarantee">Güvence</a>
+        <a href="/sss" data-route="sss" data-nav="sss" data-i18n="nav_faq">SSS</a>
       </nav>
 
       <div class="nav-actions">
@@ -107,30 +107,30 @@
           <button type="button" data-lang-btn="tr" class="active" onclick="set465Lang('tr')">TR</button>
           <button type="button" data-lang-btn="en" onclick="set465Lang('en')">EN</button>
         </div>
-        <a href="docs.html" class="btn btn-dark btn-sm" data-i18n="nav_docs">Dokümantasyon ↗</a>
+        <a href="/docs" class="btn btn-dark btn-sm" data-i18n="nav_docs">Dokümantasyon ↗</a>
         <button type="button" class="mobile-toggle" id="mobileNavToggle" aria-label="Menüyü Aç">☰</button>
       </div>
     </header>
   </div>
 
   <aside class="left-dock" aria-label="Bölüm Gezgini">
-    <a href="#baslangic" class="dock-btn active" data-dock="baslangic" title="Başlangıç">
+    <a href="/" data-route="baslangic" class="dock-btn active" data-dock="baslangic" title="Başlangıç">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     </a>
-    <a href="#nasil-calisir" class="dock-btn" data-dock="nasil-calisir" title="Nasıl Çalışır">
+    <a href="/nasil-calisir" data-route="nasil-calisir" class="dock-btn" data-dock="nasil-calisir" title="Nasıl Çalışır">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
     </a>
-    <a href="#yapilandirma" class="dock-btn" data-dock="yapilandirma" title="Yapılandırma">
+    <a href="/yapilandirma" data-route="yapilandirma" class="dock-btn" data-dock="yapilandirma" title="Yapılandırma">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
     </a>
-    <a href="#guvence" class="dock-btn" data-dock="guvence" title="Güvence">
+    <a href="/guvence" data-route="guvence" class="dock-btn" data-dock="guvence" title="Güvence">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
     </a>
-    <a href="#sss" class="dock-btn" data-dock="sss" title="SSS">
+    <a href="/sss" data-route="sss" class="dock-btn" data-dock="sss" title="SSS">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     </a>
     <div class="dock-divider"></div>
-    <a href="docs.html" class="dock-btn" title="Dokümantasyon &amp; Destek">
+    <a href="/docs" class="dock-btn" title="Dokümantasyon &amp; Destek">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </a>
   </aside>
@@ -164,7 +164,7 @@
       </p>
 
       <div class="hero-cta hero-anim-4">
-        <a href="#nasil-calisir" class="btn btn-white btn-lg" data-i18n="hero_btn_explore">Nasıl çalışır ↓</a>
+        <a href="/nasil-calisir" data-route="nasil-calisir" class="btn btn-white btn-lg" data-i18n="hero_btn_explore">Nasıl çalışır ↓</a>
         <button type="button" class="btn btn-dark btn-lg" onclick="openPreviewModal()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           <span data-i18n="hero_btn_support">Canlı Panel Önizlemesi</span>
@@ -186,7 +186,7 @@
         </span>
       </div>
 
-      <a href="#nasil-calisir" class="scroll-cue hero-anim-5">
+      <a href="/nasil-calisir" data-route="nasil-calisir" class="scroll-cue hero-anim-5">
         <span data-i18n="scroll_cue">KEŞFET</span>
         <span>↓</span>
       </a>
@@ -458,19 +458,19 @@
         <div>
           <h4>BÖLÜMLER</h4>
           <ul>
-            <li><a href="#nasil-calisir">Nasıl Çalışır?</a></li>
-            <li><a href="#yapilandirma">Kolay Yapılandırma</a></li>
-            <li><a href="#guvence">Güvence</a></li>
-            <li><a href="#sss">SSS</a></li>
+            <li><a href="/nasil-calisir" data-route="nasil-calisir">Nasıl Çalışır?</a></li>
+            <li><a href="/yapilandirma" data-route="yapilandirma">Kolay Yapılandırma</a></li>
+            <li><a href="/guvence" data-route="guvence">Güvence</a></li>
+            <li><a href="/sss" data-route="sss">SSS</a></li>
           </ul>
         </div>
 
         <div>
           <h4>DOKÜMANTASYON</h4>
           <ul>
-            <li><a href="docs.html">Kurulum Rehberi</a></li>
-            <li><a href="docs.html#api">Exports &amp; Web API</a></li>
-            <li><a href="#nasil-calisir">Nasıl Çalışır?</a></li>
+            <li><a href="/docs">Kurulum Rehberi</a></li>
+            <li><a href="/docs">Exports &amp; Web API</a></li>
+            <li><a href="/nasil-calisir" data-route="nasil-calisir">Nasıl Çalışır?</a></li>
           </ul>
         </div>
 
@@ -478,7 +478,7 @@
           <h4>TOPLULUK</h4>
           <div class="discord-box">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-              <div style="width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,0.06);display:grid;place-items:center;">
+              <div style="width:34px;height:34px;border-radius:9px;background:rgba(140,203,178,0.08);border:1px solid rgba(140,203,178,0.18);color:var(--accent-bright);display:grid;place-items:center;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               </div>
               <div>

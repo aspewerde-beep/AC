@@ -4,6 +4,13 @@
   "outputDirectory": "website",
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/baslangic", "destination": "/index.html" },
+    { "source": "/nasil-calisir", "destination": "/index.html" },
+    { "source": "/yapilandirma", "destination": "/index.html" },
+    { "source": "/guvence", "destination": "/index.html" },
+    { "source": "/sss", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
