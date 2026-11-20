@@ -8,7 +8,7 @@ const I18N_465 = {
     nav_config: "Yapılandırma",
     nav_guarantee: "Güvence",
     nav_faq: "SSS",
-    nav_tools: "465 Tools ↗",
+    nav_docs: "Dokümantasyon ↗",
 
     hero_pill: "FiveM için geliştirildi",
     hero_h1_top: "Sunucunu ileri taşıyan",
@@ -64,7 +64,7 @@ const I18N_465 = {
     nav_config: "Configuration",
     nav_guarantee: "Guarantee",
     nav_faq: "FAQ",
-    nav_tools: "465 Tools ↗",
+    nav_docs: "Documentation ↗",
 
     hero_pill: "Built for FiveM",
     hero_h1_top: "FiveM security that",

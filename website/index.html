@@ -31,7 +31,7 @@
           <button type="button" data-lang-btn="tr" class="active" onclick="set465Lang('tr')">TR</button>
           <button type="button" data-lang-btn="en" onclick="set465Lang('en')">EN</button>
         </div>
-        <a href="tools.html" class="btn btn-dark btn-sm" data-i18n="nav_tools">465 Tools ↗</a>
+        <a href="docs.html" class="btn btn-dark btn-sm" data-i18n="nav_docs">Dokümantasyon ↗</a>
         <button type="button" class="mobile-toggle" id="mobileNavToggle" aria-label="Menu">☰</button>
       </div>
     </header>
@@ -139,7 +139,7 @@
           <button type="button" class="filter-pill active" onclick="filterCatalog('all', this)">Tümü</button>
           <button type="button" class="filter-pill" onclick="filterCatalog('server', this)">SUNUCU</button>
           <button type="button" class="filter-pill" onclick="filterCatalog('intel', this)">İSTİHBARAT</button>
-          <button type="button" class="filter-pill" onclick="filterCatalog('free', this)">ÜCRETSİZ</button>
+          <button type="button" class="filter-pill" onclick="filterCatalog('network', this)">NETWORK</button>
         </div>
         <div class="search-box">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -338,7 +338,7 @@
             </div>
             <div class="stars">★★★★★</div>
             <p style="font-size:13px;color:var(--text-soft);margin:10px 0 0;">
-              465.lol üzerindeki ücretsiz Profiler Viewer ve Crash Analyzer araçlarını bile tek başına her gün kullanıyoruz. Çok temiz iş.
+              /465ac_lookup ve risk puanlama sistemi sayesinde ban aşıp yan hesapla girenleri daha kapıda yakalıyoruz. Çok temiz iş.
             </p>
           </div>
           <div style="font-size:11px;color:var(--text-dim);">Discord'da paylaşıldı · Örnek Geri Bildirim</div>
@@ -425,11 +425,11 @@
 
         <div class="faq-item">
           <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-            <span>Profiler ve Crash Analyzer araçları gerçekten ücretsiz mi?</span>
+            <span>Yetkilileri muaf (bypass) yapmak için ne yapmalıyım?</span>
             <span class="faq-plus">+</span>
           </button>
           <div class="faq-a">
-            Evet, <a href="tools.html" style="text-decoration:underline;color:#fff;">465 Tools</a> sayfasındaki araçlar tüm FiveM geliştiricileri için ücretsizdir ve dosyalar tarayıcınızdan dışarı çıkmaz.
+            <code>server.cfg</code> dosyanıza <code>add_ace group.admin 465ac.bypass allow</code> satırını eklemeniz yeterlidir; yetkili grubu tüm tarama ve cezalardan muaf tutulur.
           </div>
         </div>
       </div>
@@ -457,17 +457,16 @@
             <li><a href="#moduller">Paketler &amp; Korumalar</a></li>
             <li><a href="#guvence">Güvence</a></li>
             <li><a href="#sss">SSS</a></li>
-            <li><a href="tools.html">465 Tools Platformu</a></li>
+            <li><a href="#yapilandirma">Kolay Yapılandırma</a></li>
           </ul>
         </div>
 
         <div>
-          <h4>DOKÜMAN &amp; ARAÇLAR</h4>
+          <h4>DOKÜMANTASYON</h4>
           <ul>
             <li><a href="docs.html">Kurulum Rehberi</a></li>
             <li><a href="docs.html#api">Exports &amp; Web API</a></li>
-            <li><a href="tools.html#profiler">Profiler Viewer</a></li>
-            <li><a href="tools.html#crashdump">Crash Analyzer</a></li>
+            <li><a href="#nasil-calisir">Nasıl Çalışır?</a></li>
           </ul>
         </div>
 
@@ -542,18 +541,18 @@
         ctaHref: "docs.html"
       },
       {
-        id: "tools",
-        cat: "free",
-        badgeLeft: "ÜCRETSİZ",
-        badgeRight: "Tarayıcı İçi",
-        tags: ["Standalone", "Client", "Server"],
-        title: "465 Tools Suite (Profiler & Crash)",
-        checks: ["FiveM profile.json tarayıcı içi analizi", "Crash dump & pool hatası çözümleyici", "FXServer Artifacts güvenlik kontrolü"],
-        priceLabel: "AÇIK ERİŞİM",
-        price: "$0,00",
-        actionText: "Aracı Aç",
-        ctaText: "Başlat",
-        ctaHref: "tools.html"
+        id: "enterprise",
+        cat: "network",
+        badgeLeft: "NETWORK",
+        badgeRight: "5+ Sunucu",
+        tags: ["QBCore", "QBox", "ESX", "Standalone"],
+        title: "465 AC Enterprise Network",
+        checks: ["Çoklu sunucuda paylaşımlı global banlist", "Özel script & event whitelist desteği", "Birebir false-ban sıfırlama denetimi"],
+        priceLabel: "AYLIK LİSANS",
+        price: "$95,00",
+        actionText: "İncele",
+        ctaText: "Kurulum",
+        ctaHref: "docs.html"
       }
     ];
 
@@ -603,7 +602,7 @@
               <span class="price-val">${p.price}</span>
             </div>
             <div style="display:flex;gap:8px;">
-              <button type="button" class="btn btn-dark btn-sm" onclick="${p.id === "tools" ? "location.href='tools.html'" : "openPreviewModal()"}">${p.actionText}</button>
+              <button type="button" class="btn btn-dark btn-sm" onclick="openPreviewModal()">${p.actionText}</button>
               <a href="${p.ctaHref}" class="btn btn-white btn-sm">${p.ctaText}</a>
             </div>
           </div>
