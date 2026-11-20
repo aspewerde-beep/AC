@@ -24,7 +24,7 @@
   <meta property="og:description" content="FiveM sunucunuzda 465_AC kurulumu, komutlar ve Web API rehberi.">
   <meta property="og:url" content="https://www.465.lol/docs">
   <meta property="og:image" content="https://www.465.lol/assets/logo-465.jpg">
-  <link rel="stylesheet" href="assets/app.min.css?v=10">
+  <link rel="stylesheet" href="assets/app.min.css?v=11">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -85,72 +85,62 @@
   </div>
 
   <main class="container" style="padding: 56px 24px 80px; max-width: 940px;">
-    <div class="hero-badge" style="margin-bottom:16px;"><span class="hero-badge-dot"></span> Dokümantasyon • 465_AC</div>
-    <h1 style="font-size:clamp(28px,4vw,42px);margin:0 0 10px;letter-spacing:-0.03em;">Kurulum &amp; Referans Rehberi</h1>
-    <p style="color:var(--text-muted);margin:0 0 32px;">465 AC'yi FiveM sunucunuza kurma, ACE yetkilerini bağlama, modül modlarını yönetme ve komut listesi.</p>
+    <div class="hero-badge" style="margin-bottom:16px;"><span class="hero-badge-dot"></span> Dokümantasyon • 465 AC</div>
+    <h1 style="font-size:clamp(28px,4vw,42px);margin:0 0 10px;letter-spacing:-0.03em;">Kurulum &amp; Mimari Rehberi</h1>
+    <p style="color:var(--text-muted);margin:0 0 32px;">465 AC'yi FiveM sunucunuza nasıl başlatacağınız, aksiyon profilleri ve yönetim olanakları. Güvenlik gereği tespit eşikleri ve iç komut anahtarları yalnızca teslimat paketinde paylaşılır.</p>
 
     <!-- 1. Kurulum -->
     <section class="card" style="padding:26px;margin-bottom:24px;">
-      <h2 style="margin:0 0 12px;font-size:20px;">1. Sunucu Kurulumu (server.cfg)</h2>
+      <h2 style="margin:0 0 12px;font-size:20px;">1. Genel Başlatma Sırası</h2>
       <p style="font-size:13.5px;color:var(--text-muted);margin:0 0 14px;">
-        Kaynak klasörünüzün adını <code>465_AC</code> olarak ayarlayın, <code>resources/</code> dizinine atın ve <code>server.cfg</code> dosyanıza aşağıdaki satırları ekleyin:
+        Kaynak klasörünüzü <code>resources/</code> altına ekledikten sonra <code>server.cfg</code> dosyasında OneSync'i etkinleştirip resource'u frameworklerden sonra başlatın:
       </p>
-      <pre class="code-block"># OneSync zorunludur (Sunucu taraflı entity ve hasar korumaları için)
+      <pre class="code-block"># OneSync zorunludur
 set onesync on
 
-# 465 AC Başlatma (Frameworklerden sonra başlatın)
+# Frameworklerden sonra başlatın
 ensure 465_AC
 
-# Yetkili Muafiyet (Bypass) İzni
-add_ace group.admin 465ac.bypass allow
-add_principal identifier.discord:DISCORD_IDNIZ group.admin</pre>
+# Yetkili muafiyet anahtarları teslimat dokümanındaki özel tanımla eklenir</pre>
     </section>
 
     <!-- 2. Modül Aksiyonları -->
     <section class="card" style="padding:26px;margin-bottom:24px;">
-      <h2 style="margin:0 0 12px;font-size:20px;">2. Modül Bazlı Aksiyon Sistemi</h2>
+      <h2 style="margin:0 0 12px;font-size:20px;">2. Esnek Aksiyon Profilleri</h2>
       <p style="font-size:13.5px;color:var(--text-muted);margin:0 0 14px;">
-        <code>config.lua</code> içindeki <code>Config.Protections</code> altında her modül dört farklı moddan birini alır:
+        Tüm koruma kategorileri sunucunuzun konseptine (RP, PvP, Hard RP) göre dört farklı aksiyon seviyesiyle yapılandırılabilir:
       </p>
       <div class="grid-4">
-        <div class="card" style="padding:14px;"><span class="pill-action pill-off">off</span><p style="font-size:12px;color:var(--text-muted);margin:8px 0 0;">Modülü tamamen devre dışı bırakır.</p></div>
-        <div class="card" style="padding:14px;"><span class="pill-action pill-log">log</span><p style="font-size:12px;color:var(--text-muted);margin:8px 0 0;">Oyuncuyu atmaz/banlamaz; sadece konsola, web loguna ve Discord'a bildirir.</p></div>
-        <div class="card" style="padding:14px;"><span class="pill-action pill-kick">kick</span><p style="font-size:12px;color:var(--text-muted);margin:8px 0 0;">Şüpheliyi sunucudan atar ve Discord'a kanıt gönderir.</p></div>
-        <div class="card" style="padding:14px;"><span class="pill-action pill-ban">ban</span><p style="font-size:12px;color:var(--text-muted);margin:8px 0 0;">Kalıcı ban + HWID token kaydı oluşturur ve oyundan atar.</p></div>
+        <div class="card" style="padding:14px;"><span class="pill-action pill-off">Kapalı</span><p style="font-size:12px;color:var(--text-muted);margin:8px 0 0;">İsteğe bağlı olarak ilgili korumayı devreden çıkarır.</p></div>
+        <div class="card" style="padding:14px;"><span class="pill-action pill-log">Bildirim / Log</span><p style="font-size:12px;color:var(--text-muted);margin:8px 0 0;">Oyuna müdahale etmeden panel ve Discord üzerinden yönetici ekibine bildirir.</p></div>
+        <div class="card" style="padding:14px;"><span class="pill-action pill-kick">Atma (Kick)</span><p style="font-size:12px;color:var(--text-muted);margin:8px 0 0;">Kural dışı eylemi anında durdurup oyuncuyu sunucudan çıkarır.</p></div>
+        <div class="card" style="padding:14px;"><span class="pill-action pill-ban">Uzaklaştırma</span><p style="font-size:12px;color:var(--text-muted);margin:8px 0 0;">Kalıcı veya süreli yasaklama uygular ve kanıt kaydı oluşturur.</p></div>
       </div>
     </section>
 
-    <!-- 3. Komutlar -->
+    <!-- 3. Yönetim & Uyumluluk -->
     <section class="card" style="padding:26px;margin-bottom:24px;">
-      <h2 style="margin:0 0 14px;font-size:20px;">3. Yetkili Komutları</h2>
+      <h2 style="margin:0 0 14px;font-size:20px;">3. Dahili Panel ve Yönetim Yetenekleri</h2>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Komut</th><th>Açıklama</th></tr></thead>
+          <thead><tr><th>Alan</th><th>Sağlanan Özellikler</th></tr></thead>
           <tbody>
-            <tr><td><code>/465ac_check &lt;id&gt;</code></td><td>Oyuncunun ping, can, zırh, koordinat ve tanımlayıcılarını listeler.</td></tr>
-            <tr><td><code>/465ac_stats</code></td><td>Çalışma süresi, toplam tespit, ban ve kick sayılarını gösterir.</td></tr>
-            <tr><td><code>/465ac_protect &lt;Modül&gt; &lt;off|log|kick|ban&gt;</code></td><td>Belirtilen koruma modülünün aksiyon modunu canlı değiştirir.</td></tr>
-            <tr><td><code>/465ac_clear &lt;vehicles|peds|props|all&gt;</code></td><td>Haritadaki boş araç, NPC ve yabancı objeleri temizler.</td></tr>
-            <tr><td><code>/465ac_kick &lt;id&gt; &lt;sebep&gt;</code></td><td>Oyuncuyu sunucudan atar.</td></tr>
-            <tr><td><code>/465ac_ban &lt;id&gt; &lt;sebep&gt;</code></td><td>Oyuncuyu kalıcı yasaklar.</td></tr>
-            <tr><td><code>/465ac_tempban &lt;id&gt; &lt;saat&gt; &lt;sebep&gt;</code></td><td>Oyuncuyu belirtilen saat boyunca süreli yasaklar.</td></tr>
-            <tr><td><code>/465ac_lookup &lt;id|discord|license&gt;</code></td><td>Oyuncunun alt hesap ve istihbarat geçmişini sorgular.</td></tr>
-            <tr><td><code>/465ac_scan &lt;id&gt; &lt;CLEAN|DETECTED|SUSPICIOUS&gt; &lt;not&gt;</code></td><td>Harici PC/SS tarama sonucunu oyuncu profiline kaydeder.</td></tr>
+            <tr><td><strong>Dahili Web Panel</strong></td><td>Harici veritabanı veya Node.js gerektirmeden doğrudan tarayıcı üzerinden oyuncu, ban ve ayar yönetimi.</td></tr>
+            <tr><td><strong>Harita &amp; Varlık Kontrolü</strong></td><td>Boşta kalan araç, NPC ve istenmeyen objeleri tek komutla güvenli şekilde temizleme (RP obje korumalı).</td></tr>
+            <tr><td><strong>Güvenli Bölgeler</strong></td><td>Hastane revive alanları ve spawn noktaları için yanlış tespiti önleyen bölge uyumlulukları.</td></tr>
+            <tr><td><strong>Alt Hesap &amp; Risk Takibi</strong></td><td>Ban aşmaya çalışan hesapların giriş aşamasında tespit edilmesi ve kanıtlı Discord raporlaması.</td></tr>
+            <tr><td><strong>Dış Script Köprüsü</strong></td><td>Sunucu taraflı özel event ve senaryolarınızı korumaya bağlamak için gizli müşteri API köprüsü.</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- 4. Web Panel & Exports -->
+    <!-- 4. Güvenlik Politikası -->
     <section class="card" id="api" style="padding:26px;">
-      <h2 style="margin:0 0 12px;font-size:20px;">4. Web Yönetim Paneli & Exports</h2>
-      <p style="font-size:13.5px;color:var(--text-muted);margin:0 0 14px;">
-        Panel adresi: <code>http://SUNUCU_IP:30120/465_AC/</code> (Sonundaki <code>/</code> işareti gereklidir). Diğer scriptlerinizden 465 AC fonksiyonlarını çağırmak için:
+      <h2 style="margin:0 0 12px;font-size:20px;">4. İç Yapı Gizliliği</h2>
+      <p style="font-size:13.5px;color:var(--text-muted);margin:0;">
+        465 AC anti-bypass güvenliği kapsamında iç komut isimleri, yetki node'ları, tespit algoritmaları ve eşik parametreleri herkese açık dokümanlarda paylaşılmaz. Tam referans rehberi kurulum sırasında doğrudan sunucu sahibine iletilir.
       </p>
-      <pre class="code-block">-- Sunucu taraflı dış script entegrasyonu (Exports)
-exports['465_AC']:DetectPlayer(source, "Özel Kural İhlali", "Detay bilgisi", "log")
-exports['465_AC']:BanPlayer(source, "Yasaklanma sebebi", 3600, "Admin")
-local profile = exports['465_AC']:LookupPlayer(discordId)</pre>
     </section>
   </main>
 
@@ -167,6 +157,6 @@ local profile = exports['465_AC']:LookupPlayer(discordId)</pre>
     </div>
   </footer>
 
-  <script src="assets/app.min.js?v=10" defer></script>
+  <script src="assets/app.min.js?v=11" defer></script>
 </body>
 </html>

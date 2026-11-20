@@ -35,7 +35,7 @@
   <meta name="twitter:description" content="0.00ms resmon hedefli FiveM anti-cheat: sunucu taraflı doğrulama ve canlı web paneli.">
   <meta name="twitter:image" content="https://www.465.lol/assets/logo-465.jpg">
 
-  <link rel="stylesheet" href="assets/app.min.css?v=10">
+  <link rel="stylesheet" href="assets/app.min.css?v=11">
 
   <script type="application/ld+json">
   {
@@ -125,7 +125,7 @@
             "name": "Yanlış yasaklama (false-ban) olmaması için nasıl önlem alındı?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Riskli tespitler varsayılan olarak sadece log modundadır. Her modül off, log, kick veya ban şeklinde yapılandırılabilir ve Exclude Zones desteği sunar."
+              "text": "Her koruma kategorisi kapalı, bildirim, atma veya yasaklama profilleriyle ayarlanabilir; hastane ve spawn noktaları için güvenli bölge uyumlulukları içerir."
             }
           },
           {
@@ -133,7 +133,7 @@
             "name": "Yetkilileri muaf (bypass) yapmak için ne yapmalıyım?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "server.cfg dosyanıza add_ace group.admin 465ac.bypass allow satırını eklemeniz yeterlidir."
+              "text": "Yetkili izinleri teslimat sırasında sağlanan gizli güvenlik anahtarı ve özel yapılandırma rehberi üzerinden tanımlanır."
             }
           }
         ]
@@ -255,7 +255,7 @@
               <span class="tl-dot"></span>
               <span class="tl-num">01</span>
               <h3 data-i18n="how_s1_t">Modülleri belirle</h3>
-              <p data-i18n="how_s1_d">Sunucuna uygun koruma seviyelerini (off / log / kick / ban) ve güvenli bölgeleri kendi yapına göre belirle.</p>
+              <p data-i18n="how_s1_d">Sunucuna uygun koruma profilini ve güvenli bölge kurallarını kolayca seç.</p>
               <div class="tag-row">
                 <span class="fw-tag">465_AC</span>
                 <span class="fw-tag">Modül Seçici</span>
@@ -266,10 +266,10 @@
               <span class="tl-dot"></span>
               <span class="tl-num">02</span>
               <h3 data-i18n="how_s2_t">Tek satırda kur</h3>
-              <p data-i18n="how_s2_d">465_AC klasörünü resources içine atıp server.cfg'ye ekle; harici veritabanı kurmadan dakikalar içinde çalıştır.</p>
+              <p data-i18n="how_s2_d">465_AC klasörünü resources içine atıp başlat; harici veritabanı kurmadan dakikalar içinde çalıştır.</p>
               <div class="tag-row">
                 <span class="fw-tag">ensure 465_AC</span>
-                <span class="fw-tag">465ac.bypass</span>
+                <span class="fw-tag">ACE Yetki Yönetimi</span>
               </div>
             </div>
 
@@ -277,7 +277,7 @@
               <span class="tl-dot"></span>
               <span class="tl-num">03</span>
               <h3 data-i18n="how_s3_t">Canlı yönet &amp; koru</h3>
-              <p data-i18n="how_s3_d">Tarayıcı panelinden modülleri off/log/kick/ban olarak ayarla, Discord webhook üzerinden anlık bildirim al.</p>
+              <p data-i18n="how_s3_d">Dahili web panelinden tüm korumaları anlık yönet, Discord üzerinden anlık bildirim al.</p>
               <div class="tag-row">
                 <span class="fw-tag">Web Dashboard</span>
                 <span class="fw-tag">Discord Webhook</span>
@@ -298,47 +298,164 @@
     </section>
 
     <section class="section" id="yapilandirma" data-section-id="yapilandirma">
-      <div class="container config-grid">
-        <div data-reveal>
-          <div class="eyebrow left" data-i18n="cfg_eyebrow">KOLAY YAPILANDIRMA</div>
-          <h2 class="section-title-left">
-            <span data-i18n="cfg_title_1">Kod bilmeden </span><span class="silver-grad" data-i18n="cfg_title_2">dakikalar içinde </span><span data-i18n="cfg_title_3">ayarla</span>
-          </h2>
-          <p style="font-size:14.5px;color:var(--text-muted);margin:0;" data-i18n="cfg_desc">
-            Her koruma modülünün davranışı açık ve okunaklı yapılandırma dosyalarıyla değiştirilir. Neyin ne işe yaradığı satırında yazar.
-          </p>
+      <div class="container">
+        <div class="config-grid">
+          <div data-reveal>
+            <div class="eyebrow left" data-i18n="cfg_eyebrow">KOLAY YAPILANDIRMA &amp; ÖZELLİKLER</div>
+            <h2 class="section-title-left">
+              <span data-i18n="cfg_title_1">Kod bilmeden </span><span class="silver-grad" data-i18n="cfg_title_2">dakikalar içinde </span><span data-i18n="cfg_title_3">ayarla</span>
+            </h2>
+            <p style="font-size:14.5px;color:var(--text-muted);margin:0;" data-i18n="cfg_desc">
+              İç işleyişi açığa çıkarmadan tüm koruma modüllerini tek panelden yönetebilir, güvenli bölgeleri ve aksiyon seviyelerini sunucuna göre özelleştirebilirsin.
+            </p>
 
-          <ul class="check-list">
-            <li>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
-              <span data-i18n="cfg_b1">Modül bazlı off / log / kick / ban aksiyon seçimi</span>
-            </li>
-            <li>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
-              <span data-i18n="cfg_b2">Exclude Zones ve Object Whitelist ile sıfır false-ban</span>
-            </li>
-            <li>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
-              <span data-i18n="cfg_b3">Takıldığın yerde Discord'dan destek ve kurulum yardımı</span>
-            </li>
-          </ul>
+            <ul class="check-list">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
+                <span data-i18n="cfg_b1">Modül bazlı esnek aksiyon profilleri (Kapalı / Log / At / Ban)</span>
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
+                <span data-i18n="cfg_b2">Bölgesel muafiyet ve izinli RP objesi uyumluluğu</span>
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
+                <span data-i18n="cfg_b3">Kurulum sırasında özel destek ve kişiselleştirilmiş yapılandırma</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="ide-window" data-reveal>
+            <div class="ide-titlebar">
+              <div style="display:flex;align-items:center;height:100%;">
+                <div class="ide-dots"><span></span><span></span><span></span></div>
+                <div class="ide-tabs">
+                  <button type="button" class="ide-tab active" onclick="switchIdeTab('config', this)">ayarlar.lua</button>
+                  <button type="button" class="ide-tab" onclick="switchIdeTab('server', this)">server.cfg</button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-dark btn-sm" style="padding:4px 10px;font-size:11px;" onclick="copyIdeCode()" id="ideCopyBtn">Kopyala</button>
+            </div>
+            <pre class="ide-code" id="ideCodeView"></pre>
+            <div class="ide-statusbar">
+              <span>● Kaydedildi</span>
+              <span id="ideLangLabel">Lua &nbsp; UTF-8</span>
+            </div>
+          </div>
         </div>
 
-        <div class="ide-window" data-reveal>
-          <div class="ide-titlebar">
-            <div style="display:flex;align-items:center;height:100%;">
-              <div class="ide-dots"><span></span><span></span><span></span></div>
-              <div class="ide-tabs">
-                <button type="button" class="ide-tab active" onclick="switchIdeTab('config', this)">config.lua</button>
-                <button type="button" class="ide-tab" onclick="switchIdeTab('server', this)">server.cfg</button>
-              </div>
+        <div class="feat-block" data-reveal>
+          <div class="feat-block-head">
+            <div>
+              <div class="eyebrow left" style="margin-bottom:6px;">KORUMA KAPSAMI</div>
+              <h3 style="margin:0;font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-0.025em;">Tek pakette <span class="silver-grad">56+ Aktif Koruma ve Yönetim Özelliği</span></h3>
             </div>
-            <button type="button" class="btn btn-dark btn-sm" style="padding:4px 10px;font-size:11px;" onclick="copyIdeCode()" id="ideCopyBtn">Kopyala</button>
+            <span class="feat-count-badge">● ANTI-BYPASS MİMARİ</span>
           </div>
-          <pre class="ide-code" id="ideCodeView"></pre>
-          <div class="ide-statusbar">
-            <span>● Kaydedildi</span>
-            <span id="ideLangLabel">Lua &nbsp; UTF-8</span>
+
+          <div class="feat-marquee-wrap" aria-label="Koruma Özellikleri Şeridi">
+            <div class="feat-marquee-track">
+              <span class="feat-pill">Godmode Engeli</span><span class="feat-pill">Noclip &amp; Yer Noclip Koruması</span><span class="feat-pill">Speedhack Engeli</span><span class="feat-pill">Silent Aim Koruması</span><span class="feat-pill">Magic Bullet Engeli</span><span class="feat-pill">Multi-Crasher Filtresi</span><span class="feat-pill">Car Fly Engeli</span><span class="feat-pill">Vehicle Magneto Koruması</span><span class="feat-pill">Resource Injection Engeli</span><span class="feat-pill">Rapid Fire Koruması</span><span class="feat-pill">One-Shot Hasar Kilidi</span><span class="feat-pill">Mass-Kill Engeli</span><span class="feat-pill">Anti-Attach &amp; Freeze</span><span class="feat-pill">Ekonomi &amp; Dupe Koruması</span>
+              <span class="feat-pill">Godmode Engeli</span><span class="feat-pill">Noclip &amp; Yer Noclip Koruması</span><span class="feat-pill">Speedhack Engeli</span><span class="feat-pill">Silent Aim Koruması</span><span class="feat-pill">Magic Bullet Engeli</span><span class="feat-pill">Multi-Crasher Filtresi</span><span class="feat-pill">Car Fly Engeli</span><span class="feat-pill">Vehicle Magneto Koruması</span><span class="feat-pill">Resource Injection Engeli</span><span class="feat-pill">Rapid Fire Koruması</span><span class="feat-pill">One-Shot Hasar Kilidi</span><span class="feat-pill">Mass-Kill Engeli</span><span class="feat-pill">Anti-Attach &amp; Freeze</span><span class="feat-pill">Ekonomi &amp; Dupe Koruması</span>
+            </div>
+            <div class="feat-marquee-track rev">
+              <span class="feat-pill">Teleport Koruması</span><span class="feat-pill">Süper Zıplama Engeli</span><span class="feat-pill">Modifiye .RPF Koruması</span><span class="feat-pill">Patlama &amp; Partikül Spam Engeli</span><span class="feat-pill">Toplu NPC &amp; Prop Engeli</span><span class="feat-pill">F8 / DevTools Koruması</span><span class="feat-pill">Executor Thread Guard</span><span class="feat-pill">Sahte Event Tuzağı</span><span class="feat-pill">Alt Hesap &amp; Ban Aşma Tespiti</span><span class="feat-pill">Freecam &amp; Spectate Engeli</span><span class="feat-pill">Termal &amp; Gece Görüşü Engeli</span><span class="feat-pill">Dahili Web Yönetim Paneli</span><span class="feat-pill">Discord Kanıt Webhook</span><span class="feat-pill">Tek Tık Harita Temizliği</span>
+              <span class="feat-pill">Teleport Koruması</span><span class="feat-pill">Süper Zıplama Engeli</span><span class="feat-pill">Modifiye .RPF Koruması</span><span class="feat-pill">Patlama &amp; Partikül Spam Engeli</span><span class="feat-pill">Toplu NPC &amp; Prop Engeli</span><span class="feat-pill">F8 / DevTools Koruması</span><span class="feat-pill">Executor Thread Guard</span><span class="feat-pill">Sahte Event Tuzağı</span><span class="feat-pill">Alt Hesap &amp; Ban Aşma Tespiti</span><span class="feat-pill">Freecam &amp; Spectate Engeli</span><span class="feat-pill">Termal &amp; Gece Görüşü Engeli</span><span class="feat-pill">Dahili Web Yönetim Paneli</span><span class="feat-pill">Discord Kanıt Webhook</span><span class="feat-pill">Tek Tık Harita Temizliği</span>
+            </div>
+          </div>
+
+          <div class="feat-matrix">
+            <div class="card feat-cat-card">
+              <div class="feat-cat-top"><h3>Hareket &amp; Oyuncu</h3><span class="feat-cat-cnt">12 MODÜL</span></div>
+              <ul class="feat-list">
+                <li>Godmode &amp; Demi-God Engeli</li>
+                <li>Hızlı Can Yenileme Koruması</li>
+                <li>Klasik &amp; Yeni Nesil Noclip</li>
+                <li>Hızlı Koşu (Speedhack) Engeli</li>
+                <li>Teleport &amp; Koordinat Sıçraması</li>
+                <li>Süper Zıplama &amp; Fırlatma Engeli</li>
+                <li>Duvar Geçişi (No-Collision)</li>
+                <li>Anti-Ragdoll &amp; Anti-Tase Koruması</li>
+                <li>Hitbox Büyütme / Küçültme Engeli</li>
+                <li>Sınırsız Stamina Koruması</li>
+                <li>Görünmezlik (Ghostmode) Engeli</li>
+                <li>Yetkisiz Ped / Skin Değişimi</li>
+              </ul>
+            </div>
+
+            <div class="card feat-cat-card">
+              <div class="feat-cat-top"><h3>Silah &amp; Çatışma</h3><span class="feat-cat-cnt">10 MODÜL</span></div>
+              <ul class="feat-list">
+                <li>Yasaklı Ağır Silah Engeli</li>
+                <li>Sınırsız Mermi &amp; Şarjörsüz Ateş</li>
+                <li>One-Shot Hasar Çarpanı Engeli</li>
+                <li>Rapid Fire (Hızlı Ateş) Engeli</li>
+                <li>Magic Bullet &amp; İmkansız Mesafe</li>
+                <li>Aimbot &amp; Ani Dönüş Engeli</li>
+                <li>Silent Aim Koruması</li>
+                <li>Mass-Kill (Toplu Hasar) Engeli</li>
+                <li>Yetkisiz Silah Spawn Toplama</li>
+                <li>Modifiye .RPF Dosya Koruması</li>
+              </ul>
+            </div>
+
+            <div class="card feat-cat-card">
+              <div class="feat-cat-top"><h3>Araç &amp; Sürüş</h3><span class="feat-cat-cnt">8 KORUMA</span></div>
+              <ul class="feat-list">
+                <li>Araç Hız &amp; Tork Hilesi Engeli</li>
+                <li>Araç Ölümsüzlüğü (Vehicle God)</li>
+                <li>Anlık Araç Tamiri Koruması</li>
+                <li>Kara Aracı Uçurma (Car Fly)</li>
+                <li>Vehicle Magneto &amp; Çekme</li>
+                <li>Yetkisiz Araç Spawn Engeli</li>
+                <li>Araç Fırlatma &amp; Troll Engeli</li>
+                <li>Anormal Araç Hızı Koruması</li>
+              </ul>
+            </div>
+
+            <div class="card feat-cat-card">
+              <div class="feat-cat-top"><h3>Dünya &amp; Crasher</h3><span class="feat-cat-cnt">9 MODÜL</span></div>
+              <ul class="feat-list">
+                <li>Çoklu Crasher Saldırı Filtresi</li>
+                <li>Toplu Entity &amp; Obje Spam Engeli</li>
+                <li>Toplu NPC (Ped) Basma Engeli</li>
+                <li>Partikül &amp; Efekt Spam Koruması</li>
+                <li>Patlama (Explosion) Spam Engeli</li>
+                <li>Üzerine Obje Yapıştırma Engeli</li>
+                <li>Uzaktan Freeze / Animasyon Bozma</li>
+                <li>Sahte Para &amp; Obje Drop Engeli</li>
+                <li>Güvenli RP Obje Listesi</li>
+              </ul>
+            </div>
+
+            <div class="card feat-cat-card">
+              <div class="feat-cat-top"><h3>Çekirdek &amp; Enjeksiyon</h3><span class="feat-cat-cnt">9 MODÜL</span></div>
+              <ul class="feat-list">
+                <li>Yetkisiz Script Başlatma Engeli</li>
+                <li>Anti-Cheat Durdurma Koruması</li>
+                <li>Hile Menüsü &amp; Sahte Event Tuzağı</li>
+                <li>Native Fonksiyon Bütünlüğü</li>
+                <li>F8 / DevTools Enjeksiyon Kilidi</li>
+                <li>Executor &amp; Thread Koruması</li>
+                <li>Envanter &amp; Para Dupe Koruması</li>
+                <li>Freecam / Gizli İzleme Engeli</li>
+                <li>Termal &amp; Gece Görüşü Engeli</li>
+              </ul>
+            </div>
+
+            <div class="card feat-cat-card">
+              <div class="feat-cat-top"><h3>Yönetim &amp; Altyapı</h3><span class="feat-cat-cnt">8 SİSTEM</span></div>
+              <ul class="feat-list">
+                <li>Dahili HTTP Web Yönetim Paneli</li>
+                <li>Discord Webhook Kanıt Bildirimi</li>
+                <li>Ekran Görüntüsü Kanıt Sistemi</li>
+                <li>Alt Hesap &amp; Risk Puanlama</li>
+                <li>Esnek Kapalı / Log / At / Ban</li>
+                <li>Hastane &amp; Spawn Muafiyet Uyumu</li>
+                <li>Tek Tıkla Harita &amp; Varlık Temizliği</li>
+                <li>QBCore / QBox / ESX / Standalone</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -365,7 +482,7 @@
               </div>
               <div class="stars" aria-label="5 yıldız">★★★★★</div>
               <p style="font-size:13px;color:var(--text-soft);margin:10px 0 0;">
-                Kurulum 5 dakika sürdü. Riskli modülleri log modunda açıp test ettik, false-ban yaşamadık. Resmon gerçekten 0.01ms civarında kalıyor.
+                Kurulum kısa sürdü. Sunucudaki kalabalık saatlerde dahi false-ban yaşamadık ve resmon değerleri hep akıcı kaldı.
               </p>
             </div>
             <div style="font-size:11px;color:var(--text-dim);">465 AC Kullanıcısı</div>
@@ -382,7 +499,7 @@
               </div>
               <div class="stars" aria-label="5 yıldız">★★★★★</div>
               <p style="font-size:13px;color:var(--text-soft);margin:10px 0 0;">
-                Exclude Zones ve Object Whitelist hayat kurtardı. Hastanede revive sonrası oyuncuların atılması tamamen bitti, web paneli çok pratik.
+                Hastane ve spawn bölge uyumlulukları sayesinde masum oyuncular hiç etkilenmedi, dahili web paneli çok pratik.
               </p>
             </div>
             <div style="font-size:11px;color:var(--text-dim);">465 AC Kullanıcısı</div>
@@ -399,7 +516,7 @@
               </div>
               <div class="stars" aria-label="5 yıldız">★★★★★</div>
               <p style="font-size:13px;color:var(--text-soft);margin:10px 0 0;">
-                /465ac_lookup ve risk puanlama sistemi sayesinde ban aşıp yan hesapla girenleri daha kapıda yakalıyoruz. Çok temiz iş.
+                Alt hesap ve risk puanlama sistemi sayesinde yasak aşmaya çalışan kişileri daha sunucuya girerken engelleyebiliyoruz.
               </p>
             </div>
             <div style="font-size:11px;color:var(--text-dim);">465 AC Kullanıcısı</div>
@@ -431,7 +548,7 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
             <h3 style="margin:0 0 8px;font-size:17px;" data-i18n="g2_t">Sunucu taraflı otorite</h3>
-            <p style="margin:0;font-size:13.5px;color:var(--text-muted);" data-i18n="g2_d">Hasar, patlama, obje basma ve mesafe kontrolleri istemciye güvenmeden doğrudan sunucuda doğrulanır.</p>
+            <p style="margin:0;font-size:13.5px;color:var(--text-muted);" data-i18n="g2_d">Tüm kritik güvenlik kontrolleri istemciye güvenmeden doğrudan sunucu katmanında bağımsız olarak doğrulanır.</p>
           </div>
 
           <div class="card guarantee-card">
@@ -478,7 +595,7 @@
               <span class="faq-plus">+</span>
             </button>
             <div class="faq-a">
-              Riskli tespitler varsayılan olarak sadece <code>log</code> modundadır. İstediğiniz her modülü <code>off</code>, <code>log</code>, <code>kick</code> veya <code>ban</code> şeklinde ayarlayabilirsiniz.
+              Her koruma kategorisi kapalı, bildirim, atma veya yasaklama profilleriyle ayarlanabilir; hastane ve spawn noktaları için güvenli bölge uyumlulukları yanlış tespitleri önler.
             </div>
           </div>
 
@@ -488,7 +605,7 @@
               <span class="faq-plus">+</span>
             </button>
             <div class="faq-a">
-              <code>server.cfg</code> dosyanıza <code>add_ace group.admin 465ac.bypass allow</code> satırını eklemeniz yeterlidir; yetkili grubu tüm tarama ve cezalardan muaf tutulur.
+              Yetkili izinleri teslimat sırasında sağlanan gizli güvenlik anahtarı ve özel kurulum rehberi üzerinden tanımlanır; herkese açık ortak izin adları kullanılmaz.
             </div>
           </div>
         </div>
@@ -582,6 +699,6 @@
     </div>
   </footer>
 
-  <script src="assets/app.min.js?v=10" defer></script>
+  <script src="assets/app.min.js?v=11" defer></script>
 </body>
 </html>
