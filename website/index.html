@@ -32,9 +32,24 @@
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "Organization",
+        "@id": "https://465.lol/#organization",
+        "name": "465 AC",
+        "url": "https://465.lol/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://465.lol/assets/logo-465.png",
+          "width": 531,
+          "height": 465
+        },
+        "image": "https://465.lol/assets/logo-465.jpg",
+        "description": "FiveM sunucuları için sunucu taraflı anti-cheat ve dahili web yönetim sistemi."
+      },
+      {
         "@type": "WebSite",
         "name": "465 AC",
-        "url": "https://465.lol/"
+        "url": "https://465.lol/",
+        "publisher": { "@id": "https://465.lol/#organization" }
       },
       {
         "@type": "SoftwareApplication",
@@ -43,6 +58,8 @@
         "operatingSystem": "FiveM FXServer (Windows / Linux)",
         "url": "https://465.lol/",
         "image": "https://465.lol/assets/logo-465.jpg",
+        "author": { "@id": "https://465.lol/#organization" },
+        "publisher": { "@id": "https://465.lol/#organization" },
         "description": "Sunucu taraflı savaş doğrulama, anti-noclip, anti-crasher, Exclude Zones ve dahili web yönetim paneline sahip FiveM anti-cheat sistemi."
       },
       {
