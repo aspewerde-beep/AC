@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>465 Tools — Ücretsiz FiveM Profiler, Crash Analyzer & Artifacts | 465.lol</title>
+  <link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="brand">
+        <div class="brand-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <span>465 <span style="color:var(--accent)">AC</span></span>
+        <span class="brand-tag">TOOLS</span>
+      </a>
+
+      <nav class="nav-links" id="primaryNavLinks">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="tools.html" class="active">Ücretsiz Araçlar</a>
+        <a href="docs.html">Dokümantasyon</a>
+        <a href="index.html#pricing">Fiyatlandırma</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="lang-switch">
+          <button type="button" data-lang-btn="tr" class="active" onclick="set465Lang('tr')">TR</button>
+          <button type="button" data-lang-btn="en" onclick="set465Lang('en')">EN</button>
+        </div>
+        <a href="index.html#pricing" class="btn btn-primary btn-sm">465 AC Al</a>
+        <button type="button" class="mobile-toggle" id="mobileNavToggle" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 48px 20px 80px;">
+    <div style="max-width:760px;margin-bottom:36px;">
+      <span class="badge"><span class="dot-pulse"></span> %100 Tarayıcı İçi • Dosyalar Hiçbir Sunucuya Yüklenmez</span>
+      <h1 style="font-size:clamp(28px,4vw,42px);margin:14px 0 10px;letter-spacing:-0.025em;">465 Tools — FiveM Teşhis Merkezi</h1>
+      <p style="color:var(--text-muted);margin:0;">Sunucu lagı, crash dump hataları ve FXServer build kontrolleri için ücretsiz yardımcı araçlar.</p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;">
+        <a href="#profiler" class="btn btn-secondary btn-sm">📊 Profiler Viewer</a>
+        <a href="#crashdump" class="btn btn-secondary btn-sm">💥 Crash Analyzer</a>
+        <a href="#artifacts" class="btn btn-secondary btn-sm">⚙️ FXServer Artifacts</a>
+        <a href="#scanner" class="btn btn-secondary btn-sm">🔍 Scanner PIN Portalı</a>
+      </div>
+    </div>
+
+    <!-- 1. PROFILER VIEWER -->
+    <section id="profiler" class="card" style="padding:26px;margin-bottom:28px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+        <div>
+          <h2 style="margin:0;font-size:22px;">📊 465 Profiler Viewer</h2>
+          <p style="margin:4px 0 0;font-size:13.5px;color:var(--text-muted);">
+            Sunucu konsolunda veya F8'de <code>profiler record 500</code> → <code>profiler saveJSON profile.json</code> çalıştırıp JSON dosyasını bırakın.
+          </p>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="loadSampleProfiler()">Örnek Profil Yükle</button>
+      </div>
+
+      <div class="dropzone" id="profilerDropzone" onclick="document.getElementById('profilerFileInput').click()">
+        <input type="file" id="profilerFileInput" accept=".json,application/json" style="display:none">
+        <div style="font-weight:700;margin-bottom:4px;"><code>profile.json</code> dosyasını buraya sürükleyin veya seçmek için tıklayın</div>
+        <div style="font-size:12.5px;color:var(--text-dim);">Tamamen yerel JavaScript ile tarayıcınızda analiz edilir.</div>
+      </div>
+
+      <div id="profilerOutput" style="display:none;margin-top:20px;">
+        <div class="grid-4" style="margin-bottom:16px;" id="profilerStatsGrid"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+          <strong style="font-size:14px;">En Maliyetli Çağrılar / Sıcak Noktalar (Top Hotspots)</strong>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="copyProfilerSummary()">Discord Özetini Kopyala</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Olay / Fonksiyon</th><th>Toplam Süre</th><th>Çağrı Sayısı</th><th>Maks. Tek Kare</th><th>Durum</th></tr>
+            </thead>
+            <tbody id="profilerTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. CRASH ANALYZER -->
+    <section id="crashdump" class="card" style="padding:26px;margin-bottom:28px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+        <div>
+          <h2 style="margin:0;font-size:22px;">💥 465 Crash Analyzer</h2>
+          <p style="margin:4px 0 0;font-size:13.5px;color:var(--text-muted);">
+            FiveM çökme penceresindeki hata mesajını veya log metnini yapıştırın; olası kök nedeni ve çözüm adımlarını görün.
+          </p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="fillSampleCrash('pool')">Örnek: Pool Full</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="fillSampleCrash('gpu')">Örnek: GPU / D3D</button>
+        </div>
+      </div>
+
+      <textarea id="crashInput" class="input" rows="5" placeholder="Örn: [14829] FiveM_b2802_GTAProcess.exe!rage::fwArchetype... veya ERR_GFX_D3D_INIT veya CitizenFX_SubProcess_game..."></textarea>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+        <button type="button" class="btn btn-primary" onclick="analyzeCrash()">Hatayı Analiz Et</button>
+        <input type="file" id="crashFileInput" accept=".txt,.log" style="display:none">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('crashFileInput').click()">.log / .txt Dosyası Yükle</button>
+      </div>
+
+      <div id="crashResult" style="display:none;margin-top:18px;" class="card"></div>
+    </section>
+
+    <!-- 3. ARTIFACTS CHECKER -->
+    <section id="artifacts" class="card" style="padding:26px;margin-bottom:28px;">
+      <h2 style="margin:0 0 6px;font-size:22px;">⚙️ 465 FXServer Artifacts Kontrolü</h2>
+      <p style="margin:0 0 16px;font-size:13.5px;color:var(--text-muted);">
+        Sunucu konsolunda görünen FXServer build numarasını girerek güncellik ve güvenlik durumunu kontrol edin.
+      </p>
+      <div style="display:flex;gap:10px;max-width:440px;">
+        <input type="number" id="artifactBuildInput" class="input" placeholder="Örn: 9500 veya 11500" value="11200">
+        <button type="button" class="btn btn-primary" onclick="checkArtifact()">Kontrol Et</button>
+      </div>
+      <div id="artifactResult" style="margin-top:16px;"></div>
+    </section>
+
+    <!-- 4. SCANNER PORTAL (DEMO UI) -->
+    <section id="scanner" class="card" style="padding:26px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+        <div>
+          <h2 style="margin:0;font-size:22px;">🔍 465 Scanner PIN Portalı</h2>
+          <p style="margin:4px 0 0;font-size:13.5px;color:var(--text-muted);">
+            Şüpheli oyuncu taraması için tek kullanımlık PIN üretme ve oyun içi <code>/465ac_scan</code> kaydı oluşturma arayüzü.
+          </p>
+        </div>
+        <span class="sim-badge">Konsept Arayüz</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="card" style="padding:18px;">
+          <div style="font-size:12px;color:var(--text-dim);margin-bottom:6px;">TEK KULLANIMLIK TARAMA PIN'İ</div>
+          <div id="scannerPinBox" style="font-family:var(--font-mono);font-size:32px;font-weight:800;letter-spacing:0.18em;color:#fff;margin-bottom:14px;">465-829</div>
+          <button type="button" class="btn btn-primary btn-sm" onclick="generateScannerPin()">Yeni PIN Oluştur</button>
+        </div>
+        <div class="card" style="padding:18px;">
+          <div style="font-size:12px;color:var(--text-dim);margin-bottom:6px;">TARAMA SONRASI OYUN İÇİ KAYIT</div>
+          <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 10px;">Tarama sonucunu doğrudan sunucudaki <code>player_history.json</code> profiline işlemek için:</p>
+          <pre class="code-block" id="scannerCmdPreview">/465ac_scan &lt;oyuncu_id&gt; CLEAN PIN:465-829</pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom" style="border-top:0;padding-top:0;">
+      <span>© 2026 <strong>465 AC</strong> (<a href="https://465.lol/" style="color:var(--text-muted)">https://465.lol/</a>)</span>
+      <a href="index.html" style="color:var(--accent-hover);">← Ana Sayfaya Dön</a>
+    </div>
+  </footer>
+
+  <script src="assets/i18n.js"></script>
+  <script>
+    // --- 1. PROFILER PARSER ---
+    let lastProfilerSummary = "";
+
+    function parseProfilerJSON(rawText) {
+      let parsed;
+      try {
+        parsed = JSON.parse(rawText);
+      } catch (e) {
+        alert("Geçerli bir JSON dosyası değil.");
+        return;
+      }
+
+      const events = Array.isArray(parsed) ? parsed : (Array.isArray(parsed.traceEvents) ? parsed.traceEvents : []);
+      if (!events.length) {
+        alert("Bu JSON içinde FiveM traceEvents verisi bulunamadı.");
+        return;
+      }
+
+      const stats = {};
+      let minTs = Infinity, maxTs = -Infinity, hitchCount = 0;
+
+      for (const ev of events) {
+        if (typeof ev.ts === "number") {
+          if (ev.ts < minTs) minTs = ev.ts;
+          if (ev.ts > maxTs) maxTs = ev.ts;
+        }
+        if ((ev.ph === "X" || ev.ph === "complete") && typeof ev.dur === "number" && ev.name) {
+          const ms = ev.dur / 1000;
+          if (ms >= 16.6) hitchCount++;
+          if (!stats[ev.name]) stats[ev.name] = { name: ev.name, totalMs: 0, count: 0, maxMs: 0 };
+          stats[ev.name].totalMs += ms;
+          stats[ev.name].count++;
+          if (ms > stats[ev.name].maxMs) stats[ev.name].maxMs = ms;
+        }
+      }
+
+      const sorted = Object.values(stats).sort((a, b) => b.totalMs - a.totalMs).slice(0, 15);
+      const totalSpanMs = (maxTs > minTs) ? ((maxTs - minTs) / 1000) : 0;
+
+      document.getElementById("profilerOutput").style.display = "block";
+      document.getElementById("profilerStatsGrid").innerHTML = `
+        <div class="card" style="padding:14px;"><div style="font-size:11px;color:var(--text-dim);">TOPLAM EVENT</div><strong style="font-size:20px;font-family:var(--font-mono);">${events.length}</strong></div>
+        <div class="card" style="padding:14px;"><div style="font-size:11px;color:var(--text-dim);">KAYIT SÜRESİ</div><strong style="font-size:20px;font-family:var(--font-mono);">${(totalSpanMs / 1000).toFixed(2)} sn</strong></div>
+        <div class="card" style="padding:14px;"><div style="font-size:11px;color:var(--text-dim);">HITCH (>16.6ms)</div><strong style="font-size:20px;font-family:var(--font-mono);color:${hitchCount > 0 ? "var(--accent-hover)" : "var(--emerald)"};">${hitchCount}</strong></div>
+        <div class="card" style="padding:14px;"><div style="font-size:11px;color:var(--text-dim);">BENZERSİZ ÇAĞRI</div><strong style="font-size:20px;font-family:var(--font-mono);">${Object.keys(stats).length}</strong></div>
+      `;
+
+      const tbody = document.getElementById("profilerTableBody");
+      tbody.innerHTML = sorted.map((s) => {
+        const badge = s.maxMs >= 16.6 ? '<span class="pill-action pill-ban">Hitch</span>' : (s.maxMs >= 4 ? '<span class="pill-action pill-kick">Orta</span>' : '<span class="pill-action pill-log">Normal</span>');
+        return `<tr>
+          <td style="font-family:var(--font-mono);font-size:12px;">${s.name}</td>
+          <td style="font-family:var(--font-mono);">${s.totalMs.toFixed(2)} ms</td>
+          <td style="font-family:var(--font-mono);">${s.count}</td>
+          <td style="font-family:var(--font-mono);">${s.maxMs.toFixed(2)} ms</td>
+          <td>${badge}</td>
+        </tr>`;
+      }).join("");
+
+      lastProfilerSummary = `**465 Profiler Raporu** (${events.length} event, ${hitchCount} hitch)\n` +
+        sorted.slice(0, 5).map((s, i) => `${i + 1}. \`${s.name}\` — Toplam: ${s.totalMs.toFixed(2)}ms | Max: ${s.maxMs.toFixed(2)}ms (${s.count}x)`).join("\n");
+    }
+
+    function copyProfilerSummary() {
+      if (!lastProfilerSummary) return;
+      navigator.clipboard.writeText(lastProfilerSummary).then(() => alert("Discord özeti panoya kopyalandı!"));
+    }
+
+    function loadSampleProfiler() {
+      const sample = {
+        traceEvents: [
+          { name: "tick:qb-hud", ph: "X", ts: 1000, dur: 19400 },
+          { name: "tick:qb-hud", ph: "X", ts: 30000, dur: 18200 },
+          { name: "tick:esx_inventory", ph: "X", ts: 60000, dur: 6400 },
+          { name: "tick:465_AC", ph: "X", ts: 90000, dur: 180 },
+          { name: "event:weaponDamageEvent", ph: "X", ts: 120000, dur: 420 },
+          { name: "tick:custom_vehicles", ph: "X", ts: 150000, dur: 11500 },
+          { name: "tick:465_AC", ph: "X", ts: 180000, dur: 140 }
+        ]
+      };
+      parseProfilerJSON(JSON.stringify(sample));
+    }
+
+    const pDrop = document.getElementById("profilerDropzone");
+    const pInput = document.getElementById("profilerFileInput");
+    pInput.addEventListener("change", (e) => {
+      if (e.target.files[0]) e.target.files[0].text().then(parseProfilerJSON);
+    });
+    pDrop.addEventListener("dragover", (e) => { e.preventDefault(); pDrop.classList.add("dragover"); });
+    pDrop.addEventListener("dragleave", () => pDrop.classList.remove("dragover"));
+    pDrop.addEventListener("drop", (e) => {
+      e.preventDefault();
+      pDrop.classList.remove("dragover");
+      if (e.dataTransfer.files[0]) e.dataTransfer.files[0].text().then(parseProfilerJSON);
+    });
+
+    // --- 2. CRASH ANALYZER ---
+    const crashSignatures = [
+      {
+        match: /pool|fwArchetype|pedpool|vehiclepool|objectpool/i,
+        title: "Oyun Havuzu Doldu (Game Pool Overflow)",
+        source: "Sunucu Mapping / Aşırı Entity Spawn",
+        steps: [
+          "Haritada çok fazla sahipsiz araç, ped veya MLO prop birikmiş olabilir.",
+          "465 AC üzerinde /465ac_clear all çalıştırarak sahipsiz entity'leri temizleyin.",
+          "AntiEntitySpam ve AntiPedSpam modüllerini 'ban' veya 'kick' modunda tutun."
+        ]
+      },
+      {
+        match: /ERR_GFX_D3D_INIT|nvwgf2umx|d3d11|atidxx64|nvlddmkm/i,
+        title: "Ekran Kartı / DirectX Sürücü Çökmesi",
+        source: "Oyuncu PC / GPU Sürücüsü",
+        steps: [
+          "NVIDIA/AMD ekran kartı sürücüsünü temiz kurulum ile güncelleyin.",
+          "Overclock / Undervolt varsa varsayılan saat hızlarına döndürün.",
+          "FiveM ayarlarından Extended Texture Budget değerini düşürün."
+        ]
+      },
+      {
+        match: /out of game memory|streaming memory|gta-streaming-five/i,
+        title: "Bellek / Texture Bütçesi Aşımı (Streaming Memory)",
+        source: "Yüksek Boyutlu Addon Araç / Kıyafet Paketleri",
+        steps: [
+          "16 MB üstü YTD (texture) dosyalarını küçültün veya sıkıştırın.",
+          "Oyuncu FiveM ayarlarından Texture Quality'yi Normal'e çeksin."
+        ]
+      },
+      {
+        match: /citizen-scripting-lua|stack overflow/i,
+        title: "Lua Script Hatası / Sonsuz Döngü",
+        source: "Sunucu Scripti veya İstemci Enjeksiyonu",
+        steps: [
+          "Crash'ten hemen önce güncellenen veya eklenen scripti kontrol edin.",
+          "465 Profiler Viewer ile Wait(0) içinde ağır çalışan thread'leri tespit edin."
+        ]
+      }
+    ];
+
+    function fillSampleCrash(type) {
+      document.getElementById("crashInput").value = type === "pool"
+        ? "Fatal Error: Game Pool Full (rage::fwArchetype / CObject pool exceeded limit)"
+        : "ERR_GFX_D3D_INIT - Faulting module: nvwgf2umx.dll + 0x1A2F0";
+      analyzeCrash();
+    }
+
+    function analyzeCrash() {
+      const txt = document.getElementById("crashInput").value.trim();
+      const box = document.getElementById("crashResult");
+      if (!txt) return;
+      const hit = crashSignatures.find((s) => s.match.test(txt));
+      box.style.display = "block";
+      box.style.padding = "18px";
+      if (hit) {
+        box.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+            <strong style="font-size:16px;color:var(--accent-hover);">${hit.title}</strong>
+            <span class="pill-action pill-log">${hit.source}</span>
+          </div>
+          <ol style="margin:0;padding-left:18px;color:var(--text-muted);font-size:13.5px;">
+            ${hit.steps.map((st) => `<li style="margin-bottom:5px;">${st}</li>`).join("")}
+          </ol>
+        `;
+      } else {
+        box.innerHTML = `
+          <strong style="font-size:15px;">Bilinmeyen veya Genel Crash İmzası</strong>
+          <p style="margin:6px 0 0;font-size:13.5px;color:var(--text-muted);">
+            Bilinen pool/GPU/Lua imzalarıyla doğrudan eşleşmedi. %localappdata%\\FiveM\\FiveM.app\\crashes klasöründeki en güncel CitizenFX_log dosyasının son 30 satırını yapıştırın.
+          </p>
+        `;
+      }
+    }
+
+    document.getElementById("crashFileInput").addEventListener("change", (e) => {
+      if (e.target.files[0]) {
+        e.target.files[0].text().then((t) => {
+          document.getElementById("crashInput").value = t.slice(-4000);
+          analyzeCrash();
+        });
+      }
+    });
+
+    // --- 3. ARTIFACTS CHECKER ---
+    function checkArtifact() {
+      const build = parseInt(document.getElementById("artifactBuildInput").value, 10);
+      const box = document.getElementById("artifactResult");
+      if (!build || build <= 0) {
+        box.innerHTML = `<span style="color:var(--accent-hover);">Geçerli bir build numarası girin.</span>`;
+        return;
+      }
+
+      let statusBadge, advice;
+      if (build < 6683) {
+        statusBadge = `<span class="pill-action pill-ban">ESKİ / RİSKLİ BUILD</span>`;
+        advice = "Bu build güncel OneSync güvenlik yamalarından yoksun olabilir. FXServer'ı resmi Cfx.re artifacts sayfasından güncel önerilen sürüme yükseltin.";
+      } else if (build < 9000) {
+        statusBadge = `<span class="pill-action pill-kick">ORTA DÖNEM BUILD</span>`;
+        advice = "Temel OneSync özellikleri mevcuttur; ancak güncel ses, net-event ve güvenlik düzeltmeleri için daha yeni önerilen artifact'a geçmeniz tavsiye edilir.";
+      } else {
+        statusBadge = `<span class="pill-action pill-log">GÜNCEL NESİL BUILD</span>`;
+        advice = "Modern OneSync Infinity ve güncel server-side eventler ile uyumludur. server.cfg içinde sv_enableNetworkedSounds false kullanmanız önerilir.";
+      }
+
+      box.innerHTML = `
+        <div class="card" style="padding:16px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <strong style="font-family:var(--font-mono);font-size:15px;">FXServer Build #${build}</strong>
+            ${statusBadge}
+          </div>
+          <p style="margin:0;font-size:13.5px;color:var(--text-muted);">${advice}</p>
+        </div>
+      `;
+    }
+    checkArtifact();
+
+    // --- 4. SCANNER PIN ---
+    function generateScannerPin() {
+      const rnd = Math.floor(100 + Math.random() * 900) + "-" + Math.floor(100 + Math.random() * 900);
+      document.getElementById("scannerPinBox").textContent = rnd;
+      document.getElementById("scannerCmdPreview").textContent = `/465ac_scan <oyuncu_id> CLEAN PIN:${rnd}`;
+    }
+  </script>
+</body>
+</html>

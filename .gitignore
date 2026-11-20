@@ -1,0 +1,9 @@
+# Runtime veri dosyaları (banlar, oyuncu geçmişi, canlı ayarlar)
+bans.json
+player_history.json
+runtime_config.json
+
+# Sistem dosyaları
+.DS_Store
+Thumbs.db
+desktop.ini
