@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>465 AC — FiveM Anticheat</title>
+    <title>465 AC — FiveM Anticheat &amp; Sunucu Güvenliği</title>
     <link>https://www.465.lol/</link>
-    <description>FiveM sunucuları için 0.00ms resmon hedefli sunucu taraflı anticheat ve dahili web yönetim altyapısı.</description>
+    <description>FiveM QBCore, QBox, ESX ve Standalone sunucular için 0.00ms resmon hedefli anticheat ve dahili web yönetim altyapısı.</description>
     <language>tr-tr</language>
     <atom:link href="https://www.465.lol/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>465 AC v4.2 — 0.00ms Resmon FiveM Anticheat Sistemi</title>
       <link>https://www.465.lol/</link>
       <guid>https://www.465.lol/</guid>
-      <pubDate>Sat, 21 Nov 2026 08:00:00 +0000</pubDate>
-      <description>56+ koruma modülü, anti-noclip, anti-aimbot, multi-crasher filtresi ve dahili web yönetim paneli.</description>
+      <pubDate>Sat, 21 Nov 2026 16:00:00 +0300</pubDate>
+      <description>56+ aktif hile koruma modülü, anti-noclip, anti-aimbot, multi-crasher filtresi ve dahili web yönetim paneli.</description>
     </item>
     <item>
-      <title>465 AC — 56+ Aktif Koruma Modülü ve Filtre Arama</title>
+      <title>56+ FiveM Hile Koruması &amp; Canlı Modül Filtresi</title>
       <link>https://www.465.lol/yapilandirma</link>
       <guid>https://www.465.lol/yapilandirma</guid>
-      <pubDate>Sat, 21 Nov 2026 08:00:00 +0000</pubDate>
-      <description>Hareket, silah, araç, world crasher, enjeksiyon ve yönetim kategorilerinde 56+ aktif savunma modülü.</description>
+      <pubDate>Sat, 21 Nov 2026 16:00:00 +0300</pubDate>
+      <description>Hareket, silah, araç, world crasher, enjeksiyon ve yönetim kategorilerinde 56+ aktif FiveM koruma modülü.</description>
     </item>
     <item>
-      <title>465 AC English Overview — FiveM Anticheat</title>
+      <title>QBCore &amp; ESX FiveM Anticheat Kıyaslama &amp; Güvence</title>
+      <link>https://www.465.lol/guvence</link>
+      <guid>https://www.465.lol/guvence</guid>
+      <pubDate>Sat, 21 Nov 2026 16:00:00 +0300</pubDate>
+      <description>Zero External DB altyapısı, false-ban önleyici güvenli bölge uyumu ve sunucu sahiplerinin deneyimleri.</description>
+    </item>
+    <item>
+      <title>465 AC English Overview — 0.00ms FiveM Anticheat</title>
       <link>https://www.465.lol/en</link>
       <guid>https://www.465.lol/en</guid>
-      <pubDate>Sat, 21 Nov 2026 08:00:00 +0000</pubDate>
+      <pubDate>Sat, 21 Nov 2026 16:00:00 +0300</pubDate>
       <description>0.00ms resmon server-authoritative FiveM anticheat with 56+ modules for QBCore, QBox, ESX and Standalone servers.</description>
     </item>
     <item>
-      <title>465 AC Kurulum ve Kullanım Dokümantasyonu</title>
+      <title>465 AC Kurulum Rehberi ve Dahili Panel Dokümantasyonu</title>
       <link>https://www.465.lol/docs</link>
       <guid>https://www.465.lol/docs</guid>
-      <pubDate>Sat, 21 Nov 2026 08:00:00 +0000</pubDate>
-      <description>Harici veritabanı gerektirmeyen entegrasyon adımları, esnek modül profilleri ve dahili web paneli rehberi.</description>
+      <pubDate>Sat, 21 Nov 2026 16:00:00 +0300</pubDate>
+      <description>Harici veritabanı gerektirmeyen entegrasyon adımları, esnek aksiyon profilleri ve dahili web paneli rehberi.</description>
     </item>
   </channel>
 </rss>

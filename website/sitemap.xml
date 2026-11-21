@@ -1,56 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.465.lol/</loc>
     <xhtml:link rel="alternate" hreflang="tr" href="https://www.465.lol/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.465.lol/en"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.465.lol/en"/>
+    <image:image>
+      <image:loc>https://www.465.lol/assets/og-banner.png</image:loc>
+      <image:title>465 AC — 0.00ms FiveM Anticheat</image:title>
+    </image:image>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.465.lol/nasil-calisir</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://www.465.lol/nasil-calisir"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.465.lol/en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.465.lol/en"/>
+    <loc>https://www.465.lol/yapilandirma</loc>
+    <image:image>
+      <image:loc>https://www.465.lol/assets/og-banner.png</image:loc>
+      <image:title>465 AC — 56+ FiveM Hile Koruma Modülü</image:title>
+    </image:image>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.465.lol/yapilandirma</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://www.465.lol/yapilandirma"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.465.lol/en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.465.lol/en"/>
+    <loc>https://www.465.lol/nasil-calisir</loc>
+    <image:image>
+      <image:loc>https://www.465.lol/assets/logo-465.webp</image:loc>
+      <image:title>465 AC FiveM Anticheat Amblemi</image:title>
+    </image:image>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.465.lol/guvence</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://www.465.lol/guvence"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.465.lol/en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.465.lol/en"/>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.465.lol/sss</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://www.465.lol/sss"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.465.lol/en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.465.lol/en"/>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.465.lol/docs</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://www.465.lol/docs"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.465.lol/en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.465.lol/en"/>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -60,6 +58,10 @@
     <xhtml:link rel="alternate" hreflang="tr" href="https://www.465.lol/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.465.lol/en"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.465.lol/en"/>
+    <image:image>
+      <image:loc>https://www.465.lol/assets/og-banner.png</image:loc>
+      <image:title>465 AC — 0.00ms Server-Side FiveM Anticheat</image:title>
+    </image:image>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>

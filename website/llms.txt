@@ -1,0 +1,31 @@
+# 465 AC — FiveM Anticheat & Server Security
+
+> Official Website: https://www.465.lol/
+> Documentation: https://www.465.lol/docs
+> English Overview: https://www.465.lol/en
+> Discord Support & Licensing: https://discord.gg/YYNvMMJZTm
+
+## Overview
+465 AC is a server-authoritative FiveM anti-cheat and server security platform targeting 0.00ms–0.01ms client idle resmon overhead. Designed for FiveM Roleplay (RP), PvP, and Hard RP servers running QBCore, QBox, ESX, or Standalone setups without requiring external databases.
+
+## Core Capabilities
+- **Performance Target**: 0.00ms–0.01ms client resmon footprint on crowded FiveM communities.
+- **Zero External Database**: Built-in self-contained data and web management infrastructure; no external database setup required.
+- **56+ Active Protection Modules**:
+  - Movement & Player (12): Anti-Godmode, Anti-Noclip (classic & underground), Anti-Speedhack, Anti-Teleport, Super Jump Guard, Wallclip Prevention, Invisibility Guard.
+  - Weapon & Combat (10): Heavy Weapon Block, Infinite Ammo Lock, One-Shot Damage Cap, Rapid Fire Guard, Anti-Magic Bullet, Aimbot & Silent Aim Detection, Mass-Kill Guard, Modified Asset Protection.
+  - Vehicle & Driving (8): Vehicle Speed & Torque Guard, Vehicle Godmode Guard, Instant Repair Block, Anti-Car Fly, Vehicle Magneto Guard, Unauthorized Spawn Guard.
+  - World & Crasher (9): Multi-Crasher Attack Filter, Mass Entity & Prop Flood Guard, Mass NPC Spawn Block, Particle & Effect Spam Filter, Explosion Flood Guard, Entity Attach & Remote Freeze Prevention.
+  - Core & Injection (9): Unauthorized Package Start Guard, Anti-Stop Shield, Decoy Event Traps, Client Integrity Verification, Console Injection Blocker, Execution Layer Shield, Dupe Protection, Anti-Freecam & Vision Guard.
+  - Management & Operations (8): Built-in Web Management Dashboard, Discord Evidence Webhooks, Automated Screenshots, Alt-Account Ban Evasion Risk Scoring, Hospital & Spawn Safe Zones, 1-Click Map Cleanup.
+- **Per-Module Action Profiles**: Off, Log, Kick, or Ban per category for false-ban safety.
+- **Confidentiality & Anti-Bypass**: Internal thresholds, implementation language, file layout, and server keys remain closed-source inside licensed builds to prevent bypass fingerprinting.
+
+## Site Map
+- Turkish Home: https://www.465.lol/
+- How It Works: https://www.465.lol/nasil-calisir
+- Configuration & 56+ Modules: https://www.465.lol/yapilandirma
+- Guarantee & Architecture Comparison: https://www.465.lol/guvence
+- FAQ: https://www.465.lol/sss
+- Documentation: https://www.465.lol/docs
+- English Overview: https://www.465.lol/en
