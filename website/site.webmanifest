@@ -1,0 +1,21 @@
+{
+  "name": "465 AC — FiveM Anticheat",
+  "short_name": "465 AC",
+  "description": "0.00ms resmon hedefli sunucu taraflı FiveM anticheat ve canlı web yönetim paneli.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#020203",
+  "theme_color": "#8ccbb2",
+  "icons": [
+    {
+      "src": "assets/logo-465.png",
+      "sizes": "531x465",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

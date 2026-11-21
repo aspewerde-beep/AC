@@ -20,6 +20,11 @@
   <link rel="alternate" hreflang="x-default" href="https://www.465.lol/en">
   <link rel="alternate" type="application/rss+xml" title="465 AC Güncellemeler" href="https://www.465.lol/feed.xml">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="icon" type="image/png" sizes="531x465" href="assets/logo-465.png">
+  <link rel="apple-touch-icon" href="assets/logo-465.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="dns-prefetch" href="https://discord.gg">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="465 AC">
@@ -40,7 +45,8 @@
   <meta name="twitter:image" content="https://www.465.lol/assets/og-banner.png">
   <meta name="twitter:image:alt" content="465 AC — FiveM Anti-Cheat">
 
-  <link rel="stylesheet" href="assets/app.min.css?v=19">
+  <link rel="preload" as="style" href="assets/app.min.css?v=20">
+  <link rel="stylesheet" href="assets/app.min.css?v=20">
 
   <script type="application/ld+json">
   {
@@ -195,6 +201,7 @@
         <a href="/yapilandirma" data-route="yapilandirma" data-nav="yapilandirma" data-i18n="nav_config">Yapılandırma</a>
         <a href="/guvence" data-route="guvence" data-nav="guvence" data-i18n="nav_guarantee">Güvence</a>
         <a href="/sss" data-route="sss" data-nav="sss" data-i18n="nav_faq">SSS</a>
+        <a href="/docs" class="nav-mobile-only" data-i18n="nav_docs">Dokümantasyon ↗</a>
       </nav>
 
       <div class="nav-actions">
@@ -406,8 +413,21 @@
             </div>
           </div>
 
+          <div class="feat-filter-row">
+            <input type="search" id="featFilterInput" class="feat-search" placeholder="Modül ara: noclip, crasher, aimbot, webhook..." aria-label="Koruma modülü ara">
+            <div class="feat-chips" role="tablist" aria-label="Kategori filtresi">
+              <button type="button" class="feat-chip active" data-fcat="all">Tümü</button>
+              <button type="button" class="feat-chip" data-fcat="move">Hareket</button>
+              <button type="button" class="feat-chip" data-fcat="weapon">Silah</button>
+              <button type="button" class="feat-chip" data-fcat="vehicle">Araç</button>
+              <button type="button" class="feat-chip" data-fcat="world">Crasher</button>
+              <button type="button" class="feat-chip" data-fcat="core">Enjeksiyon</button>
+              <button type="button" class="feat-chip" data-fcat="panel">Panel</button>
+            </div>
+          </div>
+
           <div class="feat-matrix">
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="move">
               <div class="feat-cat-top"><h3>Hareket &amp; Oyuncu</h3><span class="feat-cat-cnt">12 MODÜL</span></div>
               <ul class="feat-list">
                 <li>Godmode, Demi-God &amp; Fast Regen</li>
@@ -421,7 +441,7 @@
               </ul>
             </div>
 
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="weapon">
               <div class="feat-cat-top"><h3>Silah &amp; Çatışma</h3><span class="feat-cat-cnt">10 MODÜL</span></div>
               <ul class="feat-list">
                 <li>Yasaklı Ağır Silah Engeli</li>
@@ -435,7 +455,7 @@
               </ul>
             </div>
 
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="vehicle">
               <div class="feat-cat-top"><h3>Araç &amp; Sürüş</h3><span class="feat-cat-cnt">8 KORUMA</span></div>
               <ul class="feat-list">
                 <li>Araç Hız &amp; Tork Hilesi Engeli</li>
@@ -449,7 +469,7 @@
               </ul>
             </div>
 
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="world">
               <div class="feat-cat-top"><h3>Dünya &amp; Crasher</h3><span class="feat-cat-cnt">9 MODÜL</span></div>
               <ul class="feat-list">
                 <li>Çoklu Crasher Saldırı Filtresi</li>
@@ -463,7 +483,7 @@
               </ul>
             </div>
 
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="core">
               <div class="feat-cat-top"><h3>Çekirdek &amp; Enjeksiyon</h3><span class="feat-cat-cnt">9 MODÜL</span></div>
               <ul class="feat-list">
                 <li>Yetkisiz Script Başlatma Engeli</li>
@@ -477,7 +497,7 @@
               </ul>
             </div>
 
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="panel">
               <div class="feat-cat-top"><h3>Yönetim &amp; Altyapı</h3><span class="feat-cat-cnt">8 SİSTEM</span></div>
               <ul class="feat-list">
                 <li>Dahili HTTP Web Yönetim Paneli</li>
@@ -491,6 +511,7 @@
               </ul>
             </div>
           </div>
+          <p class="feat-empty" id="featEmptyMsg">Aradığınız modül bulunamadı; tüm listeyi görmek için filtreyi temizleyin.</p>
         </div>
       </div>
     </section>
@@ -592,6 +613,30 @@
             <h3 style="margin:0 0 8px;font-size:17px;" data-i18n="g3_t">Satış &amp; 7/24 Discord desteği</h3>
             <p style="margin:0 0 12px;font-size:13.5px;color:var(--text-muted);" data-i18n="g3_d">Lisans satın almak, kurulum yaptırmak veya false-ban ince ayarları için ekibimiz Discord üzerinden birebir hizmet verir.</p>
             <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" style="font-size:12.5px;font-weight:700;color:var(--accent-bright);">Discord'dan Satın Al / Destek Al ↗</a>
+          </div>
+        </div>
+
+        <div class="card cmp-card" data-reveal>
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;">
+            <div>
+              <div class="eyebrow left" style="margin-bottom:4px;">MİMARİ KIYASLAMA</div>
+              <h3 style="margin:0;font-size:20px;">Neden 465 AC FiveM Anticheat?</h3>
+            </div>
+            <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Lisans Al • Discord ↗</a>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Özellik</th><th>Geleneksel Anti-Cheat</th><th>465 AC v4.2</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>İstemci Yükü (Resmon)</strong></td><td class="cmp-old">0.08 – 0.35ms FPS düşüşü</td><td class="cmp-win">0.00 – 0.01ms hedefli optimizasyon</td></tr>
+                <tr><td><strong>Altyapı &amp; Veritabanı</strong></td><td class="cmp-old">MySQL / harici Node.js gerektirir</td><td class="cmp-win">Zero External DB (FXServer HTTP + JSON)</td></tr>
+                <tr><td><strong>False-Ban Koruması</strong></td><td class="cmp-old">Katı tek tip kurallar</td><td class="cmp-win">Modül bazlı Kapalı/Log/At/Ban + Güvenli Bölgeler</td></tr>
+                <tr><td><strong>Crasher &amp; Executor Savunması</strong></td><td class="cmp-old">Ek script veya manuel yama</td><td class="cmp-win">Multi-Crasher + Native &amp; Thread kalkanı dahili</td></tr>
+                <tr><td><strong>Kurulum &amp; Destek</strong></td><td class="cmp-old">Karmaşık manuel ayarlar</td><td class="cmp-win">Tek satır kurulum + Discord birebir destek</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -769,6 +814,6 @@
     </div>
   </footer>
 
-  <script src="assets/app.min.js?v=19" defer></script>
+  <script src="assets/app.min.js?v=20" defer></script>
 </body>
 </html>

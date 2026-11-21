@@ -20,6 +20,11 @@
   <link rel="alternate" hreflang="x-default" href="https://www.465.lol/en">
   <link rel="alternate" type="application/rss+xml" title="465 AC Updates" href="https://www.465.lol/feed.xml">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="icon" type="image/png" sizes="531x465" href="assets/logo-465.png">
+  <link rel="apple-touch-icon" href="assets/logo-465.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="dns-prefetch" href="https://discord.gg">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="465 AC">
@@ -40,7 +45,8 @@
   <meta name="twitter:image" content="https://www.465.lol/assets/og-banner.png">
   <meta name="twitter:image:alt" content="465 AC — FiveM Anticheat">
 
-  <link rel="stylesheet" href="assets/app.min.css?v=19">
+  <link rel="preload" as="style" href="assets/app.min.css?v=20">
+  <link rel="stylesheet" href="assets/app.min.css?v=20">
 
   <script type="application/ld+json">
   {
@@ -189,6 +195,7 @@
         <a href="#yapilandirma" data-route="yapilandirma" data-nav="yapilandirma">Features</a>
         <a href="#guvence" data-route="guvence" data-nav="guvence">Guarantee</a>
         <a href="#sss" data-route="sss" data-nav="sss">FAQ</a>
+        <a href="/docs" class="nav-mobile-only">Documentation ↗</a>
       </nav>
 
       <div class="nav-actions">
@@ -400,8 +407,21 @@
             </div>
           </div>
 
+          <div class="feat-filter-row">
+            <input type="search" id="featFilterInput" class="feat-search" placeholder="Search modules: noclip, crasher, aimbot, webhook..." aria-label="Search protection modules">
+            <div class="feat-chips" role="tablist" aria-label="Category filter">
+              <button type="button" class="feat-chip active" data-fcat="all">All</button>
+              <button type="button" class="feat-chip" data-fcat="move">Movement</button>
+              <button type="button" class="feat-chip" data-fcat="weapon">Weapon</button>
+              <button type="button" class="feat-chip" data-fcat="vehicle">Vehicle</button>
+              <button type="button" class="feat-chip" data-fcat="world">Crasher</button>
+              <button type="button" class="feat-chip" data-fcat="core">Injection</button>
+              <button type="button" class="feat-chip" data-fcat="panel">Panel</button>
+            </div>
+          </div>
+
           <div class="feat-matrix">
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="move">
               <div class="feat-cat-top"><h3>Movement &amp; Player</h3><span class="feat-cat-cnt">12 MODULES</span></div>
               <ul class="feat-list">
                 <li>Godmode, Demi-God &amp; Fast Regen</li>
@@ -415,7 +435,7 @@
               </ul>
             </div>
 
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="weapon">
               <div class="feat-cat-top"><h3>Weapon &amp; Combat</h3><span class="feat-cat-cnt">10 MODULES</span></div>
               <ul class="feat-list">
                 <li>Blacklisted Heavy Weapon Blocker</li>
@@ -429,7 +449,7 @@
               </ul>
             </div>
 
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="vehicle">
               <div class="feat-cat-top"><h3>Vehicle &amp; Driving</h3><span class="feat-cat-cnt">8 SHIELDS</span></div>
               <ul class="feat-list">
                 <li>Vehicle Speed &amp; Torque Multiplier Guard</li>
@@ -443,7 +463,7 @@
               </ul>
             </div>
 
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="world">
               <div class="feat-cat-top"><h3>World &amp; Crasher</h3><span class="feat-cat-cnt">9 MODULES</span></div>
               <ul class="feat-list">
                 <li>Multi-Crasher Packet Filtering</li>
@@ -457,7 +477,7 @@
               </ul>
             </div>
 
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="core">
               <div class="feat-cat-top"><h3>Core &amp; Injection</h3><span class="feat-cat-cnt">9 MODULES</span></div>
               <ul class="feat-list">
                 <li>Unauthorized Resource Start Guard</li>
@@ -471,7 +491,7 @@
               </ul>
             </div>
 
-            <div class="snake-box feat-cat-card">
+            <div class="snake-box feat-cat-card" data-fcat="panel">
               <div class="feat-cat-top"><h3>Panel &amp; Infrastructure</h3><span class="feat-cat-cnt">8 SYSTEMS</span></div>
               <ul class="feat-list">
                 <li>Built-in FXServer HTTP Web Panel</li>
@@ -485,6 +505,7 @@
               </ul>
             </div>
           </div>
+          <p class="feat-empty" id="featEmptyMsg">No matching protection modules found; clear the search filter to view all 56+ features.</p>
         </div>
       </div>
     </section>
@@ -586,6 +607,30 @@
             <h3 style="margin:0 0 8px;font-size:17px;">Purchase &amp; 24/7 Discord support</h3>
             <p style="margin:0 0 12px;font-size:13.5px;color:var(--text-muted);">Join our official Discord to purchase a license, request onboarding, or tune QBCore / ESX rules directly with our team.</p>
             <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" style="font-size:12.5px;font-weight:700;color:var(--accent-bright);">Buy &amp; Open Ticket on Discord ↗</a>
+          </div>
+        </div>
+
+        <div class="card cmp-card" data-reveal>
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;">
+            <div>
+              <div class="eyebrow left" style="margin-bottom:4px;">ARCHITECTURE COMPARISON</div>
+              <h3 style="margin:0;font-size:20px;">Why choose 465 AC FiveM Anticheat?</h3>
+            </div>
+            <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Get License • Discord ↗</a>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Capability</th><th>Legacy Anti-Cheat</th><th>465 AC v4.2</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Client Footprint (Resmon)</strong></td><td class="cmp-old">0.08 – 0.35ms FPS drops</td><td class="cmp-win">0.00 – 0.01ms targeted performance</td></tr>
+                <tr><td><strong>Database &amp; Backend</strong></td><td class="cmp-old">External MySQL / Node.js</td><td class="cmp-win">Zero External DB (FXServer HTTP + JSON)</td></tr>
+                <tr><td><strong>False-Ban Protection</strong></td><td class="cmp-old">Rigid global thresholds</td><td class="cmp-win">Per-module Off/Log/Kick/Ban + Safe Zones</td></tr>
+                <tr><td><strong>Crasher &amp; Executor Shield</strong></td><td class="cmp-old">Requires separate scripts</td><td class="cmp-win">Multi-Crasher + Native &amp; Thread guard included</td></tr>
+                <tr><td><strong>Setup &amp; Support</strong></td><td class="cmp-old">Manual trial &amp; error</td><td class="cmp-win">1-line ensure + 1-on-1 Discord support</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -763,6 +808,6 @@
     </div>
   </footer>
 
-  <script src="assets/app.min.js?v=19" defer></script>
+  <script src="assets/app.min.js?v=20" defer></script>
 </body>
 </html>

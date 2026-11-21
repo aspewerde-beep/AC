@@ -19,8 +19,14 @@
   <link rel="alternate" hreflang="x-default" href="https://www.465.lol/docs">
   <link rel="alternate" type="application/rss+xml" title="465 AC Güncellemeler" href="https://www.465.lol/feed.xml">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="icon" type="image/png" sizes="531x465" href="assets/logo-465.png">
+  <link rel="apple-touch-icon" href="assets/logo-465.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="dns-prefetch" href="https://discord.gg">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="465 AC">
+  <meta property="og:locale" content="tr_TR">
   <meta property="og:title" content="465 AC — Kurulum &amp; Dokümantasyon">
   <meta property="og:description" content="465_AC kurulum adımları, modül aksiyonları ve dahili web yönetim paneli rehberi.">
   <meta property="og:url" content="https://www.465.lol/docs">
@@ -33,18 +39,30 @@
   <meta name="twitter:title" content="465 AC — Kurulum &amp; Dokümantasyon">
   <meta name="twitter:description" content="465_AC kurulum adımları, modül profilleri ve canlı web paneli rehberi.">
   <meta name="twitter:image" content="https://www.465.lol/assets/og-banner.png">
-  <link rel="stylesheet" href="assets/app.min.css?v=19">
+  <link rel="preload" as="style" href="assets/app.min.css?v=20">
+  <link rel="stylesheet" href="assets/app.min.css?v=20">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Organization",
+        "@id": "https://www.465.lol/#organization",
         "name": "465 AC",
         "url": "https://www.465.lol/",
         "logo": "https://www.465.lol/assets/logo-465.png",
         "image": "https://www.465.lol/assets/og-banner.png",
         "sameAs": ["https://discord.gg/YYNvMMJZTm"]
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "465 AC FiveM Anticheat Kurulum & Mimari Rehberi",
+        "description": "0.00ms resmon 465 AC FiveM anticheat kurulum sırası, aksiyon profilleri ve FXServer HTTP yönetim paneli dokümantasyonu.",
+        "inLanguage": "tr",
+        "dateModified": "2026-11-21",
+        "mainEntityOfPage": "https://www.465.lol/docs",
+        "author": { "@id": "https://www.465.lol/#organization" },
+        "publisher": { "@id": "https://www.465.lol/#organization" }
       },
       {
         "@type": "BreadcrumbList",
@@ -79,8 +97,10 @@
 
       <nav class="nav-links" id="primaryNavLinks">
         <a href="/">Ana Sayfa</a>
-        <a href="/nasil-calisir" data-route="nasil-calisir">Nasıl Çalışır</a>
+        <a href="/yapilandirma">Modüller</a>
+        <a href="/sss">SSS</a>
         <a href="/docs" class="active">Dokümantasyon</a>
+        <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="nav-mobile-only">Satın Al • Discord ↗</a>
       </nav>
 
       <div class="nav-actions">
@@ -147,11 +167,27 @@ ensure 465_AC
     </section>
 
     
-    <section class="card" id="api" style="padding:26px;">
+    <section class="card" id="api" style="padding:26px;margin-bottom:24px;">
       <h2 style="margin:0 0 12px;font-size:20px;">4. İç Yapı Gizliliği</h2>
       <p style="font-size:13.5px;color:var(--text-muted);margin:0;">
         465 AC anti-bypass güvenliği kapsamında iç komut isimleri, yetki node'ları, tespit algoritmaları ve eşik parametreleri herkese açık dokümanlarda paylaşılmaz. Tam referans rehberi kurulum sırasında doğrudan sunucu sahibine iletilir.
       </p>
+    </section>
+
+    <section class="snake-box" id="satin-al" style="padding:28px;">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:18px;">
+        <div style="max-width:560px;">
+          <div class="eyebrow left" style="margin-bottom:6px;">LİSANS &amp; TESLİMAT</div>
+          <h2 style="margin:0 0 8px;font-size:22px;">5. Satın Alma ve Birebir Kurulum</h2>
+          <p style="font-size:13.5px;color:var(--text-muted);margin:0;">
+            465 AC FiveM Anticheat lisansı almak, paket uyumluluğunu kontrol etmek veya aynı gün birebir kurulum desteği başlatmak için Discord sunucumuzdan ticket açabilirsiniz.
+          </p>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-lg">Satın Al • Discord ↗</a>
+          <a href="/yapilandirma" class="btn btn-dark btn-lg">56+ Modülü Gör</a>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -170,6 +206,6 @@ ensure 465_AC
     </div>
   </footer>
 
-  <script src="assets/app.min.js?v=19" defer></script>
+  <script src="assets/app.min.js?v=20" defer></script>
 </body>
 </html>
