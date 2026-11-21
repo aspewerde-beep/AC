@@ -4,12 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google" content="notranslate">
-  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-PP7FXDLT"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-  </script>
   <title>Kurulum & Dokümantasyon | 465 AC</title>
   <meta name="description" content="465 AC FiveM anticheat entegrasyon akışı, esnek aksiyon profilleri, dahili web paneli yetenekleri ve kaynak gizliliği dokümantasyonu.">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -23,8 +17,8 @@
   <link rel="icon" type="image/png" sizes="531x465" href="assets/logo-465.png">
   <link rel="apple-touch-icon" href="assets/logo-465.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <link rel="dns-prefetch" href="https://discord.gg">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
 
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="465 AC">
@@ -45,17 +39,19 @@
   <meta name="twitter:image" content="https://www.465.lol/assets/og-banner.png">
   <meta name="twitter:image:alt" content="465 AC — FiveM Anti-Cheat">
 
-  <link rel="preload" as="style" href="assets/app.min.css?v=22">
-  <link rel="stylesheet" href="assets/app.min.css?v=22">
+  <link rel="preload" as="style" href="assets/app.v24.min.css">
+  
+  <link rel="stylesheet" href="assets/app.v24.min.css">
 
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.465.lol/#organization","name":"465 AC","alternateName":["465 Anticheat","465 Anti-Cheat"],"url":"https://www.465.lol/","logo":{"@type":"ImageObject","url":"https://www.465.lol/assets/logo-465.png","width":531,"height":465},"image":"https://www.465.lol/assets/og-banner.png","sameAs":["https://discord.gg/YYNvMMJZTm"],"description":"FiveM sunucuları için 0.00ms resmon hedefli sunucu taraflı anticheat ve dahili web yönetim altyapısı."},{"@type":"TechArticle","headline":"465 AC FiveM Anticheat Kurulum & Kullanım Rehberi","description":"0.00ms resmon 465 AC FiveM anticheat entegrasyon sırası, esnek aksiyon profilleri ve dahili web yönetim paneli rehberi.","inLanguage":"tr","dateModified":"2026-11-21","mainEntityOfPage":"https://www.465.lol/docs","author":{"@id":"https://www.465.lol/#organization"},"publisher":{"@id":"https://www.465.lol/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana Sayfa","item":"https://www.465.lol/"},{"@type":"ListItem","position":2,"name":"Dokümantasyon","item":"https://www.465.lol/docs"}]}]}</script>
+  <script type="speculationrules">{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.xml"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body>
   <div class="bg-grid" aria-hidden="true"></div>
   <div class="navbar-wrap">
     <header class="navbar-pill">
       <a href="/" class="brand" aria-label="465 AC Ana Sayfa">
-        <img src="assets/logo.svg" alt="465 AC FiveM Anti-Cheat Logo" width="32" height="32" style="display:block;">
+        <img src="assets/logo.svg" alt="465 AC FiveM Anti-Cheat Logo" width="32" height="32" decoding="sync" fetchpriority="high" style="display:block;">
       </a>
       <nav class="nav-links" id="primaryNavLinks" aria-label="Ana Menü">
         <a href="/">Ana Sayfa</a><a href="/nasil-calisir">Nasıl Çalışır</a><a href="/yapilandirma">Yapılandırma</a><a href="/guvence">Güvence</a><a href="/sss">SSS</a>
@@ -188,7 +184,7 @@ harici_servis   = gerekmez
         <div>
           <div class="footer-col-title">KURUMSAL</div>
           <div class="footer-brand-logo">
-            <img src="assets/logo-465.png" alt="465 AC Şeffaf Logo" width="28" height="24" loading="lazy" decoding="async">
+            <picture><source srcset="assets/logo-465.webp" type="image/webp"><img src="assets/logo-465.png" alt="465 AC Şeffaf Logo" width="28" height="25" loading="lazy" decoding="async"></picture>
             <strong style="font-size:16.5px;letter-spacing:-0.02em;">465 AC</strong>
             <span class="footer-brand-tag">SECURITY</span>
           </div>
@@ -258,6 +254,7 @@ harici_servis   = gerekmez
       </div>
     </div>
   </footer>
-  <script src="assets/app.min.js?v=22" defer></script>
+  <script src="assets/app.v24.min.js" defer></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());</script>
 </body>
 </html>

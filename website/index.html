@@ -4,12 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google" content="notranslate">
-  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-PP7FXDLT"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-  </script>
   <title>465 AC | FiveM Anticheat & Sunucu Güvenliği</title>
   <meta name="description" content="0.00ms resmon hedefli FiveM anticheat ve anti-cheat sistemi. QBCore & ESX uyumlu 56+ hile koruması, anti-crasher ve dahili web yönetim panelini keşfet.">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -23,8 +17,8 @@
   <link rel="icon" type="image/png" sizes="531x465" href="assets/logo-465.png">
   <link rel="apple-touch-icon" href="assets/logo-465.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <link rel="dns-prefetch" href="https://discord.gg">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="465 AC">
@@ -45,17 +39,19 @@
   <meta name="twitter:image" content="https://www.465.lol/assets/og-banner.png">
   <meta name="twitter:image:alt" content="465 AC — FiveM Anti-Cheat">
 
-  <link rel="preload" as="style" href="assets/app.min.css?v=22">
-  <link rel="stylesheet" href="assets/app.min.css?v=22">
+  <link rel="preload" as="style" href="assets/app.v24.min.css">
+  
+  <link rel="stylesheet" href="assets/app.v24.min.css">
 
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.465.lol/#organization","name":"465 AC","alternateName":["465 Anticheat","465 Anti-Cheat"],"url":"https://www.465.lol/","logo":{"@type":"ImageObject","url":"https://www.465.lol/assets/logo-465.png","width":531,"height":465},"image":"https://www.465.lol/assets/og-banner.png","sameAs":["https://discord.gg/YYNvMMJZTm"],"description":"FiveM sunucuları için 0.00ms resmon hedefli sunucu taraflı anticheat ve dahili web yönetim altyapısı."},{"@type":"WebSite","name":"465 AC — FiveM Anticheat","url":"https://www.465.lol/","inLanguage":["tr-TR","en-US"],"publisher":{"@id":"https://www.465.lol/#organization"}},{"@type":"SoftwareApplication","name":"465 AC FiveM Anticheat","alternateName":"465 AC FiveM Anti-Cheat","applicationCategory":"SecurityApplication","operatingSystem":"FiveM (Windows / Linux)","softwareVersion":"4.2","inLanguage":"tr","url":"https://www.465.lol/","image":"https://www.465.lol/assets/og-banner.png","screenshot":"https://www.465.lol/assets/og-banner.png","author":{"@id":"https://www.465.lol/#organization"},"publisher":{"@id":"https://www.465.lol/#organization"},"description":"0.00ms resmon hedefli, sunucu taraflı savaş doğrulama, anti-noclip, anti-aimbot, multi-crasher filtresi ve dahili web paneline sahip FiveM anticheat sistemi.","featureList":["0.00ms resmon performans hedefi","56+ aktif FiveM anticheat koruma modülü","Sunucu taraflı hareket, silah ve araç doğrulama","Multi-Crasher, entity spam ve partikül saldırı filtresi","Çok katmanlı bütünlük ve enjeksiyon kalkanı","Dahili web yönetim paneli","QBCore, QBox, ESX ve Standalone uyumluluğu"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana Sayfa","item":"https://www.465.lol/"},{"@type":"ListItem","position":2,"name":"Nasıl Çalışır","item":"https://www.465.lol/nasil-calisir"},{"@type":"ListItem","position":3,"name":"Yapılandırma","item":"https://www.465.lol/yapilandirma"},{"@type":"ListItem","position":4,"name":"Güvence","item":"https://www.465.lol/guvence"},{"@type":"ListItem","position":5,"name":"SSS","item":"https://www.465.lol/sss"},{"@type":"ListItem","position":6,"name":"Dokümantasyon","item":"https://www.465.lol/docs"}]}]}</script>
+  <script type="speculationrules">{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.xml"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body>
   <div class="bg-grid" aria-hidden="true"></div>
   <div class="navbar-wrap">
     <header class="navbar-pill">
       <a href="/" class="brand" aria-label="465 AC Ana Sayfa">
-        <img src="assets/logo.svg" alt="465 AC FiveM Anti-Cheat Logo" width="32" height="32" style="display:block;">
+        <img src="assets/logo.svg" alt="465 AC FiveM Anti-Cheat Logo" width="32" height="32" decoding="sync" fetchpriority="high" style="display:block;">
       </a>
       <nav class="nav-links" id="primaryNavLinks" aria-label="Ana Menü">
         <a href="/" class="active">Ana Sayfa</a><a href="/nasil-calisir">Nasıl Çalışır</a><a href="/yapilandirma">Yapılandırma</a><a href="/guvence">Güvence</a><a href="/sss">SSS</a>
@@ -97,6 +93,12 @@
       <span class="trust-pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>0.00ms Resmon</span></span>
       <span class="trust-pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Kurulum desteği</span></span>
     </div>
+    <div class="hero-telemetry hero-anim-5" aria-label="Sistem Metrikleri">
+      <div class="ht-item"><span class="ht-val">0.00ms</span><span class="ht-lbl">İstemci Hedefi</span></div>
+      <div class="ht-item"><span class="ht-val">56+</span><span class="ht-lbl">Aktif Modül</span></div>
+      <div class="ht-item"><span class="ht-val">4 Mod</span><span class="ht-lbl">Kapalı / Log / At / Ban</span></div>
+      <div class="ht-item"><span class="ht-val">0 DB</span><span class="ht-lbl">Harici Bağımlılık</span></div>
+    </div>
     <a href="#ozet" class="scroll-cue hero-anim-5" onclick="document.getElementById('ozet').scrollIntoView({behavior:'smooth'});return false;">
       <span>KEŞFET</span><span>↓</span>
     </a>
@@ -114,28 +116,40 @@
 
       <div class="hub-grid" data-reveal>
         <a href="/nasil-calisir" class="snake-box hub-card">
-          <div class="sq-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+          <div class="hub-card-top">
+            <div class="sq-icon" style="margin-bottom:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+            <span class="hub-step">01 • MİMARİ</span>
+          </div>
           <h3>Nasıl Çalışır?</h3>
           <p>Üç adımlı sade kurulum akışı, sunucu taraflı otorite ve dahili yönetim paneli işleyişi.</p>
           <span class="hub-link">Sayfayı Aç →</span>
         </a>
 
         <a href="/yapilandirma" class="snake-box hub-card">
-          <div class="sq-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+          <div class="hub-card-top">
+            <div class="sq-icon" style="margin-bottom:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+            <span class="hub-step">02 • 56+ MODÜL</span>
+          </div>
           <h3>Yapılandırma &amp; 56+ Modül</h3>
           <p>Canlı modül arama motoru, hareket, silah, araç, crasher ve enjeksiyon korumaları.</p>
           <span class="hub-link">Modülleri İncele →</span>
         </a>
 
         <a href="/guvence" class="snake-box hub-card">
-          <div class="sq-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="hub-card-top">
+            <div class="sq-icon" style="margin-bottom:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="hub-step">03 • PERFORMANS</span>
+          </div>
           <h3>Güvence &amp; Mimari Kıyaslama</h3>
           <p>0.00ms performans güvencesi, false-ban önleme kuralları ve geleneksel sistemlerle kıyaslama.</p>
           <span class="hub-link">Kıyaslamayı Gör →</span>
         </a>
 
         <a href="/sss" class="snake-box hub-card">
-          <div class="sq-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div class="hub-card-top">
+            <div class="sq-icon" style="margin-bottom:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <span class="hub-step">04 • REHBER</span>
+          </div>
           <h3>Sıkça Sorulan Sorular</h3>
           <p>Lisans satın alma, uyumlu FiveM frameworkleri, FPS etkisi ve kurulum destek detayları.</p>
           <span class="hub-link">Soruları Oku →</span>
@@ -192,7 +206,7 @@
         <div>
           <div class="footer-col-title">KURUMSAL</div>
           <div class="footer-brand-logo">
-            <img src="assets/logo-465.png" alt="465 AC Şeffaf Logo" width="28" height="24" loading="lazy" decoding="async">
+            <picture><source srcset="assets/logo-465.webp" type="image/webp"><img src="assets/logo-465.png" alt="465 AC Şeffaf Logo" width="28" height="25" loading="lazy" decoding="async"></picture>
             <strong style="font-size:16.5px;letter-spacing:-0.02em;">465 AC</strong>
             <span class="footer-brand-tag">SECURITY</span>
           </div>
@@ -262,6 +276,7 @@
       </div>
     </div>
   </footer>
-  <script src="assets/app.min.js?v=22" defer></script>
+  <script src="assets/app.v24.min.js" defer></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());</script>
 </body>
 </html>

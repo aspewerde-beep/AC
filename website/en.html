@@ -4,12 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google" content="notranslate">
-  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-PP7FXDLT"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-  </script>
   <title>465 AC | FiveM Anticheat & Server Security</title>
   <meta name="description" content="0.00ms resmon FiveM anticheat and server security platform. 56+ anti-cheat modules, multi-crasher filters, QBCore & ESX support, and live web panel.">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -23,8 +17,8 @@
   <link rel="icon" type="image/png" sizes="531x465" href="assets/logo-465.png">
   <link rel="apple-touch-icon" href="assets/logo-465.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <link rel="dns-prefetch" href="https://discord.gg">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="465 AC">
@@ -45,17 +39,19 @@
   <meta name="twitter:image" content="https://www.465.lol/assets/og-banner.png">
   <meta name="twitter:image:alt" content="465 AC — FiveM Anti-Cheat">
 
-  <link rel="preload" as="style" href="assets/app.min.css?v=22">
-  <link rel="stylesheet" href="assets/app.min.css?v=22">
+  <link rel="preload" as="style" href="assets/app.v24.min.css">
+  
+  <link rel="stylesheet" href="assets/app.v24.min.css">
 
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.465.lol/#organization","name":"465 AC","alternateName":["465 Anticheat","465 Anti-Cheat"],"url":"https://www.465.lol/","logo":{"@type":"ImageObject","url":"https://www.465.lol/assets/logo-465.png","width":531,"height":465},"image":"https://www.465.lol/assets/og-banner.png","sameAs":["https://discord.gg/YYNvMMJZTm"],"description":"FiveM sunucuları için 0.00ms resmon hedefli sunucu taraflı anticheat ve dahili web yönetim altyapısı."},{"@type":"WebSite","name":"465 AC — FiveM Anticheat","url":"https://www.465.lol/en","inLanguage":["en-US","tr-TR"],"publisher":{"@id":"https://www.465.lol/#organization"}},{"@type":"SoftwareApplication","name":"465 AC FiveM Anticheat","alternateName":"465 AC FiveM Anti-Cheat","applicationCategory":"SecurityApplication","operatingSystem":"FiveM (Windows / Linux)","softwareVersion":"4.2","inLanguage":"en","url":"https://www.465.lol/en","image":"https://www.465.lol/assets/og-banner.png","screenshot":"https://www.465.lol/assets/og-banner.png","author":{"@id":"https://www.465.lol/#organization"},"publisher":{"@id":"https://www.465.lol/#organization"},"description":"0.00ms resmon FiveM anticheat system featuring server-side validation, anti-noclip, anti-aimbot, multi-crasher filtering, and built-in web management dashboard.","featureList":["0.00ms client resmon performance target","56+ active FiveM anticheat protection modules","Server-authoritative movement, weapon, and vehicle checks","Multi-crasher, entity spam, and explosion flood filters","Execution layer integrity and injection shielding","Built-in web management dashboard","QBCore, QBox, ESX, and Standalone compatibility"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.465.lol/en"},{"@type":"ListItem","position":2,"name":"Documentation","item":"https://www.465.lol/docs"}]}]}</script>
+  <script type="speculationrules">{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.xml"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body>
   <div class="bg-grid" aria-hidden="true"></div>
   <div class="navbar-wrap">
     <header class="navbar-pill">
       <a href="/en" data-route="baslangic" class="brand" aria-label="465 AC Home">
-        <img src="assets/logo.svg" alt="465 AC FiveM Anticheat Logo" width="32" height="32" style="display:block;">
+        <img src="assets/logo.svg" alt="465 AC FiveM Anticheat Logo" width="32" height="32" decoding="sync" fetchpriority="high" style="display:block;">
       </a>
       <nav class="nav-links" id="primaryNavLinks" aria-label="Primary Navigation">
         <a href="#nasil-calisir" data-route="nasil-calisir" data-nav="nasil-calisir">How It Works</a>
@@ -101,6 +97,12 @@
       <span class="trust-pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>0.00ms Resmon</span></span>
       <span class="trust-pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>QBCore / ESX / QBox</span></span>
     </div>
+    <div class="hero-telemetry hero-anim-5" aria-label="System Specs">
+      <div class="ht-item"><span class="ht-val">0.00ms</span><span class="ht-lbl">Client Target</span></div>
+      <div class="ht-item"><span class="ht-val">56+</span><span class="ht-lbl">Active Modules</span></div>
+      <div class="ht-item"><span class="ht-val">4 Modes</span><span class="ht-lbl">Off / Log / Kick / Ban</span></div>
+      <div class="ht-item"><span class="ht-val">0 DB</span><span class="ht-lbl">External Deps</span></div>
+    </div>
     <a href="#nasil-calisir" data-route="nasil-calisir" class="scroll-cue hero-anim-5"><span>EXPLORE</span><span>↓</span></a>
   </section>
 
@@ -116,7 +118,7 @@
         </div>
         <div class="chrome-stage" data-reveal id="emblemStage">
           <div class="chrome-halo"></div><div class="orbit-ring"></div><div class="orbit-ring-inner"></div>
-          <div class="logo-float"><img src="assets/logo-465.png" alt="465 AC FiveM Anticheat Emblem" width="310" height="271" loading="lazy" decoding="async"></div>
+          <div class="logo-float"><picture><source srcset="assets/logo-465.webp" type="image/webp"><img src="assets/logo-465.png" alt="465 AC FiveM Anticheat Emblem" width="310" height="271" loading="lazy" decoding="async"></picture></div>
         </div>
       </div>
     </div>
@@ -154,7 +156,7 @@
       <div class="feat-block" data-reveal>
         <div class="feat-block-head">
           <div><div class="eyebrow left" style="margin-bottom:6px;">PROTECTION SUITE</div><h2 style="margin:0;font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-0.025em;"><span class="silver-grad">56+ Active FiveM Anticheat</span> &amp; Management Features</h2></div>
-          <span class="feat-count-badge">● ANTI-BYPASS ENGINE</span>
+          <span class="feat-count-badge" id="featCountBadge" data-default="● 56+ MODULES ACTIVE">● 56+ MODULES ACTIVE</span>
         </div>
         <div class="feat-marquee-wrap" aria-label="Protection Capabilities">
           <div class="feat-marquee-track">
@@ -227,7 +229,7 @@
       <div style="display:flex;flex-wrap:wrap;gap:10px;"><a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Purchase • Discord ↗</a><a href="/docs" class="btn btn-dark btn-sm">Documentation ↗</a></div>
     </div>
     <div class="footer-grid">
-      <div><div class="footer-col-title">COMPANY</div><div class="footer-brand-logo"><img src="assets/logo-465.png" alt="465 AC Emblem" width="28" height="24" loading="lazy" decoding="async"><strong style="font-size:16.5px;letter-spacing:-0.02em;">465 AC</strong><span class="footer-brand-tag">SECURITY</span></div><p style="font-size:13px;color:var(--text-muted);margin:0;max-width:290px;line-height:1.6;">0.00ms resmon server-authoritative FiveM anticheat and built-in web management platform.</p><div class="footer-status"><span class="hero-badge-dot"></span><span>Server Layer Active • Web Panel</span></div></div>
+      <div><div class="footer-col-title">COMPANY</div><div class="footer-brand-logo"><picture><source srcset="assets/logo-465.webp" type="image/webp"><img src="assets/logo-465.png" alt="465 AC Emblem" width="28" height="25" loading="lazy" decoding="async"></picture><strong style="font-size:16.5px;letter-spacing:-0.02em;">465 AC</strong><span class="footer-brand-tag">SECURITY</span></div><p style="font-size:13px;color:var(--text-muted);margin:0;max-width:290px;line-height:1.6;">0.00ms resmon server-authoritative FiveM anticheat and built-in web management platform.</p><div class="footer-status"><span class="hero-badge-dot"></span><span>Server Layer Active • Web Panel</span></div></div>
       <div><div class="footer-col-title">ARCHITECTURE</div><ul><li><a href="#baslangic" data-route="baslangic">Overview</a></li><li><a href="#nasil-calisir" data-route="nasil-calisir">How It Works</a></li><li><a href="#yapilandirma" data-route="yapilandirma">56+ Modules</a></li><li><a href="#guvence" data-route="guvence">Guarantee &amp; FAQ</a></li></ul></div>
       <div><div class="footer-col-title">TURKISH PAGES</div><ul><li><a href="/">Ana Sayfa</a></li><li><a href="/nasil-calisir">Nasıl Çalışır</a></li><li><a href="/yapilandirma">Yapılandırma</a></li><li><a href="/docs">Dokümantasyon</a></li></ul></div>
       <div><div class="footer-col-title">SYSTEM SUMMARY</div><div class="snake-box footer-hub-card"><div style="display:flex;align-items:center;gap:10px;"><div class="sq-icon" style="width:32px;height:32px;margin-bottom:0;border-radius:9px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div style="font-size:13px;font-weight:700;color:#fff;">465 AC Engine</div><div style="font-size:11px;color:var(--text-dim);">Purchase, Licensing &amp; Support</div></div></div><div class="footer-kv-list"><div class="footer-kv"><span class="footer-kv-lbl">Footprint</span><span class="footer-kv-val">0.00ms Resmon</span></div><div class="footer-kv"><span class="footer-kv-lbl">Database</span><span class="footer-kv-val">Zero External DB</span></div><div class="footer-kv"><span class="footer-kv-lbl">Sales &amp; Help</span><span class="footer-kv-val">Discord Ticket</span></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><a href="/docs" class="btn btn-dark btn-sm">Docs ↗</a><a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Buy Now ↗</a></div></div></div>
@@ -237,6 +239,7 @@
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;"><div class="footer-legal-links"><a href="/">TR</a><a href="/sitemap.xml">Sitemap</a><a href="/feed.xml">RSS</a></div><span class="dmca-badge">✓ PROTECTED BY WWW.465.LOL</span></div>
     </div>
   </div></footer>
-  <script src="assets/app.min.js?v=22" defer></script>
+  <script src="assets/app.v24.min.js" defer></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());</script>
 </body>
 </html>
