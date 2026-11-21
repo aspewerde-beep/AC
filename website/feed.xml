@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>465 AC — FiveM Anti-Cheat</title>
+    <title>465 AC — FiveM Anticheat</title>
     <link>https://www.465.lol/</link>
-    <description>FiveM sunucuları için 0.00ms resmon hedefli sunucu taraflı anti-cheat ve dahili web yönetim sistemi.</description>
+    <description>FiveM sunucuları için 0.00ms resmon hedefli sunucu taraflı FiveM anticheat ve dahili web yönetim sistemi.</description>
     <language>tr-tr</language>
     <atom:link href="https://www.465.lol/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
-      <title>465 AC v4.2 — Sunucu Taraflı FiveM Anti-Cheat Sistemi</title>
+      <title>465 AC v4.2 — 0.00ms Resmon FiveM Anticheat Sistemi</title>
       <link>https://www.465.lol/</link>
       <guid>https://www.465.lol/</guid>
-      <pubDate>Fri, 20 Nov 2026 20:00:00 +0000</pubDate>
-      <description>Combat guard, anti-noclip, anti-crasher, Exclude Zones ve dahili web yönetim paneli yayında.</description>
+      <pubDate>Sat, 21 Nov 2026 08:00:00 +0000</pubDate>
+      <description>56+ koruma modülü, anti-noclip, anti-aimbot, multi-crasher filtresi ve dahili FXServer HTTP web yönetim paneli.</description>
     </item>
     <item>
-      <title>465 AC Kurulum ve Referans Dokümantasyonu</title>
+      <title>465 AC English Overview — FiveM Anticheat</title>
+      <link>https://www.465.lol/en</link>
+      <guid>https://www.465.lol/en</guid>
+      <pubDate>Sat, 21 Nov 2026 08:00:00 +0000</pubDate>
+      <description>0.00ms resmon server-authoritative FiveM anticheat with 56+ modules for QBCore, QBox, ESX and Standalone servers.</description>
+    </item>
+    <item>
+      <title>465 AC Kurulum ve Mimari Dokümantasyonu</title>
       <link>https://www.465.lol/docs</link>
       <guid>https://www.465.lol/docs</guid>
-      <pubDate>Fri, 20 Nov 2026 20:00:00 +0000</pubDate>
-      <description>server.cfg kurulumu, ACE bypass yetkileri, modül aksiyonları ve exports API rehberi.</description>
+      <pubDate>Sat, 21 Nov 2026 08:00:00 +0000</pubDate>
+      <description>server.cfg kurulum adımları, esnek modül profilleri ve FXServer dahili web paneli rehberi.</description>
     </item>
   </channel>
 </rss>

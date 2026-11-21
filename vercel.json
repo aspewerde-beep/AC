@@ -7,7 +7,9 @@
   "redirects": [
     { "source": "/index", "destination": "/", "statusCode": 301 },
     { "source": "/index.html", "destination": "/", "statusCode": 301 },
-    { "source": "/index.php", "destination": "/", "statusCode": 301 }
+    { "source": "/index.php", "destination": "/", "statusCode": 301 },
+    { "source": "/en.html", "destination": "/en", "statusCode": 301 },
+    { "source": "/docs.html", "destination": "/docs", "statusCode": 301 }
   ],
   "rewrites": [
     { "source": "/baslangic", "destination": "/" },

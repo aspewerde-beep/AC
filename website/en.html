@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en" class="notranslate">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-PP7FXDLT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  <title>465 AC | FiveM Anticheat</title>
+  <meta name="description" content="0.00ms resmon FiveM anticheat and server security system. 56+ anti-cheat modules, anti-crasher, QBCore &amp; ESX support and live web dashboard.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#8ccbb2">
+  <link rel="canonical" href="https://www.465.lol/en">
+  <link rel="alternate" hreflang="tr" href="https://www.465.lol/">
+  <link rel="alternate" hreflang="en" href="https://www.465.lol/en">
+  <link rel="alternate" hreflang="x-default" href="https://www.465.lol/en">
+  <link rel="alternate" type="application/rss+xml" title="465 AC Updates" href="https://www.465.lol/feed.xml">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="465 AC">
+  <meta property="og:title" content="465 AC — 0.00ms FiveM Anticheat &amp; Server Security">
+  <meta property="og:description" content="Server-authoritative 0.00ms resmon FiveM anticheat with 56+ protection modules, anti-crasher filters, QBCore &amp; ESX support, and built-in web panel.">
+  <meta property="og:url" content="https://www.465.lol/en">
+  <meta property="og:image" content="https://www.465.lol/assets/og-banner.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="465 AC — 0.00ms FiveM Anticheat &amp; Server Protection">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="tr_TR">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="465 AC — FiveM Anticheat &amp; Anti-Cheat System">
+  <meta name="twitter:description" content="0.00ms resmon FiveM anticheat: 56+ server-side checks, anti-crasher, and live web panel.">
+  <meta name="twitter:image" content="https://www.465.lol/assets/og-banner.png">
+  <meta name="twitter:image:alt" content="465 AC — FiveM Anticheat">
+
+  <link rel="stylesheet" href="assets/app.min.css?v=17">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.465.lol/#organization",
+        "name": "465 AC",
+        "alternateName": ["465 Anticheat", "465 Anti-Cheat"],
+        "url": "https://www.465.lol/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.465.lol/assets/logo-465.png",
+          "width": 531,
+          "height": 465
+        },
+        "image": "https://www.465.lol/assets/og-banner.png",
+        "description": "Server-authoritative 0.00ms resmon FiveM anticheat and built-in web management infrastructure."
+      },
+      {
+        "@type": "WebSite",
+        "name": "465 AC — FiveM Anticheat",
+        "url": "https://www.465.lol/en",
+        "inLanguage": ["en-US", "tr-TR"],
+        "publisher": { "@id": "https://www.465.lol/#organization" }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "465 AC FiveM Anticheat",
+        "alternateName": "465 AC FiveM Anti-Cheat",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "FiveM FXServer (Windows / Linux)",
+        "softwareVersion": "4.2",
+        "inLanguage": "en",
+        "url": "https://www.465.lol/en",
+        "image": "https://www.465.lol/assets/og-banner.png",
+        "screenshot": "https://www.465.lol/assets/og-banner.png",
+        "author": { "@id": "https://www.465.lol/#organization" },
+        "publisher": { "@id": "https://www.465.lol/#organization" },
+        "description": "0.00ms resmon FiveM anticheat system featuring server-side combat validation, anti-noclip, anti-aimbot, multi-crasher protection, and native HTTP web dashboard.",
+        "featureList": [
+          "0.00ms client resmon performance target",
+          "56+ active FiveM anticheat protection modules",
+          "Server-authoritative movement, weapon, and vehicle checks",
+          "Multi-crasher, entity spam, and explosion flood filters",
+          "Executor, thread, and resource injection blocking",
+          "Built-in FXServer HTTP web management panel",
+          "QBCore, QBox, ESX, and Standalone compatibility"
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.465.lol/en"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Documentation",
+            "item": "https://www.465.lol/docs"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Does 465 AC require an external database or Node.js?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Once added to your FiveM server resources, the built-in web panel runs natively over FXServer's own HTTP server and stores bans and evidence locally in JSON."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which FiveM frameworks are supported?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "465 AC supports QBCore, QBox, ESX, and Standalone OneSync FiveM servers with safe-zone compatibility for hospitals, spawns, and roleplay jobs."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does FiveM anticheat impact client FPS or resmon?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. 465 AC is engineered with minimal client loops targeting 0.00-0.01ms idle resmon so high-population FiveM roleplay servers stay lag-free."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it stop FiveM crashers, entity spam, and cheat menus?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Multi-crasher filtering, mass entity/NPC spawn blocks, anti-noclip, anti-aimbot, anti-godmode, and executor injection guards are included out of the box."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How are false-positive bans prevented?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Every detection module offers Off, Log, Kick, or Ban profiles alongside safe-zone exceptions and whitelisted RP object rules."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How are staff permissions and onboarding handled?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Staff permissions rely on private customer-specific security keys delivered upon onboarding, backed by direct setup assistance."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <div class="navbar-wrap">
+    <header class="navbar-pill">
+      <a href="/en" data-route="baslangic" class="brand" aria-label="465 AC FiveM Anticheat Home">
+        <img src="assets/logo.svg" alt="465 AC FiveM Anticheat Logo" width="32" height="32" style="display:block;">
+      </a>
+
+      <nav class="nav-links" id="primaryNavLinks" aria-label="Primary Navigation">
+        <a href="#nasil-calisir" data-route="nasil-calisir" data-nav="nasil-calisir">How It Works</a>
+        <a href="#yapilandirma" data-route="yapilandirma" data-nav="yapilandirma">Features</a>
+        <a href="#guvence" data-route="guvence" data-nav="guvence">Guarantee</a>
+        <a href="#sss" data-route="sss" data-nav="sss">FAQ</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="lang-switch" aria-label="Language Switch">
+          <button type="button" data-lang-btn="tr" onclick="set465Lang('tr')">TR</button>
+          <button type="button" data-lang-btn="en" class="active" onclick="set465Lang('en')">EN</button>
+        </div>
+        <a href="/docs" class="btn btn-dark btn-sm">Docs ↗</a>
+        <button type="button" class="mobile-toggle" id="mobileNavToggle" aria-label="Open menu">☰</button>
+      </div>
+    </header>
+  </div>
+
+  <aside class="left-dock" aria-label="Section Navigator">
+    <a href="#baslangic" data-route="baslangic" class="dock-btn active" data-dock="baslangic" title="Top">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </a>
+    <a href="#nasil-calisir" data-route="nasil-calisir" class="dock-btn" data-dock="nasil-calisir" title="How It Works">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+    </a>
+    <a href="#yapilandirma" data-route="yapilandirma" class="dock-btn" data-dock="yapilandirma" title="Features">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </a>
+    <a href="#guvence" data-route="guvence" class="dock-btn" data-dock="guvence" title="Guarantee">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </a>
+    <a href="#sss" data-route="sss" class="dock-btn" data-dock="sss" title="FAQ">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </a>
+    <div class="dock-divider"></div>
+    <a href="/docs" class="dock-btn" title="Documentation &amp; Support">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </a>
+  </aside>
+
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+  </button>
+
+  <main>
+    <section class="hero" id="baslangic" data-section-id="baslangic">
+      <div class="hero-watermark" aria-hidden="true">
+        <div class="hero-wm-row"><span>465 AC</span><span>465 AC</span><span>465 AC</span><span>465 AC</span><span>465 AC</span></div>
+        <div class="hero-wm-row"><span>465 AC</span><span>465 AC</span><span>465 AC</span><span>465 AC</span><span>465 AC</span></div>
+        <div class="hero-wm-row"><span>465 AC</span><span>465 AC</span><span>465 AC</span><span>465 AC</span><span>465 AC</span></div>
+        <div class="hero-wm-row"><span>465 AC</span><span>465 AC</span><span>465 AC</span><span>465 AC</span><span>465 AC</span></div>
+        <div class="hero-wm-row"><span>465 AC</span><span>465 AC</span><span>465 AC</span><span>465 AC</span><span>465 AC</span></div>
+      </div>
+
+      <div class="hero-badge hero-anim-1">
+        <span class="hero-badge-dot"></span>
+        <span>Built for FiveM</span>
+      </div>
+
+      <h1 class="hero-anim-2">
+        <span>Next-gen server protection:</span><br>
+        <span class="silver-grad">0.00ms FiveM Anticheat.</span>
+      </h1>
+
+      <p class="hero-sub hero-anim-3">
+        Server-authoritative combat validation, anti-crasher filtering, 56+ FiveM anti-cheat layers, and a 0.00ms resmon target without external databases.
+      </p>
+
+      <div class="hero-cta hero-anim-4">
+        <a href="#nasil-calisir" data-route="nasil-calisir" class="btn btn-white btn-lg">How it works ↓</a>
+        <a href="/docs" class="btn btn-dark btn-lg">Documentation ↗</a>
+      </div>
+
+      <div class="hero-trust-pills hero-anim-5">
+        <span class="trust-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Instant setup</span>
+        </span>
+        <span class="trust-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>0.00ms Resmon</span>
+        </span>
+        <span class="trust-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>QBCore / ESX / QBox</span>
+        </span>
+      </div>
+
+      <a href="#nasil-calisir" data-route="nasil-calisir" class="scroll-cue hero-anim-5">
+        <span>EXPLORE</span>
+        <span>↓</span>
+      </a>
+    </section>
+
+    <section class="section" id="nasil-calisir" data-section-id="nasil-calisir">
+      <div class="container">
+        <div class="eyebrow left" data-reveal>HOW IT WORKS</div>
+        <h2 class="section-title-left" data-reveal style="margin-bottom:36px;">Deploy <span class="silver-grad">FiveM Anticheat</span> in minutes</h2>
+
+        <div class="how-grid">
+          <div class="timeline" data-reveal>
+            <div class="tl-step">
+              <span class="tl-dot"></span>
+              <span class="tl-num">01</span>
+              <h3>Select protection profiles</h3>
+              <p>Pick safe-zone rules and module actions (Off, Log, Kick, Ban) tailored to your FiveM roleplay or PvP framework.</p>
+              <div class="tag-row">
+                <span class="fw-tag">465_AC</span>
+                <span class="fw-tag">Profile Config</span>
+              </div>
+            </div>
+
+            <div class="tl-step">
+              <span class="tl-dot"></span>
+              <span class="tl-num">02</span>
+              <h3>Single-line install</h3>
+              <p>Drop 465_AC into resources and start it — runs natively on FXServer with zero external databases or Node.js.</p>
+              <div class="tag-row">
+                <span class="fw-tag">ensure 465_AC</span>
+                <span class="fw-tag">Access Keys</span>
+              </div>
+            </div>
+
+            <div class="tl-step">
+              <span class="tl-dot"></span>
+              <span class="tl-num">03</span>
+              <h3>Monitor &amp; protect live</h3>
+              <p>Manage bans, live map cleanup, and detections from the built-in web dashboard with instant Discord evidence webhooks.</p>
+              <div class="tag-row">
+                <span class="fw-tag">Web Dashboard</span>
+                <span class="fw-tag">Discord Webhook</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chrome-stage" data-reveal id="emblemStage">
+            <div class="chrome-halo"></div>
+            <div class="orbit-ring"></div>
+            <div class="orbit-ring-inner"></div>
+            <div class="logo-float">
+              <img src="assets/logo-465.png" alt="465 AC FiveM Anticheat Emblem" width="310" height="271" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="yapilandirma" data-section-id="yapilandirma">
+      <div class="container">
+        <div class="config-grid">
+          <div data-reveal>
+            <div class="eyebrow left">CONFIGURATION &amp; FEATURES</div>
+            <h2 class="section-title-left">
+              <span>Configure </span><span class="silver-grad">FiveM Anticheat </span><span>without coding</span>
+            </h2>
+            <p style="font-size:14.5px;color:var(--text-muted);margin:0;">
+              Keep internal detection internals hidden from bypass attempts while tuning safe zones, per-module actions, and anti-crasher profiles cleanly.
+            </p>
+
+            <ul class="check-list">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
+                <span>Flexible module actions (Off / Log / Kick / Ban)</span>
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
+                <span>Hospital, spawn &amp; whitelisted RP object compatibility</span>
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
+                <span>1-on-1 setup &amp; framework optimization support</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="ide-window" data-reveal>
+            <div class="ide-titlebar">
+              <div style="display:flex;align-items:center;height:100%;">
+                <div class="ide-dots"><span></span><span></span><span></span></div>
+                <div class="ide-tabs">
+                  <button type="button" class="ide-tab active" onclick="switchIdeTab('config', this)">config.lua</button>
+                  <button type="button" class="ide-tab" onclick="switchIdeTab('server', this)">server.cfg</button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-dark btn-sm" style="padding:4px 10px;font-size:11px;" onclick="copyIdeCode()" id="ideCopyBtn">Copy</button>
+            </div>
+            <pre class="ide-code" id="ideCodeView"></pre>
+            <div class="ide-statusbar">
+              <span>● Saved</span>
+              <span id="ideLangLabel">Lua &nbsp; UTF-8</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feat-block" data-reveal>
+          <div class="feat-block-head">
+            <div>
+              <div class="eyebrow left" style="margin-bottom:6px;">PROTECTION SUITE</div>
+              <h2 style="margin:0;font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-0.025em;"><span class="silver-grad">56+ Active FiveM Anticheat</span> &amp; Management Features</h2>
+            </div>
+            <span class="feat-count-badge">● ANTI-BYPASS ENGINE</span>
+          </div>
+
+          <div class="feat-marquee-wrap" aria-label="Protection Capabilities">
+            <div class="feat-marquee-track">
+              <span class="feat-pill">Anti-Godmode</span><span class="feat-pill">Anti-Noclip &amp; Underground</span><span class="feat-pill">Anti-Speedhack</span><span class="feat-pill">Anti-Silent Aim</span><span class="feat-pill">Anti-Magic Bullet</span><span class="feat-pill">Multi-Crasher Filter</span><span class="feat-pill">Anti-Car Fly</span><span class="feat-pill">Vehicle Magneto Guard</span><span class="feat-pill">Resource Injection Block</span><span class="feat-pill">Anti-Rapid Fire</span><span class="feat-pill">One-Shot Damage Cap</span><span class="feat-pill">Anti-Mass Kill</span><span class="feat-pill">Anti-Attach &amp; Freeze</span><span class="feat-pill">Economy &amp; Dupe Guard</span>
+              <span class="feat-pill">Anti-Godmode</span><span class="feat-pill">Anti-Noclip &amp; Underground</span><span class="feat-pill">Anti-Speedhack</span><span class="feat-pill">Anti-Silent Aim</span><span class="feat-pill">Anti-Magic Bullet</span><span class="feat-pill">Multi-Crasher Filter</span><span class="feat-pill">Anti-Car Fly</span><span class="feat-pill">Vehicle Magneto Guard</span><span class="feat-pill">Resource Injection Block</span><span class="feat-pill">Anti-Rapid Fire</span><span class="feat-pill">One-Shot Damage Cap</span><span class="feat-pill">Anti-Mass Kill</span><span class="feat-pill">Anti-Attach &amp; Freeze</span><span class="feat-pill">Economy &amp; Dupe Guard</span>
+            </div>
+            <div class="feat-marquee-track rev">
+              <span class="feat-pill">Anti-Teleport</span><span class="feat-pill">Anti-Super Jump</span><span class="feat-pill">Modified .RPF Guard</span><span class="feat-pill">Explosion &amp; Particle Filter</span><span class="feat-pill">Mass NPC &amp; Prop Block</span><span class="feat-pill">F8 / DevTools Guard</span><span class="feat-pill">Executor Thread Shield</span><span class="feat-pill">Honeypot Fake Events</span><span class="feat-pill">Alt Account Risk Score</span><span class="feat-pill">Anti-Freecam &amp; Spectate</span><span class="feat-pill">Thermal &amp; Night Vision Guard</span><span class="feat-pill">Built-in HTTP Web Panel</span><span class="feat-pill">Discord Proof Webhooks</span><span class="feat-pill">1-Click Map Cleanup</span>
+              <span class="feat-pill">Anti-Teleport</span><span class="feat-pill">Anti-Super Jump</span><span class="feat-pill">Modified .RPF Guard</span><span class="feat-pill">Explosion &amp; Particle Filter</span><span class="feat-pill">Mass NPC &amp; Prop Block</span><span class="feat-pill">F8 / DevTools Guard</span><span class="feat-pill">Executor Thread Shield</span><span class="feat-pill">Honeypot Fake Events</span><span class="feat-pill">Alt Account Risk Score</span><span class="feat-pill">Anti-Freecam &amp; Spectate</span><span class="feat-pill">Thermal &amp; Night Vision Guard</span><span class="feat-pill">Built-in HTTP Web Panel</span><span class="feat-pill">Discord Proof Webhooks</span><span class="feat-pill">1-Click Map Cleanup</span>
+            </div>
+          </div>
+
+          <div class="feat-matrix">
+            <div class="snake-box feat-cat-card">
+              <div class="feat-cat-top"><h3>Movement &amp; Player</h3><span class="feat-cat-cnt">12 MODULES</span></div>
+              <ul class="feat-list">
+                <li>Godmode, Demi-God &amp; Fast Regen</li>
+                <li>Classic &amp; Modern Underground Noclip</li>
+                <li>Speedhack &amp; Infinite Stamina</li>
+                <li>Teleport &amp; Coordinate Validation</li>
+                <li>Super Jump &amp; Velocity Launch Guard</li>
+                <li>No-Collision Wallclip Prevention</li>
+                <li>Anti-Ragdoll &amp; Hitbox Tampering</li>
+                <li>Invisibility &amp; Unauthorized Ped Models</li>
+              </ul>
+            </div>
+
+            <div class="snake-box feat-cat-card">
+              <div class="feat-cat-top"><h3>Weapon &amp; Combat</h3><span class="feat-cat-cnt">10 MODULES</span></div>
+              <ul class="feat-list">
+                <li>Blacklisted Heavy Weapon Blocker</li>
+                <li>Infinite Ammo &amp; Clip Lock</li>
+                <li>One-Shot Damage Multiplier Cap</li>
+                <li>Rapid Fire Rate-of-Fire Guard</li>
+                <li>Magic Bullet &amp; Distance Validation</li>
+                <li>Aimbot &amp; Silent Aim Detection</li>
+                <li>Mass-Kill &amp; Area Damage Block</li>
+                <li>Weapon Spawn &amp; Modified .RPF Guard</li>
+              </ul>
+            </div>
+
+            <div class="snake-box feat-cat-card">
+              <div class="feat-cat-top"><h3>Vehicle &amp; Driving</h3><span class="feat-cat-cnt">8 SHIELDS</span></div>
+              <ul class="feat-list">
+                <li>Vehicle Speed &amp; Torque Multiplier Guard</li>
+                <li>Vehicle Godmode Prevention</li>
+                <li>Instant Vehicle Repair Blocking</li>
+                <li>Car Fly &amp; Air Suspension Guard</li>
+                <li>Vehicle Magneto &amp; Pull Prevention</li>
+                <li>Unauthorized Vehicle Spawn Guard</li>
+                <li>Vehicle Launch &amp; Troll Filtering</li>
+                <li>Abnormal Boost &amp; Handling Guard</li>
+              </ul>
+            </div>
+
+            <div class="snake-box feat-cat-card">
+              <div class="feat-cat-top"><h3>World &amp; Crasher</h3><span class="feat-cat-cnt">9 MODULES</span></div>
+              <ul class="feat-list">
+                <li>Multi-Crasher Packet Filtering</li>
+                <li>Mass Entity &amp; Prop Spawn Flood Guard</li>
+                <li>Mass NPC (Ped) Spawn Blocker</li>
+                <li>Particle &amp; PTFX Spam Protection</li>
+                <li>Explosion Flood &amp; Range Guard</li>
+                <li>Entity Attach Troll Prevention</li>
+                <li>Remote Freeze &amp; Anim Task Blocker</li>
+                <li>Fake Drop &amp; Whitelisted RP Objects</li>
+              </ul>
+            </div>
+
+            <div class="snake-box feat-cat-card">
+              <div class="feat-cat-top"><h3>Core &amp; Injection</h3><span class="feat-cat-cnt">9 MODULES</span></div>
+              <ul class="feat-list">
+                <li>Unauthorized Resource Start Guard</li>
+                <li>Anti-Stop Protection Mechanism</li>
+                <li>Mod Menu &amp; Honeypot Event Traps</li>
+                <li>Client Native Integrity Validation</li>
+                <li>F8 / DevTools Injection Blocker</li>
+                <li>Executor &amp; Thread Anomaly Guard</li>
+                <li>Inventory &amp; Money Dupe Prevention</li>
+                <li>Freecam, Thermal &amp; Night Vision</li>
+              </ul>
+            </div>
+
+            <div class="snake-box feat-cat-card">
+              <div class="feat-cat-top"><h3>Panel &amp; Infrastructure</h3><span class="feat-cat-cnt">8 SYSTEMS</span></div>
+              <ul class="feat-list">
+                <li>Built-in FXServer HTTP Web Panel</li>
+                <li>Discord Webhook Proof Alerts</li>
+                <li>Automated Screenshot Evidence</li>
+                <li>Ban Evasion &amp; Alt Risk Scoring</li>
+                <li>Flexible Off / Log / Kick / Ban</li>
+                <li>Hospital &amp; Spawn Safe Compatibility</li>
+                <li>1-Click Map &amp; Entity Cleanup</li>
+                <li>QBCore / QBox / ESX / Standalone</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="yorumlar">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <div class="eyebrow">COMMUNITY FEEDBACK</div>
+          <h2>
+            <span>What server owners </span><span class="silver-grad">are saying</span>
+          </h2>
+        </div>
+
+        <div class="grid-3" data-reveal>
+          <div class="card review-card">
+            <div>
+              <div class="review-meta" style="margin-bottom:12px;">
+                <div class="avatar-circle">A</div>
+                <div>
+                  <div style="font-size:13.5px;font-weight:700;">Arda K.</div>
+                  <div style="font-size:11.5px;color:var(--text-dim);">@ardarp</div>
+                </div>
+              </div>
+              <div class="stars" aria-label="5 stars">★★★★★</div>
+              <p style="font-size:13px;color:var(--text-soft);margin:10px 0 0;">
+                Setup took minutes. Even at peak player counts we saw zero false positives and resmon stayed buttery smooth.
+              </p>
+            </div>
+            <div style="font-size:11px;color:var(--text-dim);">465 AC User</div>
+          </div>
+
+          <div class="card review-card">
+            <div>
+              <div class="review-meta" style="margin-bottom:12px;">
+                <div class="avatar-circle">B</div>
+                <div>
+                  <div style="font-size:13.5px;font-weight:700;">Bora T.</div>
+                  <div style="font-size:11.5px;color:var(--text-dim);">@boradev</div>
+                </div>
+              </div>
+              <div class="stars" aria-label="5 stars">★★★★★</div>
+              <p style="font-size:13px;color:var(--text-soft);margin:10px 0 0;">
+                Hospital and spawn safe-zone rules kept legitimate players untouched while the built-in web panel simplified moderation.
+              </p>
+            </div>
+            <div style="font-size:11px;color:var(--text-dim);">465 AC User</div>
+          </div>
+
+          <div class="card review-card">
+            <div>
+              <div class="review-meta" style="margin-bottom:12px;">
+                <div class="avatar-circle">E</div>
+                <div>
+                  <div style="font-size:13.5px;font-weight:700;">Emre Y.</div>
+                  <div style="font-size:11.5px;color:var(--text-dim);">@emre_v</div>
+                </div>
+              </div>
+              <div class="stars" aria-label="5 stars">★★★★★</div>
+              <p style="font-size:13px;color:var(--text-soft);margin:10px 0 0;">
+                Alt-account risk scoring stops ban evaders right during connection before they ever disrupt RP scenes.
+              </p>
+            </div>
+            <div style="font-size:11px;color:var(--text-dim);">465 AC User</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="guvence" data-section-id="guvence">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <div class="eyebrow">GUARANTEE</div>
+          <h2>
+            <span>With you even </span><span class="silver-grad">after launch</span>
+          </h2>
+        </div>
+
+        <div class="grid-3" data-reveal>
+          <div class="card guarantee-card">
+            <div class="sq-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3 style="margin:0 0 8px;font-size:17px;">0.00ms resource target</h3>
+            <p style="margin:0;font-size:13.5px;color:var(--text-muted);">Minimal loops and low CPU footprint, targeting 0.00–0.01ms idle resmon on FiveM clients.</p>
+          </div>
+
+          <div class="card guarantee-card">
+            <div class="sq-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 style="margin:0 0 8px;font-size:17px;">Server-side authority</h3>
+            <p style="margin:0;font-size:13.5px;color:var(--text-muted);">Critical validations execute strictly server-side without trusting tampered client state.</p>
+          </div>
+
+          <div class="card guarantee-card">
+            <div class="sq-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3 style="margin:0 0 8px;font-size:17px;">Dedicated support</h3>
+            <p style="margin:0;font-size:13.5px;color:var(--text-muted);">Our team assists directly with QBCore, ESX, and custom framework tuning as your server scales.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sss" data-section-id="sss">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <div class="eyebrow">FREQUENTLY ASKED QUESTIONS</div>
+          <h2>FiveM Anticheat <span class="silver-grad">FAQ</span></h2>
+        </div>
+
+        <div class="faq-list" data-reveal>
+          <div class="faq-item">
+            <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <span>Does 465 AC require an external database or Node.js?</span>
+              <span class="faq-plus">+</span>
+            </button>
+            <div class="faq-a">
+              No. Once added to your resources folder, the web dashboard runs directly through FXServer's built-in HTTP engine and stores bans and evidence locally in JSON files.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <span>Which FiveM frameworks are supported?</span>
+              <span class="faq-plus">+</span>
+            </button>
+            <div class="faq-a">
+              QBCore, QBox, ESX, and Standalone OneSync servers are fully supported with safe-zone compatibility tailored to RP spawns, hospitals, and jobs.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <span>Does FiveM anticheat impact FPS or client resmon?</span>
+              <span class="faq-plus">+</span>
+            </button>
+            <div class="faq-a">
+              No. Client threads are tightly scheduled to target 0.00–0.01ms idle resmon so crowded servers avoid micro-stutters or FPS drops.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <span>Does it stop crashers, entity spam, and cheat menus?</span>
+              <span class="faq-plus">+</span>
+            </button>
+            <div class="faq-a">
+              Yes. Multi-crasher filtering, mass ped/prop blocking, anti-noclip, anti-aimbot, anti-godmode, and executor injection guards are included out of the box.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <span>How are false-positive bans prevented?</span>
+              <span class="faq-plus">+</span>
+            </button>
+            <div class="faq-a">
+              Every module can be tuned cleanly to Off, Log, Kick, or Ban alongside hospital/spawn grace rules and whitelisted RP objects.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <span>How are staff permissions configured?</span>
+              <span class="faq-plus">+</span>
+            </button>
+            <div class="faq-a">
+              Staff permissions use private customer-specific security keys delivered during onboarding alongside direct setup guidance.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-cta-band">
+        <div>
+          <div class="eyebrow left" style="margin-bottom:0;">FIVEM SERVER SECURITY</div>
+          <h3>Protect your community with enterprise FiveM Anticheat.</h3>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <a href="/docs" class="btn btn-white btn-sm">Documentation ↗</a>
+          <a href="#yapilandirma" data-route="yapilandirma" class="btn btn-dark btn-sm">Explore Modules</a>
+        </div>
+      </div>
+
+      <div class="footer-grid">
+        <div>
+          <h4>COMPANY</h4>
+          <div class="footer-brand-logo">
+            <img src="assets/logo-465.png" alt="465 AC Emblem" width="28" height="24" loading="lazy" decoding="async">
+            <strong style="font-size:16.5px;letter-spacing:-0.02em;">465 AC</strong>
+            <span class="footer-brand-tag">SECURITY</span>
+          </div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0;max-width:290px;line-height:1.6;">
+            0.00ms resmon server-authoritative FiveM anticheat and built-in web management platform.
+          </p>
+          <div class="footer-status">
+            <span class="hero-badge-dot"></span>
+            <span>OneSync Ready • FXServer HTTP Active</span>
+          </div>
+        </div>
+
+        <div>
+          <h4>ARCHITECTURE</h4>
+          <ul>
+            <li><a href="#baslangic" data-route="baslangic">Overview</a></li>
+            <li><a href="#nasil-calisir" data-route="nasil-calisir">How It Works</a></li>
+            <li><a href="#yapilandirma" data-route="yapilandirma">56+ Modules</a></li>
+            <li><a href="#guvence" data-route="guvence">Guarantee &amp; FAQ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>RESOURCES</h4>
+          <ul>
+            <li><a href="/docs">Setup Guide</a></li>
+            <li><a href="/docs">Action Profiles</a></li>
+            <li><a href="/docs">Web Panel Guide</a></li>
+            <li><a href="/">Türkçe Sayfa</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>SYSTEM SUMMARY</h4>
+          <div class="snake-box footer-hub-card">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="sq-icon" style="width:32px;height:32px;margin-bottom:0;border-radius:9px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">465 AC Engine</div>
+                <div style="font-size:11px;color:var(--text-dim);">Setup &amp; Technical Docs</div>
+              </div>
+            </div>
+            <div class="footer-kv-list">
+              <div class="footer-kv"><span class="footer-kv-lbl">Footprint</span><span class="footer-kv-val">0.00ms Resmon</span></div>
+              <div class="footer-kv"><span class="footer-kv-lbl">Database</span><span class="footer-kv-val">Zero External DB</span></div>
+              <div class="footer-kv"><span class="footer-kv-lbl">Frameworks</span><span class="footer-kv-val">QBCore / ESX / QBox</span></div>
+            </div>
+            <a href="/docs" class="btn btn-dark btn-sm" style="width:100%;">Open Documentation ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 <strong>465 AC</strong> (<a href="https://www.465.lol/en" style="color:var(--text-muted)">www.465.lol/en</a>) · All rights reserved.</span>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
+          <div class="footer-legal-links">
+            <a href="/">TR</a>
+            <a href="/sitemap.xml">Sitemap</a>
+            <a href="/feed.xml">RSS</a>
+          </div>
+          <span class="dmca-badge">✓ PROTECTED BY WWW.465.LOL</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/app.min.js?v=17" defer></script>
+</body>
+</html>
