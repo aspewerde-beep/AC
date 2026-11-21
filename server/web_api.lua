@@ -1,5 +1,5 @@
 -- =========================================================================
--- ONLY AC v3.0.0 (ULTIMATE EDITION) - GÖMÜLÜ WEB YÖNETİM PANELİ VE REST API
+-- 465 AC v4.2.0 - GÖMÜLÜ WEB YÖNETİM PANELİ VE REST API
 -- =========================================================================
 
 local authTokens = {}
@@ -8,7 +8,7 @@ local failedLogins = {}
 
 -- Web panel ayarları
 Config.WebPanelEnabled = (Config.WebPanelEnabled == nil) and true or Config.WebPanelEnabled
-Config.WebPanelPassword = Config.WebPanelPassword or "onlyac_admin"
+Config.WebPanelPassword = Config.WebPanelPassword or "465ac_admin"
 
 -- Süresi geçmiş tokenları temizle
 local function cleanExpiredTokens()
@@ -96,7 +96,7 @@ local function sendResponse(res, status, data, extraHeaders)
         ["Content-Type"] = "application/json; charset=utf-8",
         ["Access-Control-Allow-Origin"] = "*",
         ["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE",
-        ["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+        ["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With, X-Lookup-Query"
     }
     if extraHeaders then
         for k, v in pairs(extraHeaders) do headers[k] = v end
@@ -111,7 +111,8 @@ end
 
 -- FiveM HTTP İstek Dinleyicisi
 SetHttpHandler(function(req, res)
-    local path = req.path or "/"
+    local rawPath = req.path or "/"
+    local path = rawPath:match("^([^?]+)") or rawPath
     local method = req.method or "GET"
     local clientIp = getClientIP(req)
 
@@ -120,7 +121,7 @@ SetHttpHandler(function(req, res)
         res.writeHead(200, {
             ["Access-Control-Allow-Origin"] = "*",
             ["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE",
-            ["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+            ["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With, X-Lookup-Query"
         })
         res.send("")
         return
@@ -169,7 +170,7 @@ SetHttpHandler(function(req, res)
                 return
             end
 
-            local expected = Config.WebPanelPassword or "onlyac_admin"
+            local expected = Config.WebPanelPassword or "465ac_admin"
             if data.password and tostring(data.password) == tostring(expected) then
                 resetFailedLogin(clientIp)
                 local token = generateAuthToken()
@@ -189,12 +190,35 @@ SetHttpHandler(function(req, res)
             return
         end
 
+        local function buildSafeStatusConfig()
+            local safe = {}
+            for k, v in pairs(Config or {}) do
+                if k == "WebPanelPassword" then
+                    safe[k] = nil
+                elseif k == "DiscordWebhook" then
+                    if type(v) == "string" and #v > 8 then
+                        safe.DiscordWebhook = "__MASKED__" .. v:sub(-6)
+                        safe.HasDiscordWebhook = true
+                    elseif type(v) == "string" and v ~= "" then
+                        safe.DiscordWebhook = "__MASKED__"
+                        safe.HasDiscordWebhook = true
+                    else
+                        safe.DiscordWebhook = ""
+                        safe.HasDiscordWebhook = false
+                    end
+                else
+                    safe[k] = v
+                end
+            end
+            return safe
+        end
+
         local bans = BanSystem.GetBans and BanSystem.GetBans() or {}
         local stats = ONLY_AC.Stats or { totalDetections = 0, totalBans = 0, totalKicks = 0, startTime = os.time() }
         local statusData = {
-            serverName = Config.ServerName or "ONLY AC",
-            version = "3.0.0",
-            config = Config,
+            serverName = Config.ServerName or "465 AC",
+            version = Config.Version or "4.2.0",
+            config = buildSafeStatusConfig(),
             bans = bans,
             recentLogs = ONLY_AC.RecentLogs or {},
             playerCount = #GetPlayers(),
@@ -223,7 +247,7 @@ SetHttpHandler(function(req, res)
             totalKicks = stats.totalKicks or 0,
             uptime = os.time() - (stats.startTime or os.time()),
             playerCount = #GetPlayers(),
-            serverName = Config.ServerName or "ONLY AC"
+            serverName = Config.ServerName or "465 AC"
         }
         sendResponse(res, 200, statsData)
         return
@@ -245,6 +269,8 @@ SetHttpHandler(function(req, res)
                     id = src,
                     name = GetPlayerName(src) or "Bilinmeyen",
                     ping = GetPlayerPing(src) or 0,
+                    bypass = (ONLY_AC.IsBypassed and ONLY_AC.IsBypassed(src)) or false,
+                    threat = (ONLY_AC.ThreatScores and ONLY_AC.ThreatScores[src] and ONLY_AC.ThreatScores[src].score) or 0,
                     identifiers = ids
                 })
             end
@@ -270,7 +296,7 @@ SetHttpHandler(function(req, res)
             local target = tonumber(data.playerId)
             if target and GetPlayerName(target) then
                 local reason = data.reason or "Yetkili tarafindan web panelden atildiniz."
-                DropPlayer(target, ("\n[ONLY AC] Sunucudan Atildiniz!\nSebep: %s"):format(reason))
+                DropPlayer(target, ("\n[465 AC] Sunucudan Atildiniz!\nSebep: %s"):format(reason))
                 if ONLY_AC.Stats then
                     ONLY_AC.Stats.totalKicks = (ONLY_AC.Stats.totalKicks or 0) + 1
                 end
@@ -300,7 +326,8 @@ SetHttpHandler(function(req, res)
             if target and GetPlayerName(target) then
                 local reason = data.reason or "Web Paneli uzerinden yasaklama"
                 local duration = tonumber(data.duration)
-                local banRecord = BanSystem.AddBan(target, reason, duration)
+                if duration and duration <= 0 then duration = nil end
+                local banRecord = BanSystem.AddBan(target, reason, duration, "Web Panel")
                 if ONLY_AC.Stats then
                     ONLY_AC.Stats.totalBans = (ONLY_AC.Stats.totalBans or 0) + 1
                 end
@@ -326,14 +353,117 @@ SetHttpHandler(function(req, res)
                 return
             end
 
-            -- Canlı Config'i güncelle
+            local editableScalar = {
+                ServerName = "string",
+                DefaultAction = "string",
+                AcePermission = "string",
+                ScreenCaptureEnabled = "boolean",
+                ScreenshotQuality = "number",
+                ScreenshotCaptureTimeoutMs = "number",
+                SpawningGracePeriodSeconds = "number",
+                ViolationStrikes = "number",
+                Debug = "boolean",
+                BanDiscordLogs = "boolean",
+                SendToAllLogs = "boolean",
+                MaxFootSpeed = "number",
+                MaxVehicleSpeedKMH = "number",
+                MaxVehicleSpeedModifier = "number",
+                MaxTeleportDistance = "number",
+                MaxHealth = "number",
+                MaxArmor = "number",
+                MaxShootDistance = "number",
+                MaxWeaponDamage = "number",
+                MaxHeavyWeaponDamage = "number",
+                MaxMeleeDamage = "number",
+                MaxPlayerZVelocity = "number",
+                MaxVehicleZVelocity = "number",
+                AimbotAngleThreshold = "number",
+                AimbotCheckWindow = "number",
+                AimbotSnapCount = "number",
+                SilentAimMinDot = "number",
+                StaminaCheckInterval = "number",
+                MaxConsecutiveSprintSeconds = "number",
+                HeartbeatInterval = "number",
+                HeartbeatTimeoutSeconds = "number",
+                HandshakeTimeoutSeconds = "number",
+                MaxParticlePerWindow = "number",
+                ParticleWindowSeconds = "number",
+                MaxPedSpawnsPerWindow = "number",
+                PedWindowSeconds = "number",
+                MaxResourceStartsPerWindow = "number",
+                ResourceWindowSeconds = "number",
+                MaxEntitySpawnsPerWindow = "number",
+                EntityWindowSeconds = "number",
+                MaxExplosionsPerWindow = "number",
+                ExplosionWindowSeconds = "number"
+            }
+            local validModes = { off = true, log = true, kick = true, ban = true }
+
             for k, v in pairs(data.config) do
-                Config[k] = v
+                if k == "DiscordWebhook" and type(v) == "string" then
+                    if v == "" then
+                        Config.DiscordWebhook = ""
+                    elseif not v:find("^__MASKED__") and (v:find("^https://discord%.com/api/webhooks/") or v:find("^https://discordapp%.com/api/webhooks/")) then
+                        Config.DiscordWebhook = v
+                    end
+                elseif k == "Protections" and type(v) == "table" then
+                    Config.Protections = Config.Protections or {}
+                    for pKey, pVal in pairs(v) do
+                        if type(pKey) == "string" then
+                            if type(pVal) == "boolean" then
+                                Config.Protections[pKey] = pVal
+                            elseif type(pVal) == "string" and validModes[pVal:lower()] then
+                                Config.Protections[pKey] = pVal:lower()
+                            end
+                        end
+                    end
+                elseif k == "ThreatScoring" and type(v) == "table" then
+                    Config.ThreatScoring = Config.ThreatScoring or {}
+                    local tsSchema = { Enabled = "boolean", MinThreatAlertScore = "number", AutoBanAltAccounts = "boolean" }
+                    for tKey, tVal in pairs(v) do
+                        if tsSchema[tKey] and type(tVal) == tsSchema[tKey] then
+                            Config.ThreatScoring[tKey] = tVal
+                        end
+                    end
+                elseif k == "EventTriggerGuard" and type(v) == "table" then
+                    Config.EventTriggerGuard = Config.EventTriggerGuard or {}
+                    for eKey, eVal in pairs(v) do
+                        if (eKey == "Enabled" and type(eVal) == "boolean")
+                            or (eKey == "MaxTriggersPerSecond" and type(eVal) == "number") then
+                            Config.EventTriggerGuard[eKey] = eVal
+                        end
+                    end
+                elseif editableScalar[k] and type(v) == editableScalar[k] then
+                    if k == "DefaultAction" then
+                        local norm = v:lower()
+                        if norm == "log" or norm == "kick" or norm == "ban" then
+                            Config.DefaultAction = norm
+                        end
+                    else
+                        Config[k] = v
+                    end
+                end
             end
 
-            -- runtime_config.json olarak kaydet (Kalıcı yapılandırma)
-            SaveResourceFile(GetCurrentResourceName(), "runtime_config.json", json.encode(Config, { indent = true }), -1)
-            print("^2[ONLY AC Web Panel]^0 Ayarlar web paneli uzerinden guncellendi ve runtime_config.json dosyasina kaydedildi.")
+            if ONLY_AC and ONLY_AC.BroadcastProtections then
+                ONLY_AC.BroadcastProtections()
+            end
+
+            -- Sadece güvenli ayarları kalıcı runtime_config.json olarak kaydet (şifre asla diske yazılmaz)
+            local persist = {
+                Protections = Config.Protections,
+                ThreatScoring = Config.ThreatScoring,
+                EventTriggerGuard = Config.EventTriggerGuard
+            }
+            for k, _ in pairs(editableScalar) do
+                if Config[k] ~= nil then persist[k] = Config[k] end
+            end
+            if type(Config.DiscordWebhook) == "string" and Config.DiscordWebhook ~= "" then
+                persist.DiscordWebhook = Config.DiscordWebhook
+            end
+
+            SaveResourceFile(GetCurrentResourceName(), "runtime_config.json", json.encode(persist, { indent = true }), -1)
+            print("^2[465 AC Web Panel]^0 Ayarlar web paneli uzerinden guncellendi ve runtime_config.json dosyasina kaydedildi.")
             sendResponse(res, 200, { success = true, message = "Yapilandirma basariyla kaydedildi ve uygulandi." })
         end)
         return
@@ -374,6 +504,15 @@ SetHttpHandler(function(req, res)
         end
 
         local query = req.headers and (req.headers["x-lookup-query"] or req.headers["X-Lookup-Query"]) or ""
+        if query == "" then
+            local rawPath = req and req.path or path
+            local qParam = type(rawPath) == "string" and rawPath:match("[?&]q=([^&]+)") or nil
+            if qParam then
+                query = qParam:gsub("+", " "):gsub("%%(%x%x)", function(hex)
+                    return string.char(tonumber(hex, 16))
+                end)
+            end
+        end
         local results = (Intelligence and Intelligence.Lookup) and Intelligence.Lookup(query) or {}
         sendResponse(res, 200, { success = true, results = results, count = #results })
         return
@@ -415,20 +554,13 @@ SetHttpHandler(function(req, res)
             local targetType = (ok and data.type) and data.type:lower() or "all"
             local count = 0
 
-            if targetType == "vehicles" or targetType == "all" then
-                for _, v in ipairs(GetAllVehicles()) do
-                    if DoesEntityExist(v) then DeleteEntity(v) count = count + 1 end
+            if targetType == "vehicles" or targetType == "peds" or targetType == "props" or targetType == "all" then
+                if ONLY_AC and ONLY_AC.ClearEntities then
+                    count = ONLY_AC.ClearEntities(targetType)
                 end
-            end
-            if targetType == "peds" or targetType == "all" then
-                for _, p in ipairs(GetAllPeds()) do
-                    if DoesEntityExist(p) and not IsPedAPlayer(p) then DeleteEntity(p) count = count + 1 end
-                end
-            end
-            if targetType == "props" or targetType == "all" then
-                for _, o in ipairs(GetAllObjects()) do
-                    if DoesEntityExist(o) then DeleteEntity(o) count = count + 1 end
-                end
+            else
+                sendResponse(res, 400, { success = false, message = "Gecersiz temizleme turu" })
+                return
             end
 
             sendResponse(res, 200, { success = true, cleared = count, type = targetType })
@@ -440,16 +572,29 @@ SetHttpHandler(function(req, res)
     sendResponse(res, 404, { error = "not_found", message = "Bilinmeyen API endpointi." })
 end)
 
--- Başlangıçta eğer runtime_config.json varsa onu yükle
+-- Başlangıçta eğer runtime_config.json varsa güvenli alanları birleştirerek yükle
 CreateThread(function()
     local runtimeData = LoadResourceFile(GetCurrentResourceName(), "runtime_config.json")
     if runtimeData and runtimeData ~= "" then
         local success, decoded = pcall(json.decode, runtimeData)
         if success and type(decoded) == "table" then
+            local blockedKeys = { WebPanelPassword = true, WebPanelPort = true, Version = true, LegacyAcePermission = true }
             for k, v in pairs(decoded) do
-                Config[k] = v
+                if not blockedKeys[k] then
+                    if k == "DiscordWebhook" then
+                        if type(v) == "string" and not v:find("^__MASKED__") and not v:find("^%*%*%*") then
+                            Config.DiscordWebhook = v
+                        end
+                    elseif (k == "Protections" or k == "ThreatScoring" or k == "EventTriggerGuard") and type(v) == "table" and type(Config[k]) == "table" then
+                        for subK, subV in pairs(v) do
+                            Config[k][subK] = subV
+                        end
+                    else
+                        Config[k] = v
+                    end
+                end
             end
-            print("^2[ONLY AC]^0 Kaydedilmis Web Panel ayarlari (runtime_config.json) yuklendi.")
+            print("^2[465 AC]^0 Kaydedilmis Web Panel ayarlari (runtime_config.json) yuklendi.")
         end
     end
 end)

@@ -1,159 +1,139 @@
 -- =========================================================================
--- ONLY AC v4.1.0 (ENTERPRISE EDITION) - SUNUCU TARAFLI SAVAŞ & HASAR KORUMASI
--- Standartlar: FeloxAC v4.1, Echo Standartları (Silent Aim, Wallbang, Mass Kill, RPF)
+-- 465 AC v4.2.0 - SUNUCU TARAFLI SAVAŞ & HASAR DOĞRULAMA MOTORU
+-- Milisaniye Rate-Limit, Ağır Silah Sınıf Toleransı, Mass-Kill & Magic Bullet
 -- =========================================================================
 
-local playerDamageHistory = {}   -- Oyuncu saniyelik hasar sıklığı (Rate limit)
-local playerHeadshots = {}       -- Son vuruşların headshot oranı takibi
-local playerHitTargets = {}      -- Kısa sürede farklı hedeflere vurma (Mass Kill) analizi
+local playerDamageHistory = {}
+local playerHeadshots = {}
+local playerHitTargets = {}
 
-if Config.Protections.AntiImpossibleDamage or Config.Protections.AntiDamageModifier or Config.Protections.AntiMassKill then
-    AddEventHandler("weaponDamageEvent", function(sender, data)
-        local attacker = sender
-        if not attacker or attacker <= 0 then return end
+local MELEE_WEAPONS = {
+    [`WEAPON_UNARMED`] = true, [`WEAPON_KNIFE`] = true, [`WEAPON_BAT`] = true,
+    [`WEAPON_DAGGER`] = true, [`WEAPON_MACHETE`] = true, [`WEAPON_SWITCHBLADE`] = true,
+    [`WEAPON_KNUCKLE`] = true, [`WEAPON_NIGHTSTICK`] = true, [`WEAPON_CROWBAR`] = true,
+    [`WEAPON_GOLFCLUB`] = true, [`WEAPON_HAMMER`] = true, [`WEAPON_HATCHET`] = true
+}
 
-        -- Bypass kontrolü
-        if ONLY_AC.IsBypass(attacker) then return end
+local HEAVY_DMG_WEAPONS = {
+    [`WEAPON_SNIPERRIFLE`] = true, [`WEAPON_HEAVYSNIPER`] = true, [`WEAPON_HEAVYSNIPER_MK2`] = true,
+    [`WEAPON_MARKSMANRIFLE`] = true, [`WEAPON_MARKSMANRIFLE_MK2`] = true, [`WEAPON_MUSKET`] = true,
+    [`WEAPON_PUMPSHOTGUN`] = true, [`WEAPON_PUMPSHOTGUN_MK2`] = true, [`WEAPON_SAWNOFFSHOTGUN`] = true,
+    [`WEAPON_DBSHOTGUN`] = true, [`WEAPON_HEAVYSHOTGUN`] = true
+}
 
-        local targetEntity = NetworkGetEntityFromNetworkId(data.hitGlobalId)
-        if not DoesEntityExist(targetEntity) then return end
+local SNIPER_WEAPONS = {
+    [`WEAPON_SNIPERRIFLE`] = true, [`WEAPON_HEAVYSNIPER`] = true, [`WEAPON_HEAVYSNIPER_MK2`] = true
+}
 
-        local attackerPed = GetPlayerPed(attacker)
-        if not DoesEntityExist(attackerPed) then return end
+AddEventHandler("weaponDamageEvent", function(sender, data)
+    local attacker = sender
+    if not attacker or attacker <= 0 or not data then return end
+    if ONLY_AC.IsBypass(attacker) then return end
 
-        -- 1. KENDİNE HASAR KONTROLÜ (Self-Harm / İntihar / Kendi bombası vs.)
-        if attackerPed == targetEntity then
-            return
-        end
+    if not data.hitGlobalId or data.hitGlobalId <= 0 then return end
+    local targetEntity = NetworkGetEntityFromNetworkId(data.hitGlobalId)
+    if not DoesEntityExist(targetEntity) then return end
 
-        -- 2. ÖLÜ OYUNCUYA HASAR KONTROLÜ (Corpse Hit / Exploit)
-        if IsEntityDead(targetEntity) or GetEntityHealth(targetEntity) <= 0 then
-            CancelEvent()
-            return
-        end
+    local attackerPed = GetPlayerPed(attacker)
+    if not DoesEntityExist(attackerPed) or attackerPed == targetEntity then return end
 
-        local damage = data.weaponDamage
-        local weaponType = data.weaponType
-        local currentTime = os.time()
+    -- Ölü oyuncuya hasar girişimini engelle
+    if IsEntityDead(targetEntity) or GetEntityHealth(targetEntity) <= 0 then
+        CancelEvent()
+        return
+    end
 
-        -- 3. TOPLU OYUNCU VURMA (MASS KILL / KILL-ALL) KORUMASI
-        if Config.Protections.AntiMassKill then
-            if not playerHitTargets[attacker] then
-                playerHitTargets[attacker] = { targets = { [targetEntity] = true }, count = 1, timestamp = currentTime }
-            else
-                local mRecord = playerHitTargets[attacker]
-                if (currentTime - mRecord.timestamp) <= 1.5 then
-                    if not mRecord.targets[targetEntity] then
-                        mRecord.targets[targetEntity] = true
-                        mRecord.count = mRecord.count + 1
-                        -- 1.5 saniyede 3'ten fazla farklı hedefe tek mermide hasar veriyorsa
-                        if mRecord.count >= 3 then
-                            CancelEvent()
-                            ONLY_AC.Detect(attacker, "Toplu Hasar / Katliam Hilesi (Mass Kill / Kill-All)", ("1.5 saniyede %s farklı hedefe hasar verildi"):format(mRecord.count), "ban")
-                            return
-                        end
-                    end
-                else
-                    playerHitTargets[attacker] = { targets = { [targetEntity] = true }, count = 1, timestamp = currentTime }
-                end
-            end
-        end
+    local damage = tonumber(data.weaponDamage) or 0
+    local weaponType = data.weaponType
+    local nowMs = GetGameTimer()
+    local isMelee = MELEE_WEAPONS[weaponType] == true
 
-        -- 4. RATE LIMITING (Saniyede Aşırı Hasar Olayı / Seri Hasar)
-        if not playerDamageHistory[attacker] then
-            playerDamageHistory[attacker] = { count = 1, timestamp = currentTime }
+    -- 1. TOPLU OYUNCU / HEDEF KATLİAMI (AntiMassKill - 1500ms penceresi)
+    if ONLY_AC_Shared.IsModuleEnabled("AntiMassKill") and IsPedAPlayer(targetEntity) then
+        local mRec = playerHitTargets[attacker]
+        if not mRec or (nowMs - mRec.ts) > 1500 then
+            playerHitTargets[attacker] = { targets = { [targetEntity] = true }, count = 1, ts = nowMs }
         else
-            local dRecord = playerDamageHistory[attacker]
-            if (currentTime - dRecord.timestamp) < 1 then
-                dRecord.count = dRecord.count + 1
-                if dRecord.count > 6 then
+            if not mRec.targets[targetEntity] then
+                mRec.targets[targetEntity] = true
+                mRec.count = mRec.count + 1
+                if mRec.count >= 4 then
                     CancelEvent()
-                    ONLY_AC.Detect(attacker, "Aşırı Hasar Sıklığı (Rapid Fire / Damage Spam)", ("1 saniyede %s hasar olayı"):format(dRecord.count), "ban")
+                    ONLY_AC.Detect(attacker, "Toplu Hasar / Kill-All Hilesi (AntiMassKill)", ("1.5 saniyede %s farklı oyuncuya hasar"):format(mRec.count), "ban", "AntiMassKill")
                     return
                 end
-            else
-                dRecord.count = 1
-                dRecord.timestamp = currentTime
             end
         end
+    end
 
-        -- 5. YUMRUK / BIÇAK (MELEE) AŞIRI HASAR KONTROLÜ
-        local isMelee = (weaponType == `WEAPON_UNARMED` or weaponType == `WEAPON_KNIFE` or weaponType == `WEAPON_BAT` or weaponType == `WEAPON_DAGGER` or weaponType == `WEAPON_MACHETE` or weaponType == `WEAPON_SWITCHBLADE`)
+    -- 2. HASAR SIKLIĞI / RAPİD FİRE SUNUCU KORUMASI (1000ms penceresi)
+    if ONLY_AC_Shared.IsModuleEnabled("AntiRapidFire") then
+        local dRec = playerDamageHistory[attacker]
+        if not dRec or (nowMs - dRec.ts) > 1000 then
+            playerDamageHistory[attacker] = { count = 1, ts = nowMs }
+        else
+            dRec.count = dRec.count + 1
+            if dRec.count > 9 then
+                CancelEvent()
+                ONLY_AC.Detect(attacker, "Sunucu Taraflı Hasar / Rapid Fire Spam", ("1 saniyede %s hasar paketi"):format(dRec.count), "ban", "AntiRapidFire")
+                return
+            end
+        end
+    end
+
+    -- 3. HASAR ÇARPANI KONTROLÜ (AntiDamageModifier)
+    if ONLY_AC_Shared.IsModuleEnabled("AntiDamageModifier") then
         if isMelee and damage > (Config.MaxMeleeDamage or 95) then
             CancelEvent()
-            ONLY_AC.Detect(attacker, "Aşırı Yakın Dövüş Hasarı (One-Punch Kill)", ("Hasar: %s | Silah: %s"):format(damage, weaponType), "ban")
+            ONLY_AC.Detect(attacker, "Aşırı Yakın Dövüş Hasarı (One-Punch Kill)", ("Hasar: %s"):format(damage), "ban", "AntiDamageModifier")
             return
         end
 
-        -- 6. AŞIRI SİLAH HASARI KONTROLÜ (Damage Multiplier / Anti-RPF)
-        if not isMelee and damage > (Config.MaxWeaponDamage or 160) then
+        local maxAllowed = HEAVY_DMG_WEAPONS[weaponType] and (Config.MaxHeavyWeaponDamage or 250) or (Config.MaxWeaponDamage or 165)
+        if not isMelee and damage > maxAllowed then
             CancelEvent()
-            ONLY_AC.Detect(attacker, "Aşırı Silah Hasarı (Weapon Damage Modifier / RPF)", ("Hasar: %s | Silah: %s"):format(damage, weaponType), "ban")
+            ONLY_AC.Detect(attacker, "Aşırı Silah Hasarı (Damage Modifier / RPF)", ("Hasar: %s | Silah: %s"):format(damage, tostring(weaponType)), "ban", "AntiDamageModifier")
             return
         end
+    end
 
-        -- 7. İMKANSIZ MESAFE (MAGIC BULLET) KONTROLÜ
-        local attackerCoords = GetEntityCoords(attackerPed)
-        local targetCoords = GetEntityCoords(targetEntity)
-        local distance = #(attackerCoords - targetCoords)
-
-        -- Yakın dövüş için mesafe kontrolü (5.5 metreden uzak olamaz)
-        if isMelee and distance > 5.5 then
+    -- 4. İMKANSIZ MESAFE (Magic Bullet / AntiImpossibleDamage)
+    if ONLY_AC_Shared.IsModuleEnabled("AntiImpossibleDamage") then
+        local distance = #(GetEntityCoords(attackerPed) - GetEntityCoords(targetEntity))
+        if isMelee and distance > 6.5 then
             CancelEvent()
-            ONLY_AC.Detect(attacker, "İmkansız Yakın Dövüş Mesafesi", ("Mesafe: %.2fm"):format(distance), "ban")
+            ONLY_AC.Detect(attacker, "İmkansız Yakın Dövüş Mesafesi", ("Mesafe: %.2fm"):format(distance), "ban", "AntiImpossibleDamage")
             return
         end
-
-        -- Ateşli silah için mesafe kontrolü
-        if not isMelee and distance > (Config.MaxShootDistance or 250.0) then
+        if not isMelee and distance > (Config.MaxShootDistance or 260.0) then
             CancelEvent()
-            ONLY_AC.Detect(attacker, "İmkansız Vuruş Mesafesi (Magic Bullet)", ("Mesafe: %.2fm"):format(distance), "ban")
+            ONLY_AC.Detect(attacker, "İmkansız Vuruş Mesafesi (Magic Bullet)", ("Mesafe: %.2fm"):format(distance), "ban", "AntiImpossibleDamage")
             return
         end
+    end
 
-        -- 8. DUVAR ARKASINDAN VURMA (WALLBANG / LINE OF SIGHT) KONTROLÜ
-        if not isMelee and distance > 10.0 then
-            pcall(function()
-                if HasEntityClearLosToEntity then
-                    local hasLos = HasEntityClearLosToEntity(attackerPed, targetEntity, 17)
-                    if hasLos == 0 or hasLos == false then
-                        if weaponType ~= `WEAPON_HEAVYSNIPER` and weaponType ~= `WEAPON_HEAVYSNIPER_MK2` then
-                            ONLY_AC.Detect(attacker, "Duvar Arkasından Vurma Şüphesi (Wallbang / No LOS)", ("Mesafe: %.1fm | Silah: %s"):format(distance, weaponType), "kick")
-                        end
-                    end
-                end
-            end)
-        end
-
-        -- 9. HEADSHOT ORANI TAKİBİ (Aimbot Şüphesi)
+    -- 5. HEADSHOT ORANI TAKİBİ (Aimbot Destek Analizi)
+    if ONLY_AC_Shared.IsModuleEnabled("AntiAimbot") and not isMelee and IsPedAPlayer(targetEntity) then
         local isHeadshot = (data.headShot == true) or (data.hitComponent == 0)
-        if not isMelee then
-            if not playerHeadshots[attacker] then
+        playerHeadshots[attacker] = playerHeadshots[attacker] or {}
+        table.insert(playerHeadshots[attacker], isHeadshot)
+        if #playerHeadshots[attacker] > 10 then
+            table.remove(playerHeadshots[attacker], 1)
+        end
+
+        if #playerHeadshots[attacker] >= 10 then
+            local headshotCount = 0
+            for _, hs in ipairs(playerHeadshots[attacker]) do
+                if hs then headshotCount = headshotCount + 1 end
+            end
+            if headshotCount >= 9 and not SNIPER_WEAPONS[weaponType] then
                 playerHeadshots[attacker] = {}
-            end
-            table.insert(playerHeadshots[attacker], isHeadshot)
-            if #playerHeadshots[attacker] > 10 then
-                table.remove(playerHeadshots[attacker], 1)
-            end
-
-            if #playerHeadshots[attacker] >= 10 then
-                local headshotCount = 0
-                for _, hs in ipairs(playerHeadshots[attacker]) do
-                    if hs then headshotCount = headshotCount + 1 end
-                end
-
-                -- 10 vuruşun 9 veya daha fazlası headshot ise ve dürbünlü sniper değilse
-                if headshotCount >= 9 and weaponType ~= `WEAPON_SNIPERRIFLE` and weaponType ~= `WEAPON_HEAVYSNIPER` and weaponType ~= `WEAPON_HEAVYSNIPER_MK2` then
-                    ONLY_AC.Detect(attacker, "Aşırı Yüksek Headshot Oranı (Silent Aimbot Şüphesi)", ("10 atışta %s kafa vuruşu"):format(headshotCount), "ban")
-                    playerHeadshots[attacker] = {}
-                    return
-                end
+                ONLY_AC.Detect(attacker, "Aşırı Yüksek Headshot Oranı (Aimbot)", ("Son 10 isabette %s headshot"):format(headshotCount), "ban", "AntiAimbot")
             end
         end
-    end)
-end
+    end
+end)
 
--- Ayrılan oyuncuların tablolarını temizle
 AddEventHandler("playerDropped", function()
     local src = source
     playerDamageHistory[src] = nil

@@ -1,1134 +1,1443 @@
 <!DOCTYPE html>
-<html lang="tr" class="dark">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ONLY AC v3.0.0 - Web Dashboard & Anti-Cheat Manager</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>465 AC v4.2.0 — Canlı Yönetim Paneli</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace']
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f5f3ff',
-                            100: '#ede9fe',
-                            400: '#a78bfa',
-                            500: '#8b5cf6',
-                            600: '#7c3aed',
-                            700: '#6d28d9',
-                            900: '#4c1d95',
-                        },
-                        dark: {
-                            bg: '#080a10',
-                            card: '#0f1422',
-                            cardHover: '#141b2e',
-                            border: '#1e293b',
-                            subtle: '#334155'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #080a10;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.12) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(239, 68, 68, 0.08) 0px, transparent 50%);
-            background-attachment: fixed;
+        :root {
+            --bg-root: #070b0a;
+            --bg-elevated: #0c1311;
+            --bg-panel: #101916;
+            --bg-input: #080e0c;
+            --border-subtle: rgba(140, 203, 178, 0.14);
+            --border-strong: rgba(140, 203, 178, 0.34);
+            --text-primary: #edf4f1;
+            --text-secondary: #8ea39b;
+            --text-muted: #5c726a;
+            --mint: #8ccbb2;
+            --mint-strong: #67b999;
+            --mint-glow: rgba(140, 203, 178, 0.18);
+            --emerald: #34d399;
+            --amber: #fbbf24;
+            --danger: #f87171;
+            --danger-bg: rgba(248, 113, 113, 0.12);
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
         }
 
-        .glass-card {
-            background: rgba(15, 20, 34, 0.78);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.07);
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; background: var(--bg-root); color: var(--text-primary); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-root); }
+        ::-webkit-scrollbar-thumb { background: #1e2d28; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--mint-strong); }
+
+        .hidden { display: none !important; }
+        .mono { font-family: var(--font-mono); }
+
+        /* Ambient backdrop */
+        .ambient-bg {
+            position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            background:
+                radial-gradient(ellipse 60% 45% at 15% 0%, rgba(140, 203, 178, 0.09), transparent 70%),
+                radial-gradient(ellipse 50% 40% at 85% 100%, rgba(52, 211, 153, 0.05), transparent 70%);
         }
 
-        .glass-card:hover {
-            border-color: rgba(255, 255, 255, 0.12);
+        /* Auth View */
+        .auth-wrap {
+            position: relative; z-index: 10; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
+        }
+        .auth-card {
+            width: 100%; max-width: 420px; background: rgba(12, 19, 17, 0.92); backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle); border-radius: 20px; padding: 34px 30px;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255,255,255,0.03);
+        }
+        .brand-logo { display: flex; align-items: center; gap: 12px; }
+        .brand-mark {
+            width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, rgba(140, 203, 178, 0.18), rgba(52, 211, 153, 0.06));
+            border: 1px solid rgba(140, 203, 178, 0.35); color: var(--mint); flex-shrink: 0;
+        }
+        .brand-mark-sm { width: 34px; height: 34px; border-radius: 9px; }
+
+        /* Inputs & Buttons */
+        .field-label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); margin-bottom: 8px; }
+        .input {
+            width: 100%; background: var(--bg-input); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+            padding: 11px 14px; font-size: 13.5px; color: var(--text-primary); outline: none; transition: border-color .18s, box-shadow .18s;
+            font-family: inherit;
+        }
+        .input:focus { border-color: var(--mint); box-shadow: 0 0 0 3px var(--mint-glow); }
+        .input-sm { padding: 8px 11px; font-size: 12.5px; border-radius: 8px; }
+        select.input { cursor: pointer; }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid transparent;
+            border-radius: 10px; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .16s ease;
+            font-family: inherit; white-space: nowrap; text-decoration: none;
+        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary {
+            background: linear-gradient(135deg, #8ccbb2, #5fb896); color: #05110c; font-weight: 700;
+            box-shadow: 0 8px 24px rgba(140, 203, 178, 0.22);
+        }
+        .btn-primary:hover:not(:disabled) { filter: brightness(1.06); transform: translateY(-1px); }
+        .btn-surface { background: var(--bg-panel); color: var(--text-primary); border-color: rgba(255,255,255,0.1); }
+        .btn-surface:hover:not(:disabled) { border-color: var(--border-strong); background: #14211d; }
+        .btn-danger { background: var(--danger-bg); color: var(--danger); border-color: rgba(248, 113, 113, 0.28); }
+        .btn-danger:hover:not(:disabled) { background: rgba(248, 113, 113, 0.22); }
+        .btn-amber { background: rgba(251, 191, 36, 0.12); color: var(--amber); border-color: rgba(251, 191, 36, 0.28); }
+        .btn-amber:hover:not(:disabled) { background: rgba(251, 191, 36, 0.22); }
+        .btn-mint { background: rgba(140, 203, 178, 0.12); color: var(--mint); border-color: rgba(140, 203, 178, 0.3); }
+        .btn-mint:hover:not(:disabled) { background: rgba(140, 203, 178, 0.2); }
+        .btn-xs { padding: 5px 10px; font-size: 11.5px; border-radius: 7px; }
+
+        /* App Layout */
+        .app-shell { position: relative; z-index: 5; min-height: 100vh; display: flex; flex-direction: column; }
+        .topbar {
+            position: sticky; top: 0; z-index: 40; height: 64px; padding: 0 24px;
+            background: rgba(7, 11, 10, 0.85); backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; gap: 16px;
+        }
+        .topbar-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+        .topbar-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+        .status-pill {
+            display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 999px;
+            background: rgba(140, 203, 178, 0.08); border: 1px solid rgba(140, 203, 178, 0.22);
+            font-size: 11.5px; font-weight: 600; color: var(--mint);
+        }
+        .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 8px var(--emerald); }
+
+        .workspace { display: flex; flex: 1; max-width: 1520px; width: 100%; margin: 0 auto; padding: 20px 24px 96px; gap: 24px; }
+
+        /* Sidebar */
+        .sidebar { width: 240px; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px; }
+        .nav-section-title { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-muted); padding: 12px 12px 4px; }
+        .nav-btn {
+            width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            padding: 10px 13px; border-radius: 11px; font-size: 13px; font-weight: 500; color: var(--text-secondary);
+            background: transparent; border: 1px solid transparent; cursor: pointer; transition: all .15s; text-align: left; font-family: inherit;
+        }
+        .nav-btn-left { display: flex; align-items: center; gap: 10px; }
+        .nav-btn:hover { background: rgba(255,255,255,0.03); color: var(--text-primary); }
+        .nav-btn.active {
+            background: rgba(140, 203, 178, 0.11); border-color: rgba(140, 203, 178, 0.28);
+            color: var(--mint); font-weight: 600;
+        }
+        .nav-badge { font-size: 10.5px; font-family: var(--font-mono); padding: 2px 7px; border-radius: 6px; background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+        .nav-btn.active .nav-badge { background: rgba(140, 203, 178, 0.18); color: var(--mint); }
+
+        .main-content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+
+        /* Mobile nav */
+        .mobile-nav { display: none; gap: 8px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+        .mobile-nav::-webkit-scrollbar { display: none; }
+        .mobile-nav .nav-btn { width: auto; flex-shrink: 0; padding: 8px 13px; background: var(--bg-elevated); border-color: rgba(255,255,255,0.06); }
+
+        /* Stats Row */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+        .stat-card {
+            background: var(--bg-elevated); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 16px 18px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .stat-top { display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; font-weight: 600; color: var(--text-secondary); }
+        .stat-value { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-primary); font-family: var(--font-mono); }
+        .stat-sub { font-size: 11.5px; color: var(--text-muted); }
+
+        /* Cards & Section Headers */
+        .panel-card { background: var(--bg-elevated); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 20px; }
+        .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+        .section-title { font-size: 18px; font-weight: 700; letter-spacing: -0.015em; }
+        .section-desc { font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; }
+
+        /* Category Pills & Search */
+        .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+        .pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+        .filter-pill {
+            padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+            background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.07); color: var(--text-secondary);
+            cursor: pointer; transition: all .15s; font-family: inherit;
+        }
+        .filter-pill:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.16); }
+        .filter-pill.active { background: rgba(140, 203, 178, 0.14); border-color: var(--mint); color: var(--mint); }
+
+        /* Protection Cards Grid */
+        .protections-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+        .prot-card {
+            background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.06); border-radius: 13px; padding: 14px 15px;
+            display: flex; flex-direction: column; justify-content: space-between; gap: 12px; transition: border-color .16s;
+        }
+        .prot-card:hover { border-color: rgba(140, 203, 178, 0.25); }
+        .prot-card.is-dirty { border-color: rgba(251, 191, 36, 0.45); }
+        .prot-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+        .prot-name { font-size: 13.5px; font-weight: 700; color: var(--text-primary); }
+        .prot-key { font-size: 10.5px; font-family: var(--font-mono); color: var(--text-muted); margin-top: 2px; }
+        .prot-cat {
+            font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+            padding: 3px 7px; border-radius: 5px; background: rgba(255,255,255,0.04); color: var(--text-secondary); flex-shrink: 0;
+        }
+        .prot-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
+
+        /* 5-state Mode Selector */
+        .mode-group {
+            display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px;
+            background: var(--bg-input); border: 1px solid rgba(255,255,255,0.06); border-radius: 9px; padding: 3px;
+        }
+        .mode-group.binary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .mode-opt {
+            border: none; background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600;
+            padding: 5px 4px; border-radius: 6px; cursor: pointer; transition: all .14s; font-family: inherit;
+        }
+        .mode-opt:hover { color: var(--text-primary); }
+        .mode-opt.active-true { background: rgba(140, 203, 178, 0.2); color: var(--mint); }
+        .mode-opt.active-ban { background: rgba(248, 113, 113, 0.22); color: #fca5a5; }
+        .mode-opt.active-kick { background: rgba(251, 191, 36, 0.2); color: #fde68a; }
+        .mode-opt.active-log { background: rgba(96, 165, 250, 0.2); color: #93c5fd; }
+        .mode-opt.active-off { background: rgba(255,255,255,0.09); color: #cbd5e1; }
+
+        /* Threshold Grid */
+        .thresh-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+        .thresh-card { background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.06); border-radius: 13px; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .thresh-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+        .thresh-title { font-size: 13px; font-weight: 600; }
+        .thresh-val { font-size: 13px; font-family: var(--font-mono); color: var(--mint); font-weight: 700; }
+
+        /* Tables */
+        .table-wrap { width: 100%; overflow-x: auto; border: 1px solid rgba(255,255,255,0.06); border-radius: 13px; background: var(--bg-panel); }
+        table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
+        thead { background: rgba(255,255,255,0.025); }
+        th { padding: 11px 14px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.06); white-space: nowrap; }
+        td { padding: 11px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: rgba(140, 203, 178, 0.03); }
+
+        .tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; font-family: var(--font-mono); white-space: nowrap; }
+        .tag-mint { background: rgba(140, 203, 178, 0.14); color: var(--mint); }
+        .tag-red { background: rgba(248, 113, 113, 0.15); color: #fca5a5; }
+        .tag-amber { background: rgba(251, 191, 36, 0.15); color: #fde68a; }
+        .tag-slate { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+
+        /* Log list */
+        .log-list { display: flex; flex-direction: column; gap: 8px; max-height: 540px; overflow-y: auto; }
+        .log-row {
+            display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 14px;
+            background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.06); border-radius: 11px;
         }
 
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(15, 20, 34, 0.5);
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #27334d;
-            border-radius: 9999px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #3b4b6d;
+        /* Floating Save Bar */
+        .save-bar {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 50;
+            background: rgba(12, 19, 17, 0.96); backdrop-filter: blur(14px);
+            border: 1px solid var(--border-strong); border-radius: 14px; padding: 10px 16px;
+            display: flex; align-items: center; gap: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.7);
         }
 
-        .pulse-dot {
-            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-            animation: pulse-ring 2s infinite cubic-bezier(0.66, 0, 0, 1);
+        /* Modal */
+        .modal-backdrop {
+            position: fixed; inset: 0; z-index: 60; background: rgba(4, 7, 6, 0.78); backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-box {
+            width: 100%; max-width: 440px; background: var(--bg-elevated); border: 1px solid var(--border-strong);
+            border-radius: 16px; padding: 22px; box-shadow: 0 24px 60px rgba(0,0,0,0.75);
         }
 
-        @keyframes pulse-ring {
-            0% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-            }
+        /* Toast */
+        .toast {
+            position: fixed; top: 76px; right: 20px; z-index: 70; max-width: 360px;
+            background: var(--bg-elevated); border: 1px solid var(--border-strong); border-radius: 12px; padding: 12px 16px;
+            font-size: 13px; font-weight: 500; box-shadow: 0 14px 36px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 10px;
+        }
+        .toast.err { border-color: rgba(248, 113, 113, 0.5); color: #fecaca; }
+
+        /* Lookup Cards */
+        .lookup-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; margin-top: 14px; }
+        .lookup-card { background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+
+        @media (max-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 860px) {
+            .workspace { flex-direction: column; padding: 14px 14px 96px; gap: 14px; }
+            .sidebar { display: none; }
+            .mobile-nav { display: flex; }
+            .topbar { padding: 0 14px; }
+            .hide-sm { display: none; }
+        }
+        @media (max-width: 560px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .protections-grid { grid-template-columns: 1fr; }
+            .stat-value { font-size: 21px; }
         }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col selection:bg-brand-600 selection:text-white">
+<body>
+    <div class="ambient-bg"></div>
 
-    <!-- GİRİŞ MODAL EKRANI -->
-    <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 transition-all duration-300">
-        <div class="glass-card p-8 md:p-10 rounded-3xl w-full max-w-md shadow-2xl border border-slate-800 text-center relative overflow-hidden">
-            <div class="absolute -top-24 -left-24 w-48 h-48 bg-brand-600/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-red-600/20 rounded-full blur-3xl pointer-events-none"></div>
-
-            <div class="w-20 h-20 bg-gradient-to-tr from-brand-600/20 via-red-500/20 to-brand-400/10 text-brand-400 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-brand-500/30 shadow-xl shadow-brand-600/10">
-                <i data-lucide="shield-alert" class="w-10 h-10 text-red-500"></i>
+    <!-- AUTH SCREEN -->
+    <div id="authScreen" class="auth-wrap">
+        <div class="auth-card">
+            <div class="brand-logo" style="margin-bottom: 22px;">
+                <div class="brand-mark">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                </div>
+                <div>
+                    <div style="font-size: 18px; font-weight: 800; letter-spacing: -0.02em;">465 AC <span class="mono" style="font-size: 12px; color: var(--mint);">v4.2.0</span></div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">FiveM Sunucu Güvenlik Yönetim Merkezi</div>
+                </div>
             </div>
-            
-            <h2 class="text-2xl font-extrabold tracking-tight text-white mb-2">
-                ONLY <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-brand-400">AC</span> <span class="text-xs py-1 px-2.5 rounded-lg bg-brand-500/10 text-brand-400 border border-brand-500/20 align-middle">v3.0</span>
-            </h2>
-            <p class="text-sm text-slate-400 mb-8 leading-relaxed">
-                Yönetim paneline erişmek için lütfen yetkili şifrenizi girin.
-            </p>
 
-            <form onsubmit="event.preventDefault(); login();" class="space-y-4">
-                <div class="relative text-left">
-                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Yönetici Şifresi</label>
-                    <div class="relative">
-                        <i data-lucide="lock" class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                        <input type="password" id="adminPassword" placeholder="••••••••••••" 
-                            class="w-full pl-11 pr-12 py-3.5 bg-slate-900/90 border border-slate-700/80 rounded-2xl text-white placeholder-slate-600 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all font-mono text-sm">
-                        <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
-                            <i data-lucide="eye" id="passwordEyeIcon" class="w-5 h-5"></i>
-                        </button>
-                    </div>
+            <form id="loginForm" style="display: flex; flex-direction: column; gap: 14px;">
+                <div>
+                    <label class="field-label" for="passwordInput">Web Panel Yönetici Şifresi</label>
+                    <input id="passwordInput" type="password" class="input" placeholder="config.lua -> WebPanelPassword" autocomplete="current-password" required>
                 </div>
-
-                <div id="loginError" class="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-xs text-red-400 hidden flex items-center gap-2">
-                    <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
-                    <span>Hatalı şifre! Lütfen `config.lua` dosyasındaki şifreyi kontrol edin.</span>
-                </div>
-
-                <button type="submit" id="loginBtn" class="w-full py-3.5 bg-gradient-to-r from-red-600 via-brand-600 to-brand-700 hover:from-red-500 hover:to-brand-600 text-white font-semibold rounded-2xl transition-all shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2">
-                    <i data-lucide="key" class="w-4 h-4"></i>
-                    <span>Panele Güvenli Giriş</span>
+                <div id="loginError" class="hidden" style="font-size: 12.5px; color: #fca5a5; background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.28); padding: 9px 12px; border-radius: 9px;"></div>
+                <button id="loginBtn" type="submit" class="btn btn-primary" style="width: 100%; padding: 12px;">
+                    Yönetim Paneline Bağlan
                 </button>
             </form>
-
-            <div class="mt-8 pt-6 border-t border-slate-800/80 text-[11px] text-slate-500">
-                FiveM Modern Security System &bull; %100 Açık Kaynak
+            <div style="margin-top: 16px; font-size: 11.5px; color: var(--text-muted); text-align: center;">
+                5 başarısız denemede IP 5 dakika geçici olarak kilitlenir.
             </div>
         </div>
     </div>
 
-    <!-- ÜST NAVBAR -->
-    <header class="glass-card sticky top-0 z-40 px-6 py-4 border-b border-slate-800/80">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3.5">
-                <div class="w-11 h-11 bg-gradient-to-br from-red-500/20 via-brand-500/20 to-transparent border border-red-500/40 rounded-2xl flex items-center justify-center shadow-lg shadow-red-500/10">
-                    <i data-lucide="shield-check" class="w-6 h-6 text-red-400"></i>
-                </div>
-                <div>
-                    <div class="flex items-center gap-2.5">
-                        <h1 class="text-lg font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                            ONLY <span class="text-red-500">AC</span>
-                        </h1>
-                        <span class="text-[10px] font-bold tracking-widest px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></span> V3.0 ULTIMATE
-                        </span>
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="app-shell hidden">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="brand-logo">
+                    <div class="brand-mark brand-mark-sm">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
                     </div>
-                    <p class="text-xs text-slate-400 flex items-center gap-1.5 font-medium" id="serverHeaderInfo">
-                        <i data-lucide="server" class="w-3.5 h-3.5 text-slate-500"></i> Sunucuya bağlanılıyor...
-                    </p>
+                    <div style="min-width: 0;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span id="serverTitle" style="font-size: 14.5px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">465 AC Security</span>
+                            <span id="versionBadge" class="mono hide-sm" style="font-size: 11px; padding: 2px 7px; border-radius: 6px; background: rgba(140,203,178,0.12); color: var(--mint);">v4.2.0</span>
+                        </div>
+                        <div class="hide-sm" style="font-size: 11px; color: var(--text-muted);">Canlı Sunucu Senkronizasyonu</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Sağ Aksiyon Butonları -->
-            <div class="flex items-center gap-2.5">
-                <button onclick="refreshData(true)" title="Verileri Yenile" class="p-2.5 bg-slate-900/80 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl border border-slate-800 transition-colors">
-                    <i data-lucide="rotate-cw" id="refreshIcon" class="w-4 h-4"></i>
+            <div class="topbar-right">
+                <div class="status-pill hide-sm">
+                    <span class="pulse-dot"></span>
+                    <span>AKTİF KORUMA</span>
+                </div>
+                <button id="refreshBtn" class="btn btn-surface btn-xs" type="button">Yenile</button>
+                <button id="logoutBtn" class="btn btn-danger btn-xs" type="button">Çıkış</button>
+            </div>
+        </header>
+
+        <div class="workspace">
+            <!-- Desktop Sidebar -->
+            <aside class="sidebar">
+                <div class="nav-section-title">Koruma &amp; Kurallar</div>
+                <button class="nav-btn active" data-tab="protections" type="button">
+                    <span class="nav-btn-left">Koruma Modülleri</span>
+                    <span id="badgeProtections" class="nav-badge">51</span>
                 </button>
-                <button onclick="saveAllSettings()" class="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs md:text-sm font-semibold transition-all shadow-lg shadow-emerald-600/20 active:scale-95">
-                    <i data-lucide="save" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline">Değişiklikleri</span> Kaydet
+                <button class="nav-btn" data-tab="thresholds" type="button">
+                    <span class="nav-btn-left">Eşik &amp; Kurallar</span>
+                    <span class="nav-badge">v4.2</span>
                 </button>
-                <button onclick="logout()" title="Çıkış Yap" class="p-2.5 bg-slate-900/80 hover:bg-red-500/20 text-slate-400 hover:text-red-400 rounded-xl border border-slate-800 transition-colors">
-                    <i data-lucide="log-out" class="w-4 h-4"></i>
+
+                <div class="nav-section-title">Canlı Yönetim</div>
+                <button class="nav-btn" data-tab="players" type="button">
+                    <span class="nav-btn-left">Oyuncular &amp; Temizlik</span>
+                    <span id="badgePlayers" class="nav-badge">0</span>
                 </button>
-            </div>
-        </div>
-    </header>
+                <button class="nav-btn" data-tab="bans" type="button">
+                    <span class="nav-btn-left">Ban Listesi</span>
+                    <span id="badgeBans" class="nav-badge">0</span>
+                </button>
+                <button class="nav-btn" data-tab="logs" type="button">
+                    <span class="nav-btn-left">Canlı Tespit Logları</span>
+                    <span id="badgeLogs" class="nav-badge">0</span>
+                </button>
 
-    <!-- ANA İÇERİK ALANI -->
-    <main class="flex-1 max-w-7xl mx-auto w-full p-4 md:p-6 space-y-6">
+                <div class="nav-section-title">Sistem</div>
+                <button class="nav-btn" data-tab="webhook" type="button">
+                    <span class="nav-btn-left">Discord &amp; Genel</span>
+                </button>
+            </aside>
 
-        <!-- METRİK & İSTATİSTİK KARTLARI (4 Adet) -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-            <!-- 1. Aktif Oyuncular -->
-            <div class="glass-card p-5 rounded-2xl flex items-center justify-between border border-slate-800/90 relative overflow-hidden group">
-                <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-sky-500/5 rounded-full blur-xl group-hover:bg-sky-500/10 transition-all"></div>
-                <div>
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Aktif Oyuncu</span>
-                    <h3 id="statPlayers" class="text-2xl md:text-3xl font-extrabold mt-1 text-sky-400 font-mono">0</h3>
-                    <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span> Canlı İzleniyor
-                    </p>
+            <main class="main-content">
+                <!-- Mobile Nav -->
+                <div class="mobile-nav" id="mobileNav">
+                    <button class="nav-btn active" data-tab="protections" type="button">Modüller</button>
+                    <button class="nav-btn" data-tab="thresholds" type="button">Eşikler</button>
+                    <button class="nav-btn" data-tab="players" type="button">Oyuncular</button>
+                    <button class="nav-btn" data-tab="bans" type="button">Banlar</button>
+                    <button class="nav-btn" data-tab="logs" type="button">Loglar</button>
+                    <button class="nav-btn" data-tab="webhook" type="button">Discord</button>
                 </div>
-                <div class="w-12 h-12 bg-sky-500/10 text-sky-400 rounded-2xl flex items-center justify-center border border-sky-500/20">
-                    <i data-lucide="users" class="w-6 h-6"></i>
-                </div>
-            </div>
 
-            <!-- 2. Aktif Koruma Modülleri -->
-            <div class="glass-card p-5 rounded-2xl flex items-center justify-between border border-slate-800/90 relative overflow-hidden group">
-                <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl group-hover:bg-emerald-500/10 transition-all"></div>
-                <div>
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Aktif Korumalar</span>
-                    <h3 id="statProtections" class="text-2xl md:text-3xl font-extrabold mt-1 text-emerald-400 font-mono">-- / --</h3>
-                    <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Modül Devrede
-                    </p>
-                </div>
-                <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center border border-emerald-500/20">
-                    <i data-lucide="shield" class="w-6 h-6"></i>
-                </div>
-            </div>
-
-            <!-- 3. Toplam Yasaklama -->
-            <div class="glass-card p-5 rounded-2xl flex items-center justify-between border border-slate-800/90 relative overflow-hidden group">
-                <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-red-500/5 rounded-full blur-xl group-hover:bg-red-500/10 transition-all"></div>
-                <div>
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Toplam Yasaklama</span>
-                    <h3 id="statBans" class="text-2xl md:text-3xl font-extrabold mt-1 text-red-400 font-mono">0</h3>
-                    <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> bans.json Kayıtlı
-                    </p>
-                </div>
-                <div class="w-12 h-12 bg-red-500/10 text-red-400 rounded-2xl flex items-center justify-center border border-red-500/20">
-                    <i data-lucide="user-x" class="w-6 h-6"></i>
-                </div>
-            </div>
-
-            <!-- 4. Tespitler & Loglar -->
-            <div class="glass-card p-5 rounded-2xl flex items-center justify-between border border-slate-800/90 relative overflow-hidden group">
-                <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-amber-500/5 rounded-full blur-xl group-hover:bg-amber-500/10 transition-all"></div>
-                <div>
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Son Tespitler</span>
-                    <h3 id="statLogs" class="text-2xl md:text-3xl font-extrabold mt-1 text-amber-400 font-mono">0</h3>
-                    <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Canlı Akış Logu
-                    </p>
-                </div>
-                <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-2xl flex items-center justify-center border border-amber-500/20">
-                    <i data-lucide="activity" class="w-6 h-6"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- SEKMELER (NAV TABS) -->
-        <div class="glass-card p-1.5 rounded-2xl flex items-center gap-1.5 overflow-x-auto custom-scrollbar border border-slate-800/80">
-            <button onclick="switchTab('protections')" id="tabBtn-protections" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all whitespace-nowrap bg-brand-600/20 text-brand-400 border border-brand-500/30">
-                <i data-lucide="shield" class="w-4 h-4"></i>
-                <span>Koruma Modülleri</span>
-            </button>
-            <button onclick="switchTab('thresholds')" id="tabBtn-thresholds" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all whitespace-nowrap text-slate-400 hover:text-white">
-                <i data-lucide="sliders" class="w-4 h-4"></i>
-                <span>Limit & Eşik Ayarları</span>
-            </button>
-            <button onclick="switchTab('bans')" id="tabBtn-bans" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all whitespace-nowrap text-slate-400 hover:text-white">
-                <i data-lucide="ban" class="w-4 h-4"></i>
-                <span>Yasaklılar Listesi</span>
-            </button>
-            <button onclick="switchTab('logs')" id="tabBtn-logs" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all whitespace-nowrap text-slate-400 hover:text-white">
-                <i data-lucide="terminal" class="w-4 h-4"></i>
-                <span>Canlı Log Akışı</span>
-            </button>
-            <button onclick="switchTab('webhook')" id="tabBtn-webhook" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all whitespace-nowrap text-slate-400 hover:text-white">
-                <i data-lucide="bell" class="w-4 h-4"></i>
-                <span>Discord & Bildirim</span>
-            </button>
-        </div>
-
-        <!-- TAB 1: KORUMA MODÜLLERİ -->
-        <div id="tabContent-protections" class="tab-content space-y-6">
-            <!-- Hızlı Aksiyon Barı & Kategori Filtresi -->
-            <div class="glass-card p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4 border border-slate-800">
-                <div class="flex items-center gap-2 flex-wrap" id="categoryPills">
-                    <button onclick="filterCategory('all')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white transition-all">Tümü</button>
-                    <button onclick="filterCategory('physics')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 hover:text-white transition-all">🏃 Fizik & Hareket</button>
-                    <button onclick="filterCategory('combat')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 hover:text-white transition-all">🔫 Silah & Aimbot</button>
-                    <button onclick="filterCategory('vision')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 hover:text-white transition-all">👁️ Görüş & Ped</button>
-                    <button onclick="filterCategory('vehicle')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 hover:text-white transition-all">🚗 Araç & Uçma</button>
-                    <button onclick="filterCategory('troll')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 hover:text-white transition-all">🛡️ Troll & Crasher</button>
-                    <button onclick="filterCategory('server')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 hover:text-white transition-all">🌐 Sunucu & Sistem</button>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="setAllProtections(true)" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-600/30 transition-all flex items-center gap-1.5">
-                        <i data-lucide="check" class="w-3.5 h-3.5"></i> Tümünü Aç
-                    </button>
-                    <button onclick="setAllProtections(false)" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600/30 transition-all flex items-center gap-1.5">
-                        <i data-lucide="x" class="w-3.5 h-3.5"></i> Tümünü Kapat
-                    </button>
-                </div>
-            </div>
-
-            <!-- Kartlar Izgarası -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="protectionsContainer">
-                <!-- Javascript ile dinamik doldurulacak -->
-            </div>
-        </div>
-
-        <!-- TAB 2: LİMİT & EŞİK DEĞERLERİ -->
-        <div id="tabContent-thresholds" class="tab-content hidden space-y-6">
-            <div class="glass-card p-6 rounded-3xl border border-slate-800 space-y-6">
-                <div class="border-b border-slate-800/80 pb-4 flex items-center justify-between">
-                    <div>
-                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                            <i data-lucide="gauge" class="w-5 h-5 text-brand-400"></i> Hız, Mesafe & Hasar Eşikleri
-                        </h3>
-                        <p class="text-xs text-slate-400 mt-1">Sunucu seviyesinde tolerans değerlerini canlı olarak ayarlayın.</p>
+                <!-- KPI Cards -->
+                <section class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-top"><span>Aktif Oyuncu</span></div>
+                        <div id="statPlayers" class="stat-value">0</div>
+                        <div class="stat-sub">Sunucudaki çevrimiçi kişi</div>
                     </div>
-                    <button onclick="resetThresholdsDefault()" class="text-xs text-slate-400 hover:text-brand-400 underline transition-colors">
-                        Varsayılanlara Sıfırla
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- MaxFootSpeed -->
-                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="text-sm font-semibold text-slate-200">Maksimum Yaya Hızı</label>
-                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20" id="val-MaxFootSpeed">16.0 m/s</span>
-                        </div>
-                        <p class="text-xs text-slate-500">Yayanın 1 saniyede koşabileceği maksimum mesafe.</p>
-                        <input type="range" min="10" max="30" step="0.5" id="slider-MaxFootSpeed" oninput="syncThreshold('MaxFootSpeed', this.value, 'm/s')" class="w-full accent-brand-500">
-                        <input type="number" step="0.5" id="limit-MaxFootSpeed" onchange="syncThreshold('MaxFootSpeed', this.value, 'm/s')" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-sm">
+                    <div class="stat-card">
+                        <div class="stat-top"><span>Aktif Modül</span></div>
+                        <div id="statActiveModules" class="stat-value" style="color: var(--mint);">0/51</div>
+                        <div class="stat-sub">4 farklı ceza modu</div>
                     </div>
-
-                    <!-- MaxVehicleSpeedKMH -->
-                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="text-sm font-semibold text-slate-200">Maksimum Araç Hızı</label>
-                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20" id="val-MaxVehicleSpeedKMH">350 km/s</span>
-                        </div>
-                        <p class="text-xs text-slate-500">Kara araçlarının izin verilen tavan hız sınırı.</p>
-                        <input type="range" min="200" max="600" step="10" id="slider-MaxVehicleSpeedKMH" oninput="syncThreshold('MaxVehicleSpeedKMH', this.value, 'km/s')" class="w-full accent-brand-500">
-                        <input type="number" step="5" id="limit-MaxVehicleSpeedKMH" onchange="syncThreshold('MaxVehicleSpeedKMH', this.value, 'km/s')" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-sm">
+                    <div class="stat-card">
+                        <div class="stat-top"><span>Toplam Tespit / Ban</span></div>
+                        <div id="statDetections" class="stat-value">0 / 0</div>
+                        <div class="stat-sub">Oturum istatistiği</div>
                     </div>
-
-                    <!-- MaxTeleportDistance -->
-                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="text-sm font-semibold text-slate-200">Max Teleport Mesafesi</label>
-                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20" id="val-MaxTeleportDistance">85.0 m</span>
-                        </div>
-                        <p class="text-xs text-slate-500">1 saniyede tolere edilen anlık koordinat atlama eşiği.</p>
-                        <input type="range" min="30" max="200" step="5" id="slider-MaxTeleportDistance" oninput="syncThreshold('MaxTeleportDistance', this.value, 'm')" class="w-full accent-brand-500">
-                        <input type="number" step="5" id="limit-MaxTeleportDistance" onchange="syncThreshold('MaxTeleportDistance', this.value, 'm')" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-sm">
+                    <div class="stat-card">
+                        <div class="stat-top"><span>Sunucu Uptime</span></div>
+                        <div id="statUptime" class="stat-value">0s</div>
+                        <div class="stat-sub">Kesintisiz izleme</div>
                     </div>
+                </section>
 
-                    <!-- MaxShootDistance -->
-                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="text-sm font-semibold text-slate-200">Max Vuruş Mesafesi</label>
-                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20" id="val-MaxShootDistance">250 m</span>
-                        </div>
-                        <p class="text-xs text-slate-500">Ateşli silah hasarının kabul edileceği tavan menzil.</p>
-                        <input type="range" min="100" max="500" step="10" id="slider-MaxShootDistance" oninput="syncThreshold('MaxShootDistance', this.value, 'm')" class="w-full accent-brand-500">
-                        <input type="number" step="10" id="limit-MaxShootDistance" onchange="syncThreshold('MaxShootDistance', this.value, 'm')" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-sm">
-                    </div>
-
-                    <!-- MaxWeaponDamage -->
-                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="text-sm font-semibold text-slate-200">Maksimum Silah Hasarı</label>
-                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20" id="val-MaxWeaponDamage">160 HP</span>
-                        </div>
-                        <p class="text-xs text-slate-500">Tek bir mermiyle verilebilecek azami hasar tavanı.</p>
-                        <input type="range" min="50" max="300" step="5" id="slider-MaxWeaponDamage" oninput="syncThreshold('MaxWeaponDamage', this.value, 'HP')" class="w-full accent-brand-500">
-                        <input type="number" step="5" id="limit-MaxWeaponDamage" onchange="syncThreshold('MaxWeaponDamage', this.value, 'HP')" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-sm">
-                    </div>
-
-                    <!-- MaxMeleeDamage -->
-                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="text-sm font-semibold text-slate-200">Max Yakın Dövüş Hasarı</label>
-                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20" id="val-MaxMeleeDamage">95 HP</span>
-                        </div>
-                        <p class="text-xs text-slate-500">Yumruk veya sopa ile tek vuruşta azami hasar.</p>
-                        <input type="range" min="30" max="150" step="5" id="slider-MaxMeleeDamage" oninput="syncThreshold('MaxMeleeDamage', this.value, 'HP')" class="w-full accent-brand-500">
-                        <input type="number" step="5" id="limit-MaxMeleeDamage" onchange="syncThreshold('MaxMeleeDamage', this.value, 'HP')" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-sm">
-                    </div>
-
-                    <!-- Aimbot Eşik Ayarları -->
-                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="text-sm font-semibold text-slate-200">Aimbot Açı Eşiği</label>
-                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20" id="val-AimbotAngleThreshold">15.0°</span>
-                        </div>
-                        <p class="text-xs text-slate-500">Ardışık atışta ani açı snap toleransı.</p>
-                        <input type="range" min="5" max="45" step="1" id="slider-AimbotAngleThreshold" oninput="syncThreshold('AimbotAngleThreshold', this.value, '°')" class="w-full accent-brand-500">
-                        <input type="number" step="1" id="limit-AimbotAngleThreshold" onchange="syncThreshold('AimbotAngleThreshold', this.value, '°')" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-sm">
-                    </div>
-
-                    <!-- MaxConsecutiveSprintSeconds -->
-                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="text-sm font-semibold text-slate-200">Max Kesintisiz Sprint</label>
-                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20" id="val-MaxConsecutiveSprintSeconds">60 sn</span>
-                        </div>
-                        <p class="text-xs text-slate-500">Stamina düşmeden tolere edilen koşma süresi.</p>
-                        <input type="range" min="20" max="180" step="5" id="slider-MaxConsecutiveSprintSeconds" oninput="syncThreshold('MaxConsecutiveSprintSeconds', this.value, 'sn')" class="w-full accent-brand-500">
-                        <input type="number" step="5" id="limit-MaxConsecutiveSprintSeconds" onchange="syncThreshold('MaxConsecutiveSprintSeconds', this.value, 'sn')" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-sm">
-                    </div>
-
-                    <!-- HeartbeatTimeoutSeconds -->
-                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="text-sm font-semibold text-slate-200">Heartbeat Zaman Aşımı</label>
-                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20" id="val-HeartbeatTimeoutSeconds">30 sn</span>
-                        </div>
-                        <p class="text-xs text-slate-500">İstemci thread donduruldu sayılmadan önceki süre.</p>
-                        <input type="range" min="15" max="90" step="5" id="slider-HeartbeatTimeoutSeconds" oninput="syncThreshold('HeartbeatTimeoutSeconds', this.value, 'sn')" class="w-full accent-brand-500">
-                        <input type="number" step="5" id="limit-HeartbeatTimeoutSeconds" onchange="syncThreshold('HeartbeatTimeoutSeconds', this.value, 'sn')" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-sm">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 3: YASAKLILAR LİSTESİ (BAN LIST) -->
-        <div id="tabContent-bans" class="tab-content hidden space-y-4">
-            <div class="glass-card p-6 rounded-3xl border border-slate-800 space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
-                    <div>
-                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                            <i data-lucide="shield-x" class="w-5 h-5 text-red-400"></i> Aktif Yasaklamalar (Ban Listesi)
-                        </h3>
-                        <p class="text-xs text-slate-400 mt-1">Sunucudan uzaklaştırılmış oyuncuların kayıtları ve tanımlayıcıları.</p>
-                    </div>
-                    <div class="relative w-full sm:w-80">
-                        <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                        <input type="text" id="banSearchInput" onkeyup="filterBans()" placeholder="İsim, Ban ID veya sebep ara..." 
-                            class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-brand-500">
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-sm border-collapse">
-                        <thead>
-                            <tr class="text-slate-400 border-b border-slate-800 text-xs uppercase tracking-wider bg-slate-950/40">
-                                <th class="py-3.5 px-4 font-semibold">Ban ID</th>
-                                <th class="py-3.5 px-4 font-semibold">Oyuncu</th>
-                                <th class="py-3.5 px-4 font-semibold">Tespit Nedeni</th>
-                                <th class="py-3.5 px-4 font-semibold">Tarih</th>
-                                <th class="py-3.5 px-4 font-semibold">Tanımlayıcılar</th>
-                                <th class="py-3.5 px-4 text-right font-semibold">İşlem</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bansTableBody" class="divide-y divide-slate-800/60">
-                            <!-- Javascript ile doldurulacak -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <div id="bansPagination" class="flex items-center justify-between pt-4 border-t border-slate-800/60 text-xs text-slate-400">
-                    <span id="bansCountInfo">0 kayıt listeleniyor</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 4: CANLI LOG AKIŞI -->
-        <div id="tabContent-logs" class="tab-content hidden space-y-4">
-            <div class="glass-card p-6 rounded-3xl border border-slate-800 space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
-                    <div>
-                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                            <i data-lucide="terminal" class="w-5 h-5 text-amber-400"></i> Canlı Tespit Logları
-                        </h3>
-                        <p class="text-xs text-slate-400 mt-1">Sunucuda yakalanan son 50 şüpheli hareket ve eylemler.</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5 font-mono">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span> Otomatik Güncelleme (5s)
-                        </span>
-                    </div>
-                </div>
-
-                <div id="logsContainer" class="space-y-2.5 max-h-[550px] overflow-y-auto custom-scrollbar pr-1">
-                    <!-- Loglar dinamik yerleştirilecek -->
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 5: DİSCORD & BİLDİRİM AYARLARI -->
-        <div id="tabContent-webhook" class="tab-content hidden space-y-6">
-            <div class="glass-card p-6 rounded-3xl border border-slate-800 space-y-6 max-w-3xl">
-                <div class="border-b border-slate-800/80 pb-4">
-                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i data-lucide="bell" class="w-5 h-5 text-indigo-400"></i> Discord Webhook & Bildirim Ayarları
-                    </h3>
-                    <p class="text-xs text-slate-400 mt-1">Şüpheli tespitler ve ekran görüntülerinin iletileceği webhook kanalı.</p>
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1.5">Discord Webhook URL</label>
-                        <div class="relative">
-                            <i data-lucide="link" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                            <input type="text" id="cfg-DiscordWebhook" placeholder="https://discord.com/api/webhooks/..." 
-                                class="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-white font-mono text-xs md:text-sm focus:outline-none focus:border-brand-500">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- TAB 1: PROTECTIONS -->
+                <section id="tab-protections" class="panel-card">
+                    <div class="section-head">
                         <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1.5">Sunucu / Bot İsmi</label>
-                            <input type="text" id="cfg-ServerName" placeholder="ONLY AC Ultimate" 
-                                class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-brand-500">
+                            <h2 class="section-title">Modül Matrisi (51 Yapılandırılabilir Katman)</h2>
+                            <p class="section-desc">Her modül için ceza aksiyonunu tek tıkla belirleyin: Oto (Config.DefaultAction), Kalıcı Ban, Kick, Yalnızca Log veya Kapalı.</p>
+                        </div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button id="btnAllDefault" class="btn btn-mint btn-xs" type="button">Tümünü Oto Aç</button>
+                            <button id="btnAllLog" class="btn btn-surface btn-xs" type="button">Tümünü Log Moduna Al</button>
+                        </div>
+                    </div>
+
+                    <div class="toolbar">
+                        <div id="categoryFilterRow" class="pill-row"></div>
+                        <div style="width: 240px; max-width: 100%;">
+                            <input id="moduleSearch" type="search" class="input input-sm" placeholder="Modül ara (örn: Aimbot, Noclip)...">
+                        </div>
+                    </div>
+
+                    <div id="protectionsContainer" class="protections-grid"></div>
+                </section>
+
+                <!-- TAB 2: THRESHOLDS -->
+                <section id="tab-thresholds" class="panel-card hidden">
+                    <div class="section-head">
+                        <div>
+                            <h2 class="section-title">Hassasiyet, Eşik Değerleri &amp; Tehdit Skoru</h2>
+                            <p class="section-desc">Özel RP scriptleriniz ve sunucu donanım hızına göre yanlış tespiti önleyen ince ayarlar.</p>
+                        </div>
+                    </div>
+                    <div id="thresholdsContainer" class="thresh-grid"></div>
+                </section>
+
+                <!-- TAB 3: PLAYERS, LOOKUP & CLEANUP -->
+                <section id="tab-players" class="hidden" style="display: flex; flex-direction: column; gap: 16px;">
+                    <!-- Map Cleanup Strip -->
+                    <div class="panel-card" style="padding: 16px 20px;">
+                        <div class="section-head" style="margin-bottom: 10px;">
+                            <div>
+                                <h2 class="section-title" style="font-size: 16px;">Güvenli Harita &amp; Entity Temizliği</h2>
+                                <p class="section-desc">İçinde oyuncu oturan araçlara ve Whitelist RP objelerine dokunmadan haritayı temizler.</p>
+                            </div>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button class="btn btn-surface btn-xs" data-clear="vehicles" type="button">Boş Araçları Sil</button>
+                                <button class="btn btn-surface btn-xs" data-clear="peds" type="button">NPC Pedleri Sil</button>
+                                <button class="btn btn-surface btn-xs" data-clear="props" type="button">Objeleri Temizle</button>
+                                <button class="btn btn-danger btn-xs" data-clear="all" type="button">Tüm Haritayı Temizle</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Online Players Table -->
+                    <div class="panel-card">
+                        <div class="section-head">
+                            <div>
+                                <h2 class="section-title">Çevrimiçi Oyuncular</h2>
+                                <p class="section-desc">Canlı ping, ACE yetki durumu, tehdit puanı ve tek tıkla Kick/Ban işlemleri.</p>
+                            </div>
+                            <button id="reloadPlayersBtn" class="btn btn-surface btn-xs" type="button">Listeyi Güncelle</button>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Oyuncu</th>
+                                        <th>Ping</th>
+                                        <th>Durum / Yetki</th>
+                                        <th>License</th>
+                                        <th style="text-align: right;">İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="playersTableBody">
+                                    <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 26px;">Oyuncu verisi yükleniyor...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Player Intelligence Lookup -->
+                    <div class="panel-card">
+                        <div class="section-head">
+                            <div>
+                                <h2 class="section-title">Oyuncu İstihbarat &amp; Geçmiş Sorgulama (Lookup)</h2>
+                                <p class="section-desc">İsim, license, Discord ID veya son giriş kayıtlarından alt hesap ve harici SS/Ocean tarama notlarını görüntüleyin.</p>
+                            </div>
+                        </div>
+                        <form id="lookupForm" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <input id="lookupInput" type="text" class="input input-sm" style="flex: 1; min-width: 220px;" placeholder="Oyuncu adı, license:..., discord:... ara (boş bırakıp tümünü getir)">
+                            <button class="btn btn-mint btn-xs" type="submit" style="padding: 8px 16px;">İstihbarat Ara</button>
+                        </form>
+                        <div id="lookupResults" class="lookup-grid"></div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: BANS -->
+                <section id="tab-bans" class="panel-card hidden">
+                    <div class="section-head">
+                        <div>
+                            <h2 class="section-title">Yasaklanan Hesaplar</h2>
+                            <p class="section-desc">Donanım token, lisans ve Discord eşleşmeli kalıcı veya süreli yasak kayıtları.</p>
+                        </div>
+                        <input id="banSearch" type="search" class="input input-sm" style="width: 240px;" placeholder="Ban ID, isim veya sebep ara...">
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ban ID</th>
+                                    <th>Oyuncu</th>
+                                    <th>Sebep</th>
+                                    <th>Süre / Bitiş</th>
+                                    <th>Yasaklayan</th>
+                                    <th style="text-align: right;">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bansTableBody">
+                                <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 26px;">Aktif yasak bulunmuyor.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- TAB 5: LOGS -->
+                <section id="tab-logs" class="panel-card hidden">
+                    <div class="section-head">
+                        <div>
+                            <h2 class="section-title">Canlı Tespit Akışı</h2>
+                            <p class="section-desc">Sunucunun belleğinde tutulan son 60 ihlal, uyarı ve ceza olayları.</p>
+                        </div>
+                    </div>
+                    <div id="logsContainer" class="log-list">
+                        <div style="text-align: center; color: var(--text-muted); padding: 28px;">Henüz tespit kaydı yok.</div>
+                    </div>
+                </section>
+
+                <!-- TAB 6: WEBHOOK & GENERAL -->
+                <section id="tab-webhook" class="panel-card hidden">
+                    <div class="section-head">
+                        <div>
+                            <h2 class="section-title">Genel Ayarlar &amp; Discord Webhook</h2>
+                            <p class="section-desc">Webhook bağlantısı güvenlik gereği API üzerinden gizli tutulur; yeni bir URL yapıştırana kadar mevcut ayar korunur.</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                        <div>
+                            <label class="field-label" for="cfgServerName">Sunucu Adı</label>
+                            <input id="cfgServerName" type="text" class="input" placeholder="465 AC Security">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1.5">Varsayılan Ceza Eylemi</label>
-                            <select id="cfg-DefaultAction" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-brand-500">
-                                <option value="ban">Yasakla (Ban)</option>
-                                <option value="kick">Sunucudan At (Kick)</option>
-                                <option value="log">Sadece Logla (Log)</option>
+                            <label class="field-label" for="cfgAcePerm">Yetkili Muafiyet (Bypass) ACE İzni</label>
+                            <input id="cfgAcePerm" type="text" class="input mono" placeholder="465ac.bypass">
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 10px; flex-wrap: wrap;">
+                                <label class="field-label" for="cfgWebhook" style="margin-bottom: 0;">Discord Webhook URL</label>
+                                <span id="webhookStatusBadge" class="tag tag-slate">Kayıtlı Webhook Yok</span>
+                            </div>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <input id="cfgWebhook" type="url" class="input" style="flex: 1; min-width: 240px;" placeholder="https://discord.com/api/webhooks/...">
+                                <button id="clearWebhookBtn" class="btn btn-danger btn-xs" type="button" style="padding: 0 14px;">Webhook'u Sıfırla</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="field-label" for="cfgScreenshot">Ekran Görüntüsü Kanıtı (screenshot-basic)</label>
+                            <select id="cfgScreenshot" class="input">
+                                <option value="true">Aktif — Ban/Kick öncesi otomatik ekran kanıtı al</option>
+                                <option value="false">Pasif — Yalnızca metin ve log gönder</option>
                             </select>
                         </div>
                     </div>
+                </section>
+            </main>
+        </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1.5">Yetkili Muafiyet (Bypass) ACE İzni</label>
-                            <input type="text" id="cfg-AcePermission" placeholder="onlyac.bypass" 
-                                class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-brand-500">
-                        </div>
-                        <div class="flex items-center justify-between p-3.5 bg-slate-900/60 rounded-xl border border-slate-800">
-                            <div>
-                                <span class="text-sm font-semibold text-white block">Ekran Görüntüsü Kanıtı</span>
-                                <span class="text-xs text-slate-500 block">screenshot-basic ile anlık SS alma</span>
-                            </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="cfg-ScreenCaptureEnabled" class="sr-only peer">
-                                <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
-                            </label>
-                        </div>
-                    </div>
+        <!-- FLOATING SAVE BAR -->
+        <div id="saveBar" class="save-bar hidden">
+            <span style="font-size: 13px; color: var(--amber); font-weight: 600;">Kaydedilmemiş değişiklikler var</span>
+            <button id="discardBtn" class="btn btn-surface btn-xs" type="button">Geri Al</button>
+            <button id="saveConfigBtn" class="btn btn-primary btn-xs" type="button" style="padding: 8px 16px;">Kaydet &amp; İstemcilere Senkronize Et</button>
+        </div>
+    </div>
+
+    <!-- BAN / SCAN ACTION MODAL -->
+    <div id="actionModal" class="modal-backdrop hidden">
+        <div class="modal-box">
+            <h3 id="modalTitle" style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">Oyuncu İşlemi</h3>
+            <p id="modalSub" style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 16px;"></p>
+            <form id="modalForm" style="display: flex; flex-direction: column; gap: 12px;">
+                <div id="modalStatusWrap" class="hidden">
+                    <label class="field-label" for="modalStatusInput">Tarama Sonucu</label>
+                    <select id="modalStatusInput" class="input input-sm">
+                        <option value="Temiz">Temiz (Clean)</option>
+                        <option value="Şüpheli">Şüpheli (Watchlist)</option>
+                        <option value="Hileli">Hileli (Confirmed)</option>
+                    </select>
                 </div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="mt-auto border-t border-slate-800/80 py-5 text-center text-xs text-slate-500">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <span>🛡️ <strong>ONLY AC Ultimate Edition</strong> &bull; Sürüm 3.0.0</span>
-            <span class="font-mono text-slate-600">Secure FiveM Infrastructure &bull; Real-time Guard</span>
-        </div>
-    </footer>
-
-    <!-- TOAST BİLDİRİMİ -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border flex items-center gap-3 font-medium text-sm">
-        <div id="toastIconWrapper" class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0">
-            <i data-lucide="check-circle" id="toastIcon" class="w-5 h-5"></i>
-        </div>
-        <span id="toastMsg">İşlem tamamlandı.</span>
-    </div>
-
-    <!-- TANIMLAYICILAR DETAY MODALI -->
-    <div id="identifiersModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 hidden">
-        <div class="glass-card p-6 rounded-3xl w-full max-w-lg border border-slate-800 space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h4 class="font-bold text-white flex items-center gap-2" id="idModalTitle">Oyuncu Tanımlayıcıları</h4>
-                <button onclick="closeIdentifiersModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div class="space-y-2 font-mono text-xs" id="idModalContent">
-                <!-- Javascript ile doldurulacak -->
-            </div>
+                <div>
+                    <label class="field-label" id="modalReasonLabel" for="modalReasonInput">Sebep / Açıklama</label>
+                    <input id="modalReasonInput" type="text" class="input input-sm" required placeholder="Örn: Yetkisiz hile şüphesi / SS notu">
+                </div>
+                <div id="modalDurationWrap" class="hidden">
+                    <label class="field-label" for="modalDurationSelect">Ban Süresi</label>
+                    <select id="modalDurationSelect" class="input input-sm">
+                        <option value="0">Kalıcı (Permanent)</option>
+                        <option value="3600">1 Saat</option>
+                        <option value="21600">6 Saat</option>
+                        <option value="86400">24 Saat (1 Gün)</option>
+                        <option value="259200">3 Gün</option>
+                        <option value="604800">7 Gün</option>
+                        <option value="2592000">30 Gün</option>
+                    </select>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px;">
+                    <button id="modalCancelBtn" type="button" class="btn btn-surface btn-xs">İptal</button>
+                    <button id="modalConfirmBtn" type="submit" class="btn btn-primary btn-xs" style="padding: 8px 16px;">Onayla</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- DASHBOARD JAVASCRIPT MOTORU -->
+    <div id="toast" class="toast hidden"></div>
+
     <script>
-        let currentAuthToken = localStorage.getItem('onlyac_auth_token') || '';
-        let serverConfig = {};
-        let bansList = [];
-        let autoRefreshInterval = null;
-        let activeCategory = 'all';
+        (function () {
+            const API_BASE = window.location.pathname.replace(/\/(index\.html|web\/index\.html)?\/?$/, '').replace(/\/+$/, '');
+            const TOKEN_KEY = 'ac465_panel_token';
 
-        // Koruma Modülleri Sözlüğü ve Kategorileri
-        const protectionDefinitions = {
-            // Fizik & Hareket
-            AntiGodmode:            { category: 'physics', title: "Native GodMode Koruması", desc: "Ölümsüzlük ve demi-god bayraklarını denetler." },
-            AntiLegitGodmode:       { category: 'physics', title: "Legit GodMode / Hızlı Can", desc: "Hasar aldığı an canını anında fulleyenleri (fast regen) tespit eder." },
-            AntiSpeedHack:          { category: 'physics', title: "Yaya & Araç Hız Hilesi", desc: "Maksimum hız sınırlarının üzerindeki anormal koşu ve sürüşleri engeller." },
-            AntiNoclip:             { category: 'physics', title: "Uçma / Noclip Koruması", desc: "Havada süzülerek uçan veya binalara tırmananları yakalar." },
-            AntiTeleport:           { category: 'physics', title: "Anlık Işınlanma (Teleport)", desc: "1 saniyede tolere edilemeyecek anlık mesafe atlamalarını engeller." },
-            AntiSuperJump:          { category: 'physics', title: "Süper Zıplama (Super Jump)", desc: "Yetkisiz aşırı yüksek zıplama hilelerini yakalar." },
-            AntiNoCollision:        { category: 'physics', title: "Duvarlardan Geçme (No-Collision)", desc: "Çarpışma modelini devredışı bırakanları yakalar." },
-            AntiRagdoll:            { category: 'physics', title: "Taser & Düşme Bağışıklığı", desc: "Taser yiyip veya yüksekten düşüp yere düşmeme hilelerini engeller." },
-            AntiTinyPed:            { category: 'physics', title: "Ped Boyut Değiştirme (Tiny Ped)", desc: "Görünmezlik için ped boyutunu küçültenleri tespit eder." },
-            AntiInfiniteStamina:    { category: 'physics', title: "Sınırsız Stamina / Koşma", desc: "Stamina düşmeden sürekli koşanları yakalar." },
+            let authToken = localStorage.getItem(TOKEN_KEY) || '';
+            let serverState = null;
+            let workingConfig = null;
+            let currentTab = 'protections';
+            let activeCategory = 'all';
+            let moduleQuery = '';
+            let banQuery = '';
+            let pendingWebhookClear = false;
+            let isDirty = false;
+            let pollTimer = null;
+            let modalContext = null;
 
-            // Silah & Aimbot
-            AntiBlacklistedWeapons: { category: 'combat',  title: "Yasaklı Ağır Silahlar", desc: "RPG, Minigun gibi sunucuda olmaması gereken silahları siler." },
-            AntiInfiniteAmmo:       { category: 'combat',  title: "Sınırsız Şarjör & Mermi", desc: "Şarjör kapasitesi üzerinde mermi sıkılmasını engeller." },
-            AntiDamageModifier:     { category: 'combat',  title: "Hasar Artırma (One-Shot)", desc: "Silah veya yumruk hasar çarpanını artıranları engeller." },
-            AntiRapidFire:          { category: 'combat',  title: "Seri Ateş (Rapid Fire)", desc: "Pompalı veya silahlarda fiziksel sınırın üzerinde ateşi engeller." },
-            AntiImpossibleDamage:   { category: 'combat',  title: "İmkansız Mesafe (Magic Bullet)", desc: "Duvar arkasından veya imkansız menzilden vurmayı sunucuda engeller." },
-            AntiAimbot:             { category: 'combat',  title: "Aimbot & Kamera Snap Tespiti", desc: "Kamera açısındaki anlık snap hareketlerini analiz eder." },
-            AntiWeaponPickup:       { category: 'combat',  title: "Yerde Silah Toplama Engeli", desc: "Hileyle spawn edilen silah kutularını toplamayı engeller." },
+            const CATEGORIES = [
+                { id: 'all', label: 'Tümü (51)' },
+                { id: 'Fizik', label: 'Fizik & Hareket' },
+                { id: 'Görüş', label: 'Görünmezlik & Görüş' },
+                { id: 'Çatışma', label: 'Silah & Çatışma' },
+                { id: 'Araç', label: 'Araç & Magneto' },
+                { id: 'Crasher', label: 'Troll & Crasher' },
+                { id: 'Sistem', label: 'Sistem & Yetki' }
+            ];
 
-            // Görüş & Ped
-            AntiInvisibility:       { category: 'vision',  title: "Görünmezlik (Invisibility)", desc: "Karakterini görünmez veya şeffaf yapanları yakalar." },
-            AntiNightThermalVision: { category: 'vision',  title: "Termal & Gece Görüşü", desc: "Yetkisiz vizyon modlarını anında kapatır ve loglar." },
-            AntiSpectate:           { category: 'vision',  title: "Freecam & Gizli İzleme", desc: "Yetkisiz izleyici modunu yakalar." },
-            AntiPedChange:          { category: 'vision',  title: "Yetkisiz Ped Değişimi", desc: "Freemode peds dışında hileyle skin değiştirmeyi yakalar." },
+            const MODULES = [
+                // 1. Fizik & Hareket (13)
+                { key: 'AntiGodmode', cat: 'Fizik', name: 'Anti-Godmode', desc: 'Native ölümsüzlük, yüksek HP/Zırh ve Demi-God engeli.' },
+                { key: 'AntiLegitGodmode', cat: 'Fizik', name: 'Anti-Legit Godmode', desc: 'Hasar sonrası anormal hızlı can yenileme tespiti.' },
+                { key: 'AntiArmorHack', cat: 'Fizik', name: 'Anti-Armor Hack', desc: 'Maksimum sınır üstü yetkisiz zırh basımını engeller.' },
+                { key: 'AntiSpeedHack', cat: 'Fizik', name: 'Anti-SpeedHack', desc: 'Yaya ve kara aracı hız tavanı kontrolü.' },
+                { key: 'AntiNoclip', cat: 'Fizik', name: 'Anti-Noclip', desc: 'Havada serbest uçma (Noclip) koruması.' },
+                { key: 'AntiGroundNoclip', cat: 'Fizik', name: 'Anti-Ground Noclip', desc: 'Yürüme animasyonlu gizli yer altı/zemin bypass tespiti.' },
+                { key: 'AntiTeleport', cat: 'Fizik', name: 'Anti-Teleport', desc: 'Yetkisiz ani koordinat sıçramalarını analiz eder.' },
+                { key: 'AntiSuperJump', cat: 'Fizik', name: 'Anti-SuperJump', desc: 'İnsanüstü zıplama hilesini tespit eder.' },
+                { key: 'AntiNoCollision', cat: 'Fizik', name: 'Anti-NoCollision', desc: 'Duvar ve yapılardan içinden geçmeyi engeller.' },
+                { key: 'AntiRagdoll', cat: 'Fizik', name: 'Anti-Ragdoll', desc: 'Çarpma veya taser anında yere düşmeme kilidi kontrolü.' },
+                { key: 'AntiTinyPed', cat: 'Fizik', name: 'Anti-TinyPed (Hitbox)', desc: 'Ped ölçeğiyle hitbox küçültme veya büyütmeyi yakalar.' },
+                { key: 'AntiInfiniteStamina', cat: 'Fizik', name: 'Anti-Infinite Stamina', desc: 'Yorulmadan sınırsız sprint atma tespiti.' },
+                { key: 'AntiLaunchPlayer', cat: 'Fizik', name: 'Anti-Launch Player', desc: 'Dikey Z ekseninde oyuncuyu fırlatma koruması.' },
 
-            // Araç & Uçma
-            AntiVehicleModifiers:   { category: 'vehicle', title: "Araç Hızlandırma & Tork", desc: "Araç hız ve çekiş çarpanı hilelerini engeller." },
-            AntiVehicleGodmode:     { category: 'vehicle', title: "Araç Ölümsüzlüğü & Tamir", desc: "Araçların hasar almamasını ve anlık tamiri engeller." },
-            AntiVehicleFly:         { category: 'vehicle', title: "Araç Uçurma (Car Fly)", desc: "Kara araçlarının havada uçurulmasını engeller." },
-            AntiVehicleMagneto:     { category: 'vehicle', title: "Araç Mıknatısı (Magneto)", desc: "Araçları kendine çekme veya fırlatmayı engeller." },
-            AntiVehicleSpawn:       { category: 'vehicle', title: "Yetkisiz Araç Spawnı", desc: "Sunucuda yetkisiz araç basılmasını denetler." },
+                // 2. Görünmezlik & Görüş (4)
+                { key: 'AntiInvisibility', cat: 'Görüş', name: 'Anti-Invisibility', desc: 'Ghostmode ve karakter alpha görünmezliği koruması.' },
+                { key: 'AntiNightThermalVision', cat: 'Görüş', name: 'Anti-Thermal & Night Vision', desc: 'Ekipmansız yetkisiz gece/termal görüş engeli.' },
+                { key: 'AntiSpectate', cat: 'Görüş', name: 'Anti-Spectate & Freecam', desc: 'İzleme modu ve serbest kamera bypass tespiti.' },
+                { key: 'AntiPedChange', cat: 'Görüş', name: 'Anti-Ped Model Change', desc: 'Whitelisted olmayan ped/hayvan modeline geçiş engeli.' },
 
-            // Troll & Crasher
-            AntiAttach:             { category: 'troll',   title: "Obje Yapıştırma (Anti-Attach)", desc: "Oyuncuların üzerine trol amaçlı obje yapıştırmayı boşa çıkarır." },
-            AntiParticleSpam:       { category: 'troll',   title: "Partikül & Efekt Crasher", desc: "FPS düşüren havai fişek/patlama efekt spamını engeller." },
-            AntiClearTasks:         { category: 'troll',   title: "Uzaktan Dondurma (Freeze)", desc: "Başka oyuncuları uzaktan animasyonsuz dondurmayı bloke eder." },
-            AntiMoneyDrop:          { category: 'troll',   title: "Para Düşürme & Obje Spam", desc: "Yere para çantası veya toplu obje spamını bloke eder." },
+                // 3. Silah & Çatışma (10)
+                { key: 'AntiBlacklistedWeapons', cat: 'Çatışma', name: 'Anti-Blacklisted Weapons', desc: 'RPG, Minigun gibi yasaklı silahları anında siler.' },
+                { key: 'AntiInfiniteAmmo', cat: 'Çatışma', name: 'Anti-Infinite Ammo', desc: 'Sınırsız mermi ve şarjör kilidi koruması.' },
+                { key: 'AntiDamageModifier', cat: 'Çatışma', name: 'Anti-Damage Modifier', desc: 'One-shot ve silah/yumruk hasar çarpanı kontrolü.' },
+                { key: 'AntiRapidFire', cat: 'Çatışma', name: 'Anti-RapidFire', desc: 'Silah atış hızı manipülasyonunu yakalar.' },
+                { key: 'AntiImpossibleDamage', cat: 'Çatışma', name: 'Anti-Impossible Damage', desc: 'Menzil dışı vuruş ve Magic Bullet koruması.' },
+                { key: 'AntiAimbot', cat: 'Çatışma', name: 'Anti-Aimbot (Snap)', desc: 'Ateş anında ani kamera snap açılarını tespit eder.' },
+                { key: 'AntiSilentAim', cat: 'Çatışma', name: 'Anti-Silent Aim', desc: 'Kamera yönü ve vuruş açısı arasındaki tutarsızlığı ölçer.' },
+                { key: 'AntiWeaponPickup', cat: 'Çatışma', name: 'Anti-Weapon Pickup', desc: 'Hilecilerin yere bıraktığı silahların toplanmasını engeller.' },
+                { key: 'AntiMassKill', cat: 'Çatışma', name: 'Anti-MassKill', desc: 'Kısa sürede çoklu oyuncu katliamını (Kill-All) keser.' },
+                { key: 'AntiRPF', cat: 'Çatışma', name: 'Anti-Modified RPF', desc: 'Değiştirilmiş silah meta/RPF hasar dosyalarını denetler.' },
 
-            // Sunucu & Sistem Güvenliği
-            AntiExplosionSpam:      { category: 'server',  title: "Patlama Spamı Koruması", desc: "Toplu patlama ve sunucuda yasak patlama türlerini engeller." },
-            AntiEntitySpam:         { category: 'server',  title: "Toplu Varlık Basma (Entity Spam)", desc: "Sunucuyu düşürmek için toplu obje/araç basılmasını engeller." },
-            AntiPedSpam:            { category: 'server',  title: "Toplu NPC Basma (Ped Spam)", desc: "Toplu ped spam saldırılarını sunucuda engeller." },
-            AntiHoneypotEvents:     { category: 'server',  title: "Bal Küpü (Honeypot) Eventleri", desc: "Hile menülerinin tetiklediği sahte eventleri yakalar." },
-            AntiResourceStop:       { category: 'server',  title: "Resource Stop Koruması", desc: "AC scriptini menüyle durdurma girişimlerini yakalar." },
-            AntiResourceInjection:  { category: 'server',  title: "Resource Injection Tespiti", desc: "İstemcide harici resource başlatılmasını tespit eder." },
-            AntiMenuDetection:      { category: 'server',  title: "Hile Menüsü Değişkenleri", desc: "Bilinen popüler hile menülerinin global değişkenlerini yakalar." },
-            AntiThreadFreeze:       { category: 'server',  title: "Döngü Dondurma (Heartbeat)", desc: "AC ana döngüsünü donduran veya askıya alanları tespit eder." }
-        };
+                // 4. Araç & Magneto (6)
+                { key: 'AntiVehicleModifiers', cat: 'Araç', name: 'Anti-Vehicle Modifiers', desc: 'Araç tork/güç ve hız çarpanı hilelerini engeller.' },
+                { key: 'AntiVehicleGodmode', cat: 'Araç', name: 'Anti-Vehicle Godmode', desc: 'Hasar almayan ölümsüz araç koruması.' },
+                { key: 'AntiVehicleFly', cat: 'Araç', name: 'Anti-Vehicle Fly', desc: 'Kara araçlarını gökyüzünde uçurma engeli.' },
+                { key: 'AntiVehicleMagneto', cat: 'Araç', name: 'Anti-Vehicle Magneto', desc: 'Sürücülü aracı uzaktan ele geçirme/çekme koruması.' },
+                { key: 'AntiVehicleSpawn', cat: 'Araç', name: 'Anti-Vehicle Spawn', desc: 'Yasaklı veya izinsiz ağ sahipliğinde araç spawn kontrolü.' },
+                { key: 'AntiLaunchVehicle', cat: 'Araç', name: 'Anti-Launch Vehicle', desc: 'Araçların dikey ivmeyle fırlatılmasını önler.' },
 
-        // Başlangıç Fonksiyonu
-        async function init() {
-            if (currentAuthToken) {
-                document.getElementById('loginModal').classList.add('hidden');
-                await loadDashboardData();
-                startAutoRefresh();
+                // 5. Troll & Crasher (5)
+                { key: 'AntiAttach', cat: 'Crasher', name: 'Anti-Prop Attach', desc: 'Oyunculara trol/lag objesi yapıştırmayı EMS güvenli engeller.' },
+                { key: 'AntiParticleSpam', cat: 'Crasher', name: 'Anti-Particle Spam', desc: 'FPS düşüren yoğun partikül efektlerini sınırlar.' },
+                { key: 'AntiClearTasks', cat: 'Crasher', name: 'Anti-ClearTasks', desc: 'Başka oyuncuların animasyonunu uzaktan bozmayı engeller.' },
+                { key: 'AntiMoneyDrop', cat: 'Crasher', name: 'Anti-Money Drop', desc: 'Sahte para objesi / para çantası spawn koruması.' },
+                { key: 'AntiCrasher', cat: 'Crasher', name: 'Anti-Crasher Guard', desc: 'Ses, silah ve OneSync event crasher filtresi.' },
+
+                // 6. Sistem, Enjeksiyon & Bütünlük (13)
+                { key: 'AntiNativeHook', cat: 'Sistem', name: 'Anti-NativeHook', desc: 'Kritik FiveM istemci fonksiyon bütünlüğü doğrulaması.' },
+                { key: 'AntiNUIDevTools', cat: 'Sistem', name: 'Anti-Executor & Global', desc: 'Executor / konsol global değişken ve imza taraması.' },
+                { key: 'AntiExplosionSpam', cat: 'Sistem', name: 'Anti-Explosion Spam', desc: 'Yasaklı patlama türlerini ve zincirleme patlamaları durdurur.' },
+                { key: 'AntiEntitySpam', cat: 'Sistem', name: 'Anti-Entity Spam', desc: 'Pencere içi toplu prop/entity spamını keser.' },
+                { key: 'AntiPedSpam', cat: 'Sistem', name: 'Anti-Ped Spam', desc: 'Sunucu geneli toplu NPC spawn saldırılarını engeller.' },
+                { key: 'AntiHoneypotEvents', cat: 'Sistem', name: 'Honeypot Trap Events', desc: 'Sahte tetikleyici event tuzağına düşen executorları banlar.' },
+                { key: 'AntiResourceStop', cat: 'Sistem', name: 'Anti-Resource Stop', desc: '465 AC kaynağının durdurulmasına karşı bekçi kontrolü.' },
+                { key: 'AntiResourceInjection', cat: 'Sistem', name: 'Anti-Resource Injection', desc: 'İzinsiz oyun içi yeni kaynak (resource) başlatma engeli.' },
+                { key: 'AntiMenuDetection', cat: 'Sistem', name: 'Anti-Menu Signatures', desc: 'Bilinen hile menüsü pencerelerini ve NUI global izlerini yakalar.' },
+                { key: 'AntiThreadFreeze', cat: 'Sistem', name: 'Anti-Thread Freeze', desc: 'İstemci döngüsü dondurma & eksik handshake watchdog.' },
+                { key: 'AntiDupe', cat: 'Sistem', name: 'Anti-Dupe Rate Guard', desc: 'Ekonomi & envanter event flooding sınırlandırması.' },
+                { key: 'AutoTxAdminBypass', cat: 'Sistem', name: 'txAdmin Otomatik Bypass', desc: 'txAdmin admin yetkisiyle giriş yapanları muaf tutar.', type: 'toggle' },
+                { key: 'UseExcludeZones', cat: 'Sistem', name: 'Güvenli Bölge Muafiyeti', desc: 'Hastane ve Spawn bölgelerinde yanlış pozitif önler.', type: 'toggle' }
+            ];
+
+            const THRESHOLDS = [
+                { key: 'DefaultAction', label: 'Varsayılan Ceza Modu', kind: 'select', opts: [['ban', 'Kalıcı Ban'], ['kick', 'Sunucudan At'], ['log', 'Yalnızca Log']] },
+                { key: 'SpawningGracePeriodSeconds', label: 'Spawn Koruma Süresi (sn)', kind: 'number', min: 5, max: 60, step: 1 },
+                { key: 'ViolationStrikes', label: 'İhlal Tekrar Eşiği (Strike)', kind: 'number', min: 1, max: 10, step: 1 },
+                { key: 'MaxFootSpeed', label: 'Maks. Yaya Hızı (m/s)', kind: 'number', min: 8, max: 35, step: 0.5 },
+                { key: 'MaxVehicleSpeedKMH', label: 'Maks. Araç Hızı (KM/H)', kind: 'number', min: 200, max: 650, step: 10 },
+                { key: 'MaxVehicleSpeedModifier', label: 'Araç Güç Çarpanı Limiti', kind: 'number', min: 1.0, max: 5.0, step: 0.1 },
+                { key: 'MaxTeleportDistance', label: 'Max Teleport Mesafesi (m)', kind: 'number', min: 30, max: 300, step: 5 },
+                { key: 'MaxHealth', label: 'Maksimum Oyuncu Canı', kind: 'number', min: 100, max: 500, step: 10 },
+                { key: 'MaxArmor', label: 'Maksimum Oyuncu Zırhı', kind: 'number', min: 50, max: 250, step: 10 },
+                { key: 'MaxShootDistance', label: 'Maks. Atış Mesafesi (m)', kind: 'number', min: 100, max: 600, step: 10 },
+                { key: 'MaxWeaponDamage', label: 'Standart Silah Max Hasar', kind: 'number', min: 60, max: 400, step: 5 },
+                { key: 'MaxHeavyWeaponDamage', label: 'Sniper / Pompalı Max Hasar', kind: 'number', min: 120, max: 600, step: 10 },
+                { key: 'SilentAimMinDot', label: 'Silent Aim Min Dot (-1..1)', kind: 'number', min: 0.1, max: 0.95, step: 0.05 },
+                { key: 'AimbotAngleThreshold', label: 'Aimbot Snap Açısı (°)', kind: 'number', min: 8, max: 45, step: 1 },
+                { key: 'MaxExplosionsPerWindow', label: 'Pencere Başı Max Patlama', kind: 'number', min: 1, max: 20, step: 1 },
+                { key: 'MaxEntitySpawnsPerWindow', label: 'Pencere Başı Max Entity', kind: 'number', min: 2, max: 30, step: 1 },
+                { key: 'MaxPedSpawnsPerWindow', label: 'Pencere Başı Max NPC', kind: 'number', min: 2, max: 20, step: 1 },
+                { key: 'ThreatScoring.MinThreatAlertScore', label: 'Yüksek Risk Uyarı Eşiği', kind: 'number', min: 10, max: 95, step: 5 },
+                { key: 'ThreatScoring.AutoBanAltAccounts', label: 'Ban Evasion Oto-Engel', kind: 'bool' },
+                { key: 'EventTriggerGuard.MaxTriggersPerSecond', label: 'Anti-Dupe Event / Saniye', kind: 'number', min: 2, max: 30, step: 1 }
+            ];
+
+            const el = (id) => document.getElementById(id);
+
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
             }
-            lucide.createIcons();
-        }
 
-        function togglePasswordVisibility() {
-            const input = document.getElementById('adminPassword');
-            if (input.type === 'password') {
-                input.type = 'text';
-            } else {
-                input.type = 'password';
+            function showToast(msg, isError = false) {
+                const t = el('toast');
+                t.textContent = msg;
+                t.className = 'toast' + (isError ? ' err' : '');
+                clearTimeout(t._timer);
+                t._timer = setTimeout(() => { t.classList.add('hidden'); }, 3200);
             }
-        }
 
-        // Giriş Yapma
-        async function login() {
-            const pass = document.getElementById('adminPassword').value;
-            const btn = document.getElementById('loginBtn');
-            const errEl = document.getElementById('loginError');
-
-            btn.disabled = true;
-            btn.innerHTML = `<span class="inline-block animate-spin mr-2">🔄</span> Doğrulanıyor...`;
-            errEl.classList.add('hidden');
-
-            try {
-                const res = await fetch('/ONLY_AC/api/auth', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password: pass })
-                }).then(r => r.json()).catch(() => ({ success: false }));
-
-                if (res.success && res.token) {
-                    currentAuthToken = res.token;
-                    localStorage.setItem('onlyac_auth_token', res.token);
-                    document.getElementById('loginModal').classList.add('hidden');
-                    showToast("Giriş başarılı! Yönetim paneli yüklendi.", "success");
-                    await loadDashboardData();
-                    startAutoRefresh();
-                } else {
-                    errEl.classList.remove('hidden');
+            async function apiFetch(endpoint, options = {}) {
+                const headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
+                if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
+                const res = await fetch(API_BASE + endpoint, Object.assign({}, options, { headers }));
+                let data = {};
+                try { data = await res.json(); } catch (_) {}
+                if (res.status === 401) {
+                    logout(false);
+                    throw new Error('Oturum süresi doldu, yeniden giriş yapın.');
                 }
-            } catch (e) {
-                errEl.classList.remove('hidden');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="key" class="w-4 h-4"></i><span>Panele Güvenli Giriş</span>`;
-                lucide.createIcons();
+                if (!res.ok && data.success !== true) {
+                    throw new Error(data.message || data.error || ('HTTP ' + res.status));
+                }
+                return data;
             }
-        }
 
-        function logout() {
-            localStorage.removeItem('onlyac_auth_token');
-            currentAuthToken = '';
-            stopAutoRefresh();
-            document.getElementById('loginModal').classList.remove('hidden');
-            showToast("Oturum kapatıldı.", "info");
-        }
-
-        function startAutoRefresh() {
-            stopAutoRefresh();
-            autoRefreshInterval = setInterval(() => {
-                refreshData(false);
-            }, 5000);
-        }
-
-        function stopAutoRefresh() {
-            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
-        }
-
-        async function refreshData(manual = false) {
-            const icon = document.getElementById('refreshIcon');
-            if (icon && manual) icon.classList.add('animate-spin');
-            await loadDashboardData();
-            if (icon && manual) {
-                setTimeout(() => icon.classList.remove('animate-spin'), 600);
-                showToast("Veriler güncellendi.", "info");
+            function markDirty(state = true) {
+                isDirty = state;
+                el('saveBar').classList.toggle('hidden', !state);
             }
-        }
 
-        // Dashboard Verilerini Çekme
-        async function loadDashboardData() {
-            if (!currentAuthToken) return;
+            function cloneConfig(cfg) {
+                return JSON.parse(JSON.stringify(cfg || {}));
+            }
 
-            try {
-                const res = await fetch('/ONLY_AC/api/status', {
-                    headers: { 'Authorization': currentAuthToken }
-                }).then(r => r.json());
+            function formatUptime(sec) {
+                sec = Math.max(0, Number(sec) || 0);
+                const h = Math.floor(sec / 3600);
+                const m = Math.floor((sec % 3600) / 60);
+                const s = sec % 60;
+                if (h > 0) return `${h}sa ${m}dk`;
+                if (m > 0) return `${m}dk ${s}sn`;
+                return `${s}sn`;
+            }
 
-                if (res.error === 'unauthorized') {
-                    logout();
+            function formatExpire(exp) {
+                if (!exp || exp === 'PERMANENT') return 'Kalıcı';
+                if (typeof exp === 'number') {
+                    return new Date(exp * 1000).toLocaleString('tr-TR');
+                }
+                return String(exp);
+            }
+
+            function normalizeProtVal(val, type) {
+                if (type === 'toggle') return val ? 'true' : 'off';
+                if (val === true) return 'true';
+                if (val === false || val === 'off') return 'off';
+                const s = String(val || 'true').toLowerCase();
+                return ['ban', 'kick', 'log', 'off'].includes(s) ? s : 'true';
+            }
+
+            function updateStats() {
+                if (!serverState || !workingConfig) return;
+                const s = serverState.stats || {};
+                const prots = workingConfig.Protections || {};
+                let enabledCount = 0;
+                MODULES.forEach((m) => {
+                    const mode = normalizeProtVal(prots[m.key] !== undefined ? prots[m.key] : true, m.type);
+                    if (mode !== 'off') enabledCount++;
+                });
+
+                el('serverTitle').textContent = workingConfig.ServerName || serverState.serverName || '465 AC Security';
+                el('versionBadge').textContent = 'v' + (serverState.version || '4.2.0');
+                el('statPlayers').textContent = serverState.playerCount ?? 0;
+                el('badgePlayers').textContent = serverState.playerCount ?? 0;
+                el('statActiveModules').textContent = `${enabledCount}/${MODULES.length}`;
+                el('badgeProtections').textContent = MODULES.length;
+                el('statDetections').textContent = `${s.totalDetections ?? 0} / ${s.totalBans ?? 0}`;
+                el('statUptime').textContent = formatUptime(s.uptime);
+                el('badgeBans').textContent = (serverState.bans || []).length;
+                el('badgeLogs').textContent = (serverState.recentLogs || []).length;
+            }
+
+            function renderCategories() {
+                const row = el('categoryFilterRow');
+                row.innerHTML = CATEGORIES.map((c) => `
+                    <button type="button" class="filter-pill ${activeCategory === c.id ? 'active' : ''}" data-cat="${c.id}">
+                        ${escapeHtml(c.label)}
+                    </button>
+                `).join('');
+                row.querySelectorAll('.filter-pill').forEach((btn) => {
+                    btn.onclick = () => {
+                        activeCategory = btn.dataset.cat;
+                        renderCategories();
+                        renderProtections();
+                    };
+                });
+            }
+
+            function renderProtections() {
+                if (!workingConfig) return;
+                const prots = workingConfig.Protections || {};
+                const origProts = (serverState && serverState.config && serverState.config.Protections) || {};
+                const q = moduleQuery.trim().toLowerCase();
+
+                const filtered = MODULES.filter((m) => {
+                    if (activeCategory !== 'all' && m.cat !== activeCategory) return false;
+                    if (q && !(m.name.toLowerCase().includes(q) || m.key.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q))) return false;
+                    return true;
+                });
+
+                const grid = el('protectionsContainer');
+                if (!filtered.length) {
+                    grid.innerHTML = '<div style="grid-column: 1 / -1; text-align:center; padding: 30px; color: var(--text-muted);">Aramaya uygun modül bulunamadı.</div>';
                     return;
                 }
 
-                serverConfig = res.config || {};
-                bansList = res.bans || [];
+                grid.innerHTML = filtered.map((m) => {
+                    const current = normalizeProtVal(prots[m.key] !== undefined ? prots[m.key] : true, m.type);
+                    const original = normalizeProtVal(origProts[m.key] !== undefined ? origProts[m.key] : true, m.type);
+                    const dirtyClass = current !== original ? ' is-dirty' : '';
 
-                // İstatistikleri Güncelle
-                const protections = serverConfig.Protections || {};
-                renderProtections(protections);
-                renderThresholds(serverConfig);
-                renderBans(bansList);
-                renderLogs(res.recentLogs || []);
+                    let controlsHtml = '';
+                    if (m.type === 'toggle') {
+                        controlsHtml = `
+                            <div class="mode-group binary">
+                                <button type="button" class="mode-opt ${current === 'true' ? 'active-true' : ''}" data-key="${m.key}" data-val="true">Açık</button>
+                                <button type="button" class="mode-opt ${current === 'off' ? 'active-off' : ''}" data-key="${m.key}" data-val="false">Kapalı</button>
+                            </div>
+                        `;
+                    } else {
+                        const opts = [
+                            ['true', 'Oto', 'active-true'],
+                            ['ban', 'Ban', 'active-ban'],
+                            ['kick', 'Kick', 'active-kick'],
+                            ['log', 'Log', 'active-log'],
+                            ['off', 'Kapalı', 'active-off']
+                        ];
+                        controlsHtml = `<div class="mode-group">` + opts.map(([v, lbl, cls]) => `
+                            <button type="button" class="mode-opt ${current === v ? cls : ''}" data-key="${m.key}" data-val="${v}">${lbl}</button>
+                        `).join('') + `</div>`;
+                    }
 
-                const playerCount = res.playerCount !== undefined ? res.playerCount : 0;
-                document.getElementById('statPlayers').innerText = playerCount;
-                document.getElementById('statBans').innerText = bansList.length;
-                document.getElementById('statLogs').innerText = (res.recentLogs || []).length;
-                
-                const serverName = res.serverName || serverConfig.ServerName || "ONLY AC Ultimate";
-                document.getElementById('serverHeaderInfo').innerHTML = `
-                    <i data-lucide="server" class="w-3.5 h-3.5 text-emerald-400"></i> ${serverName} &bull; ${playerCount} Oyuncu Çevrimiçi
-                `;
-
-                lucide.createIcons();
-            } catch (e) {
-                console.error("Dashboard verisi yüklenirken hata:", e);
-            }
-        }
-
-        // Koruma Modülleri Render
-        function renderProtections(protections) {
-            const container = document.getElementById('protectionsContainer');
-            container.innerHTML = '';
-            let activeCount = 0;
-            let totalCount = 0;
-
-            for (const [key, info] of Object.entries(protectionDefinitions)) {
-                totalCount++;
-                const isEnabled = protections[key] !== false;
-                if (isEnabled) activeCount++;
-
-                const card = document.createElement('div');
-                card.id = `card-prot-${key}`;
-                card.dataset.category = info.category;
-                card.className = `glass-card p-4 rounded-2xl flex items-start justify-between gap-4 border border-slate-800/80 hover:border-slate-700 transition-all ${
-                    (activeCategory !== 'all' && activeCategory !== info.category) ? 'hidden' : ''
-                }`;
-
-                card.innerHTML = `
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2">
-                            <h4 class="text-sm font-bold text-white">${info.title}</h4>
-                            <span class="text-[10px] font-mono text-slate-500 bg-slate-900 px-1.5 py-0.5 rounded">${key}</span>
+                    return `
+                        <div class="prot-card${dirtyClass}">
+                            <div>
+                                <div class="prot-head">
+                                    <div>
+                                        <div class="prot-name">${escapeHtml(m.name)}</div>
+                                        <div class="prot-key">${escapeHtml(m.key)}</div>
+                                    </div>
+                                    <span class="prot-cat">${escapeHtml(m.cat)}</span>
+                                </div>
+                                <p class="prot-desc" style="margin-top: 8px;">${escapeHtml(m.desc)}</p>
+                            </div>
+                            ${controlsHtml}
                         </div>
-                        <p class="text-xs text-slate-400 leading-relaxed">${info.desc}</p>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer flex-shrink-0 mt-0.5">
-                        <input type="checkbox" id="prot-${key}" ${isEnabled ? 'checked' : ''} class="sr-only peer" onchange="updateProtection('${key}', this.checked)">
-                        <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
-                    </label>
-                `;
-                container.appendChild(card);
+                    `;
+                }).join('');
+
+                grid.querySelectorAll('.mode-opt').forEach((btn) => {
+                    btn.onclick = () => {
+                        const k = btn.dataset.key;
+                        const raw = btn.dataset.val;
+                        workingConfig.Protections = workingConfig.Protections || {};
+                        workingConfig.Protections[k] = raw === 'true' ? true : (raw === 'false' ? false : raw);
+                        markDirty(true);
+                        updateStats();
+                        renderProtections();
+                    };
+                });
             }
 
-            document.getElementById('statProtections').innerText = `${activeCount} / ${totalCount}`;
-        }
+            function getNested(obj, path) {
+                return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : undefined), obj);
+            }
 
-        function filterCategory(cat) {
-            activeCategory = cat;
-            document.querySelectorAll('.cat-pill').forEach(btn => {
-                btn.classList.remove('bg-brand-600', 'text-white');
-                btn.classList.add('bg-slate-900', 'text-slate-400');
-            });
-            event.target.classList.remove('bg-slate-900', 'text-slate-400');
-            event.target.classList.add('bg-brand-600', 'text-white');
-
-            document.querySelectorAll('#protectionsContainer > div').forEach(card => {
-                if (cat === 'all' || card.dataset.category === cat) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
+            function setNested(obj, path, val) {
+                const parts = path.split('.');
+                let cur = obj;
+                for (let i = 0; i < parts.length - 1; i++) {
+                    if (!cur[parts[i]] || typeof cur[parts[i]] !== 'object') cur[parts[i]] = {};
+                    cur = cur[parts[i]];
                 }
-            });
-        }
-
-        function setAllProtections(enable) {
-            if (!serverConfig.Protections) serverConfig.Protections = {};
-            for (const key of Object.keys(protectionDefinitions)) {
-                serverConfig.Protections[key] = enable;
-                const el = document.getElementById(`prot-${key}`);
-                if (el) el.checked = enable;
+                cur[parts[parts.length - 1]] = val;
             }
-            renderProtections(serverConfig.Protections);
-            showToast(enable ? "Tüm korumalar aktif edildi (Kaydetmeyi unutmayın)" : "Tüm korumalar kapatıldı", "info");
-        }
 
-        function updateProtection(key, val) {
-            if (!serverConfig.Protections) serverConfig.Protections = {};
-            serverConfig.Protections[key] = val;
-            let activeCount = 0;
-            for (const k of Object.keys(protectionDefinitions)) {
-                if (serverConfig.Protections[k] !== false) activeCount++;
+            function renderThresholds() {
+                if (!workingConfig) return;
+                const box = el('thresholdsContainer');
+                box.innerHTML = THRESHOLDS.map((t) => {
+                    const val = getNested(workingConfig, t.key);
+                    if (t.kind === 'select') {
+                        return `
+                            <div class="thresh-card">
+                                <div class="thresh-top"><span class="thresh-title">${escapeHtml(t.label)}</span></div>
+                                <select class="input input-sm" data-tkey="${t.key}">
+                                    ${t.opts.map(([ov, ol]) => `<option value="${ov}" ${String(val || 'ban') === ov ? 'selected' : ''}>${escapeHtml(ol)}</option>`).join('')}
+                                </select>
+                            </div>
+                        `;
+                    }
+                    if (t.kind === 'bool') {
+                        const checked = val !== false;
+                        return `
+                            <div class="thresh-card">
+                                <div class="thresh-top">
+                                    <span class="thresh-title">${escapeHtml(t.label)}</span>
+                                    <span class="thresh-val">${checked ? 'Aktif' : 'Pasif'}</span>
+                                </div>
+                                <select class="input input-sm" data-tkey="${t.key}" data-bool="1">
+                                    <option value="true" ${checked ? 'selected' : ''}>Aktif — Yan hesapları engelle</option>
+                                    <option value="false" ${!checked ? 'selected' : ''}>Pasif — Yalnızca logla</option>
+                                </select>
+                            </div>
+                        `;
+                    }
+                    const num = Number(val !== undefined ? val : t.min);
+                    return `
+                        <div class="thresh-card">
+                            <div class="thresh-top">
+                                <span class="thresh-title">${escapeHtml(t.label)}</span>
+                                <span class="thresh-val" id="tval-${t.key.replace(/\./g, '_')}">${num}</span>
+                            </div>
+                            <input type="range" min="${t.min}" max="${t.max}" step="${t.step}" value="${num}" data-tkey="${t.key}" style="accent-color: var(--mint); cursor: pointer;">
+                        </div>
+                    `;
+                }).join('');
+
+                box.querySelectorAll('[data-tkey]').forEach((input) => {
+                    input.oninput = input.onchange = () => {
+                        const k = input.dataset.tkey;
+                        let val;
+                        if (input.dataset.bool) {
+                            val = input.value === 'true';
+                            const label = input.parentElement.querySelector('.thresh-val');
+                            if (label) label.textContent = val ? 'Aktif' : 'Pasif';
+                        } else if (input.tagName === 'SELECT') {
+                            val = input.value;
+                        } else {
+                            val = Number(input.value);
+                            const vEl = el('tval-' + k.replace(/\./g, '_'));
+                            if (vEl) vEl.textContent = val;
+                        }
+                        setNested(workingConfig, k, val);
+                        markDirty(true);
+                    };
+                });
             }
-            document.getElementById('statProtections').innerText = `${activeCount} / ${Object.keys(protectionDefinitions).length}`;
-        }
 
-        // Limit & Eşik Senkronizasyonu
-        function syncThreshold(field, val, unit) {
-            const num = parseFloat(val);
-            const slider = document.getElementById(`slider-${field}`);
-            const input = document.getElementById(`limit-${field}`);
-            const label = document.getElementById(`val-${field}`);
+            function renderWebhookForm() {
+                if (!workingConfig) return;
+                el('cfgServerName').value = workingConfig.ServerName || '';
+                el('cfgAcePerm').value = workingConfig.AcePermission || '465ac.bypass';
+                el('cfgScreenshot').value = workingConfig.ScreenCaptureEnabled === false ? 'false' : 'true';
+                el('cfgWebhook').value = '';
 
-            if (slider && slider.value !== val) slider.value = num;
-            if (input && input.value !== val) input.value = num;
-            if (label) label.innerText = `${num} ${unit}`;
-
-            serverConfig[field] = num;
-        }
-
-        function renderThresholds(cfg) {
-            const mapping = [
-                { id: 'MaxFootSpeed', unit: 'm/s', def: 16.0 },
-                { id: 'MaxVehicleSpeedKMH', unit: 'km/s', def: 350.0 },
-                { id: 'MaxTeleportDistance', unit: 'm', def: 85.0 },
-                { id: 'MaxShootDistance', unit: 'm', def: 250.0 },
-                { id: 'MaxWeaponDamage', unit: 'HP', def: 160 },
-                { id: 'MaxMeleeDamage', unit: 'HP', def: 95 },
-                { id: 'AimbotAngleThreshold', unit: '°', def: 15.0 },
-                { id: 'MaxConsecutiveSprintSeconds', unit: 'sn', def: 60 },
-                { id: 'HeartbeatTimeoutSeconds', unit: 'sn', def: 30 }
-            ];
-
-            mapping.forEach(m => {
-                const val = cfg[m.id] !== undefined ? cfg[m.id] : m.def;
-                syncThreshold(m.id, val, m.unit);
-            });
-
-            if (document.getElementById('cfg-DiscordWebhook')) 
-                document.getElementById('cfg-DiscordWebhook').value = cfg.DiscordWebhook || '';
-            if (document.getElementById('cfg-ServerName')) 
-                document.getElementById('cfg-ServerName').value = cfg.ServerName || '';
-            if (document.getElementById('cfg-AcePermission')) 
-                document.getElementById('cfg-AcePermission').value = cfg.AcePermission || '';
-            if (document.getElementById('cfg-DefaultAction')) 
-                document.getElementById('cfg-DefaultAction').value = cfg.DefaultAction || 'ban';
-            if (document.getElementById('cfg-ScreenCaptureEnabled')) 
-                document.getElementById('cfg-ScreenCaptureEnabled').checked = cfg.ScreenCaptureEnabled !== false;
-        }
-
-        function resetThresholdsDefault() {
-            const defaults = {
-                MaxFootSpeed: 16.0,
-                MaxVehicleSpeedKMH: 350.0,
-                MaxTeleportDistance: 85.0,
-                MaxShootDistance: 250.0,
-                MaxWeaponDamage: 160,
-                MaxMeleeDamage: 95,
-                AimbotAngleThreshold: 15.0,
-                MaxConsecutiveSprintSeconds: 60,
-                HeartbeatTimeoutSeconds: 30
-            };
-            for (const [k, v] of Object.entries(defaults)) {
-                serverConfig[k] = v;
+                const badge = el('webhookStatusBadge');
+                if (pendingWebhookClear) {
+                    badge.className = 'tag tag-amber';
+                    badge.textContent = 'Kaydedilince Sıfırlanacak';
+                } else if (workingConfig.HasDiscordWebhook) {
+                    const tail = String(workingConfig.DiscordWebhook || '').replace('__MASKED__', '');
+                    badge.className = 'tag tag-mint';
+                    badge.textContent = tail ? `Kayıtlı Webhook (...${tail})` : 'Kayıtlı Webhook Aktif';
+                } else {
+                    badge.className = 'tag tag-slate';
+                    badge.textContent = 'Kayıtlı Webhook Yok';
+                }
             }
-            renderThresholds(serverConfig);
-            showToast("Eşik değerleri varsayılana döndürüldü.", "info");
-        }
 
-        // Ban Listesi Render
-        function renderBans(bans) {
-            const tbody = document.getElementById('bansTableBody');
-            tbody.innerHTML = '';
+            function renderBans() {
+                const bans = (serverState && serverState.bans) || [];
+                const q = banQuery.trim().toLowerCase();
+                const filtered = bans.filter((b) => {
+                    if (!q) return true;
+                    return String(b.id || '').toLowerCase().includes(q)
+                        || String(b.name || '').toLowerCase().includes(q)
+                        || String(b.reason || '').toLowerCase().includes(q);
+                });
 
-            if (!bans || !bans.length) {
-                tbody.innerHTML = `
+                const tbody = el('bansTableBody');
+                if (!filtered.length) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 26px; color: var(--text-muted);">Görüntülenecek yasak kaydı yok.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = filtered.map((b) => `
                     <tr>
-                        <td colspan="6" class="py-10 text-center text-slate-500">
-                            <i data-lucide="shield-check" class="w-8 h-8 mx-auto mb-2 text-slate-600"></i>
-                            Kayıtlı aktif bir yasaklama bulunmuyor. Sunucunuz tertemiz!
+                        <td class="mono" style="color: var(--mint);">${escapeHtml(b.id)}</td>
+                        <td style="font-weight: 600;">${escapeHtml(b.name || 'Bilinmeyen')}</td>
+                        <td>${escapeHtml(b.reason || '-')}</td>
+                        <td><span class="tag ${b.expire === 'PERMANENT' ? 'tag-red' : 'tag-amber'}">${escapeHtml(formatExpire(b.expire))}</span></td>
+                        <td>${escapeHtml(b.bannedBy || '465 AC')}</td>
+                        <td style="text-align: right;">
+                            <button type="button" class="btn btn-mint btn-xs" data-unban="${escapeHtml(b.id)}">Banı Kaldır</button>
                         </td>
                     </tr>
-                `;
-                document.getElementById('bansCountInfo').innerText = "0 kayıt listeleniyor";
-                lucide.createIcons();
-                return;
+                `).join('');
+
+                tbody.querySelectorAll('[data-unban]').forEach((btn) => {
+                    btn.onclick = async () => {
+                        const banId = btn.dataset.unban;
+                        btn.disabled = true;
+                        try {
+                            await apiFetch('/api/unban', { method: 'POST', body: JSON.stringify({ banId }) });
+                            showToast(`${banId} yasağı kaldırıldı.`);
+                            await loadStatus();
+                        } catch (e) {
+                            showToast(e.message, true);
+                            btn.disabled = false;
+                        }
+                    };
+                });
             }
 
-            bans.forEach(b => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-900/50 transition-colors group";
-                const ids = b.identifiers || {};
-                const idBadges = [];
-                if (ids.steam && ids.steam !== 'N/A') idBadges.push(`<span class="px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 text-[10px]">Steam</span>`);
-                if (ids.discord && ids.discord !== 'N/A') idBadges.push(`<span class="px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 text-[10px]">Discord</span>`);
-                if (ids.license && ids.license !== 'N/A') idBadges.push(`<span class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[10px]">License</span>`);
-
-                tr.innerHTML = `
-                    <td class="py-3.5 px-4 font-mono text-xs text-red-400 font-semibold">${b.id || '-'}</td>
-                    <td class="py-3.5 px-4 font-semibold text-white">${b.name || 'Bilinmeyen'}</td>
-                    <td class="py-3.5 px-4 text-slate-300 text-xs">${b.reason || 'Hile Tespiti'}</td>
-                    <td class="py-3.5 px-4 text-xs text-slate-400 font-mono">${b.date || '-'}</td>
-                    <td class="py-3.5 px-4">
-                        <button onclick="showIdentifiersModal('${b.id}', '${encodeURIComponent(JSON.stringify(ids))}')" class="flex items-center gap-1.5 hover:opacity-80 transition-opacity">
-                            ${idBadges.join(' ') || '<span class="text-xs text-slate-500">Detay Yok</span>'}
-                            <i data-lucide="external-link" class="w-3 h-3 text-slate-500"></i>
-                        </button>
-                    </td>
-                    <td class="py-3.5 px-4 text-right">
-                        <button onclick="unbanPlayer('${b.id}')" class="px-3 py-1.5 bg-red-600/15 hover:bg-red-600 text-red-400 hover:text-white rounded-xl text-xs font-semibold transition-all border border-red-500/20 active:scale-95">
-                            Yasağı Kaldır
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('bansCountInfo').innerText = `${bans.length} aktif yasaklama kaydı`;
-            lucide.createIcons();
-        }
-
-        function filterBans() {
-            const query = (document.getElementById('banSearchInput').value || '').toLowerCase();
-            const filtered = bansList.filter(b => {
-                const name = (b.name || '').toLowerCase();
-                const id = (b.id || '').toLowerCase();
-                const reason = (b.reason || '').toLowerCase();
-                return name.includes(query) || id.includes(query) || reason.includes(query);
-            });
-            renderBans(filtered);
-        }
-
-        function showIdentifiersModal(banId, idsEncoded) {
-            const ids = JSON.parse(decodeURIComponent(idsEncoded));
-            document.getElementById('idModalTitle').innerText = `Ban Tanımlayıcıları: ${banId}`;
-            const content = document.getElementById('idModalContent');
-            content.innerHTML = '';
-
-            for (const [key, val] of Object.entries(ids)) {
-                const row = document.createElement('div');
-                row.className = "flex items-center justify-between p-2.5 rounded-xl bg-slate-950/80 border border-slate-800";
-                row.innerHTML = `
-                    <span class="text-slate-400 uppercase font-semibold text-[11px]">${key}:</span>
-                    <span class="text-white select-all">${val}</span>
-                `;
-                content.appendChild(row);
-            }
-
-            document.getElementById('identifiersModal').classList.remove('hidden');
-            lucide.createIcons();
-        }
-
-        function closeIdentifiersModal() {
-            document.getElementById('identifiersModal').classList.add('hidden');
-        }
-
-        // Ban Kaldırma (Unban)
-        async function unbanPlayer(banId) {
-            if (!confirm(`"${banId}" numaralı yasaklama kaydını kaldırmak istediğinize emin misiniz?`)) return;
-
-            try {
-                const res = await fetch('/ONLY_AC/api/unban', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': currentAuthToken },
-                    body: JSON.stringify({ banId: banId })
-                }).then(r => r.json());
-
-                if (res.success) {
-                    showToast(`${banId} numaralı ban başarıyla kaldırıldı!`, "success");
-                    await loadDashboardData();
-                } else {
-                    showToast("Ban kaldırılamadı!", "error");
+            function renderLogs() {
+                const logs = (serverState && serverState.recentLogs) || [];
+                const box = el('logsContainer');
+                if (!logs.length) {
+                    box.innerHTML = '<div style="text-align:center; padding: 28px; color: var(--text-muted);">Henüz tespit kaydı yok.</div>';
+                    return;
                 }
-            } catch (e) {
-                showToast("Sunucu iletişim hatası!", "error");
+
+                box.innerHTML = logs.map((l) => {
+                    const act = String(l.action || 'log').toLowerCase();
+                    const cls = act === 'ban' ? 'tag-red' : (act === 'kick' ? 'tag-amber' : 'tag-mint');
+                    return `
+                        <div class="log-row">
+                            <div style="min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <span class="tag ${cls}">${escapeHtml(act.toUpperCase())}</span>
+                                    <span style="font-weight: 700; font-size: 13px;">${escapeHtml(l.player || 'Bilinmeyen')}</span>
+                                    <span style="font-size: 12.5px; color: var(--mint);">— ${escapeHtml(l.reason || '')}</span>
+                                </div>
+                                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">${escapeHtml(l.details || 'Detay yok')}</div>
+                            </div>
+                            <span class="mono" style="font-size: 11.5px; color: var(--text-muted); flex-shrink: 0;">${escapeHtml(l.time || '')}</span>
+                        </div>
+                    `;
+                }).join('');
             }
-        }
 
-        // Canlı Loglar Render
-        function renderLogs(logs) {
-            const container = document.getElementById('logsContainer');
-            container.innerHTML = '';
+            async function loadPlayers() {
+                try {
+                    const data = await apiFetch('/api/players');
+                    const list = data.players || [];
+                    const tbody = el('playersTableBody');
+                    if (!list.length) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 26px; color: var(--text-muted);">Şu an çevrimiçi oyuncu bulunmuyor.</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = list.map((p) => {
+                        const lic = (p.identifiers && p.identifiers.license) || 'N/A';
+                        const threat = Number(p.threat || 0);
+                        const threatCls = threat >= 45 ? 'tag-red' : (threat > 15 ? 'tag-amber' : 'tag-slate');
+                        return `
+                            <tr>
+                                <td class="mono" style="color: var(--mint); font-weight: 700;">#${escapeHtml(p.id)}</td>
+                                <td style="font-weight: 600;">${escapeHtml(p.name)}</td>
+                                <td class="mono">${escapeHtml(p.ping)}ms</td>
+                                <td>
+                                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                        ${p.bypass ? '<span class="tag tag-mint">Bypass</span>' : '<span class="tag tag-slate">Oyuncu</span>'}
+                                        <span class="tag ${threatCls}">Risk ${threat}</span>
+                                    </div>
+                                </td>
+                                <td class="mono" style="font-size: 11.5px; color: var(--text-secondary); max-width: 190px; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(lic)}</td>
+                                <td style="text-align: right;">
+                                    <div style="display: inline-flex; gap: 6px;">
+                                        <button type="button" class="btn btn-mint btn-xs" data-lookup-id="${escapeHtml(lic)}">İstihbarat</button>
+                                        <button type="button" class="btn btn-amber btn-xs" data-kick-id="${escapeHtml(p.id)}" data-pname="${escapeHtml(p.name)}">Kick</button>
+                                        <button type="button" class="btn btn-danger btn-xs" data-ban-id="${escapeHtml(p.id)}" data-pname="${escapeHtml(p.name)}">Ban</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
 
-            if (!logs || !logs.length) {
-                container.innerHTML = `
-                    <div class="py-12 text-center text-slate-500">
-                        <i data-lucide="shield-check" class="w-8 h-8 mx-auto mb-2 text-slate-600"></i>
-                        Henüz kayıtlı bir hile tespiti veya şüpheli hareket bulunmuyor.
-                    </div>
-                `;
-                lucide.createIcons();
-                return;
-            }
-
-            logs.forEach(l => {
-                const d = document.createElement('div');
-                const action = (l.action || 'log').toLowerCase();
-                let badgeClass = "bg-slate-800 text-slate-300 border-slate-700";
-                if (action === 'ban') badgeClass = "bg-red-500/20 text-red-400 border-red-500/30";
-                else if (action === 'kick') badgeClass = "bg-amber-500/20 text-amber-400 border-amber-500/30";
-
-                d.className = "p-3.5 bg-slate-900/70 hover:bg-slate-900 rounded-2xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs transition-colors";
-                d.innerHTML = `
-                    <div class="flex items-center gap-3 flex-wrap">
-                        <span class="font-mono text-[11px] text-slate-400">${l.time || 'Canlı'}</span>
-                        <span class="px-2 py-0.5 rounded-lg border text-[10px] font-bold uppercase tracking-wider ${badgeClass}">${action}</span>
-                        <span class="font-bold text-white">${l.player || 'Bilinmeyen'}</span>
-                        <span class="text-slate-300 font-medium">${l.reason || 'Tespit'}</span>
-                    </div>
-                    <span class="text-slate-500 font-mono text-[11px] bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800/80 truncate max-w-md">${l.details || 'Detay yok'}</span>
-                `;
-                container.appendChild(d);
-            });
-        }
-
-        // Tüm Ayarları Kaydetme
-        async function saveAllSettings() {
-            // Eşikleri topla
-            const thresholdFields = [
-                'MaxFootSpeed', 'MaxVehicleSpeedKMH', 'MaxTeleportDistance',
-                'MaxShootDistance', 'MaxWeaponDamage', 'MaxMeleeDamage',
-                'AimbotAngleThreshold', 'MaxConsecutiveSprintSeconds', 'HeartbeatTimeoutSeconds'
-            ];
-            thresholdFields.forEach(f => {
-                const el = document.getElementById(`limit-${f}`);
-                if (el) serverConfig[f] = parseFloat(el.value) || serverConfig[f];
-            });
-
-            // Discord & Genel Ayarları topla
-            serverConfig.DiscordWebhook = document.getElementById('cfg-DiscordWebhook').value;
-            serverConfig.ServerName = document.getElementById('cfg-ServerName').value;
-            serverConfig.AcePermission = document.getElementById('cfg-AcePermission').value;
-            serverConfig.DefaultAction = document.getElementById('cfg-DefaultAction').value;
-            serverConfig.ScreenCaptureEnabled = document.getElementById('cfg-ScreenCaptureEnabled').checked;
-
-            try {
-                const res = await fetch('/ONLY_AC/api/config', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': currentAuthToken },
-                    body: JSON.stringify({ config: serverConfig })
-                }).then(r => r.json()).catch(() => ({ success: false }));
-
-                if (res.success) {
-                    showToast("Tüm ayarlar kaydedildi ve sunucuya uygulandı!", "success");
-                    await loadDashboardData();
-                } else {
-                    showToast("Ayarlar kaydedilirken hata oluştu!", "error");
+                    tbody.querySelectorAll('[data-kick-id]').forEach((btn) => {
+                        btn.onclick = () => openActionModal('kick', { id: Number(btn.dataset.kickId), name: btn.dataset.pname });
+                    });
+                    tbody.querySelectorAll('[data-ban-id]').forEach((btn) => {
+                        btn.onclick = () => openActionModal('ban', { id: Number(btn.dataset.banId), name: btn.dataset.pname });
+                    });
+                    tbody.querySelectorAll('[data-lookup-id]').forEach((btn) => {
+                        btn.onclick = () => {
+                            el('lookupInput').value = btn.dataset.lookupId;
+                            runLookup(btn.dataset.lookupId);
+                        };
+                    });
+                } catch (e) {
+                    showToast(e.message, true);
                 }
-            } catch (e) {
-                showToast("Sunucu iletişim hatası!", "error");
             }
-        }
 
-        // Sekme Değiştirme
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(el => {
-                el.classList.remove('bg-brand-600/20', 'text-brand-400', 'border', 'border-brand-500/30');
-                el.classList.add('text-slate-400');
+            async function runLookup(query) {
+                const q = String(query || '').trim();
+                try {
+                    const data = await apiFetch('/api/lookup?q=' + encodeURIComponent(q), {
+                        headers: q ? { 'X-Lookup-Query': q } : {}
+                    });
+                    const results = data.results || [];
+                    const box = el('lookupResults');
+                    if (!results.length) {
+                        box.innerHTML = '<div style="grid-column: 1 / -1; color: var(--text-muted); font-size: 12.5px; padding: 14px 0;">Eşleşen oyuncu profili bulunamadı.</div>';
+                        return;
+                    }
+                    box.innerHTML = results.map((r) => {
+                        const alts = r.altAccounts || [];
+                        const notes = r.scanNotes || [];
+                        return `
+                            <div class="lookup-card">
+                                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                                    <span style="font-weight: 700; font-size: 14px;">${escapeHtml(r.name || 'Bilinmeyen')}</span>
+                                    <span class="tag ${r.banned ? 'tag-red' : 'tag-mint'}">${r.banned ? 'BANLI' : 'TEMİZ'}</span>
+                                </div>
+                                <div class="mono" style="font-size: 11px; color: var(--text-secondary); word-break: break-all;">${escapeHtml(r.license)}</div>
+                                <div style="font-size: 11.5px; color: var(--text-muted);">
+                                    İlk: ${escapeHtml(r.firstSeen || '-')} | Son: ${escapeHtml(r.lastSeen || '-')}
+                                </div>
+                                <div style="display:flex; gap: 6px; flex-wrap: wrap;">
+                                    <span class="tag tag-slate">Yan Hesap: ${alts.length}</span>
+                                    <span class="tag tag-slate">SS/Not: ${notes.length}</span>
+                                </div>
+                                ${notes.length ? `<div style="font-size: 11.5px; color: var(--text-secondary); border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px;">Son Not: <b>${escapeHtml(notes[0].status || '')}</b> — ${escapeHtml(notes[0].note || '')}</div>` : ''}
+                                <div style="display:flex; justify-content:flex-end; margin-top:4px;">
+                                    <button type="button" class="btn btn-surface btn-xs" data-scan-lic="${escapeHtml(r.license)}" data-scan-name="${escapeHtml(r.name)}">SS / Ocean Notu Ekle</button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    box.querySelectorAll('[data-scan-lic]').forEach((btn) => {
+                        btn.onclick = () => openActionModal('scan', { license: btn.dataset.scanLic, name: btn.dataset.scanName });
+                    });
+                } catch (e) {
+                    showToast(e.message, true);
+                }
+            }
+
+            function openActionModal(mode, target) {
+                modalContext = Object.assign({ mode }, target);
+                el('modalReasonInput').value = '';
+                el('modalDurationWrap').classList.toggle('hidden', mode !== 'ban');
+                el('modalStatusWrap').classList.toggle('hidden', mode !== 'scan');
+                if (mode === 'kick') {
+                    el('modalTitle').textContent = `Oyuncuyu At: ${target.name} (#${target.id})`;
+                    el('modalSub').textContent = 'Oyuncu sunucudan DropPlayer ile anında uzaklaştırılır.';
+                    el('modalReasonLabel').textContent = 'Atılma Sebebi';
+                } else if (mode === 'ban') {
+                    el('modalTitle').textContent = `Oyuncuyu Yasakla: ${target.name} (#${target.id})`;
+                    el('modalSub').textContent = 'HWID Token, Lisans ve Discord verileri kalıcı yasak listesine eklenir.';
+                    el('modalReasonLabel').textContent = 'Yasaklama Sebebi';
+                } else {
+                    el('modalTitle').textContent = `SS / Ocean Tarama Notu: ${target.name}`;
+                    el('modalSub').textContent = target.license;
+                    el('modalReasonLabel').textContent = 'Tarama Notu';
+                }
+                el('actionModal').classList.remove('hidden');
+                el('modalReasonInput').focus();
+            }
+
+            function closeModal() {
+                el('actionModal').classList.add('hidden');
+                modalContext = null;
+            }
+
+            async function loadStatus() {
+                const data = await apiFetch('/api/status');
+                serverState = data;
+                if (!isDirty) {
+                    workingConfig = cloneConfig(data.config || {});
+                    pendingWebhookClear = false;
+                }
+                updateStats();
+                renderCategories();
+                renderProtections();
+                renderThresholds();
+                renderBans();
+                renderLogs();
+                renderWebhookForm();
+                if (currentTab === 'players') {
+                    loadPlayers();
+                }
+            }
+
+            function switchTab(tabId) {
+                currentTab = tabId;
+                ['protections', 'thresholds', 'players', 'bans', 'logs', 'webhook'].forEach((id) => {
+                    el('tab-' + id).classList.toggle('hidden', id !== tabId);
+                });
+                document.querySelectorAll('[data-tab]').forEach((btn) => {
+                    btn.classList.toggle('active', btn.dataset.tab === tabId);
+                });
+                if (tabId === 'players') {
+                    loadPlayers();
+                }
+            }
+
+            function enterDashboard() {
+                el('authScreen').classList.add('hidden');
+                el('dashboard').classList.remove('hidden');
+                loadStatus().catch((e) => showToast(e.message, true));
+                clearInterval(pollTimer);
+                pollTimer = setInterval(() => {
+                    if (!el('dashboard').classList.contains('hidden')) {
+                        loadStatus().catch(() => {});
+                    }
+                }, 10000);
+            }
+
+            function logout(showMsg = true) {
+                localStorage.removeItem(TOKEN_KEY);
+                authToken = '';
+                clearInterval(pollTimer);
+                isDirty = false;
+                el('dashboard').classList.add('hidden');
+                el('authScreen').classList.remove('hidden');
+                el('passwordInput').value = '';
+                if (showMsg) showToast('Güvenli çıkış yapıldı.');
+            }
+
+            // Events
+            el('loginForm').onsubmit = async (e) => {
+                e.preventDefault();
+                el('loginError').classList.add('hidden');
+                el('loginBtn').disabled = true;
+                try {
+                    const data = await apiFetch('/api/auth', {
+                        method: 'POST',
+                        body: JSON.stringify({ password: el('passwordInput').value })
+                    });
+                    if (data.success && data.token) {
+                        authToken = data.token;
+                        localStorage.setItem(TOKEN_KEY, authToken);
+                        enterDashboard();
+                    } else {
+                        throw new Error(data.message || 'Hatalı şifre.');
+                    }
+                } catch (err) {
+                    el('loginError').textContent = err.message;
+                    el('loginError').classList.remove('hidden');
+                } finally {
+                    el('loginBtn').disabled = false;
+                }
+            };
+
+            document.querySelectorAll('[data-tab]').forEach((btn) => {
+                btn.onclick = () => switchTab(btn.dataset.tab);
             });
 
-            const content = document.getElementById('tabContent-' + tabId);
-            const btn = document.getElementById('tabBtn-' + tabId);
-            if (content) content.classList.remove('hidden');
-            if (btn) {
-                btn.classList.add('bg-brand-600/20', 'text-brand-400', 'border', 'border-brand-500/30');
-                btn.classList.remove('text-slate-400');
+            el('moduleSearch').oninput = (e) => { moduleQuery = e.target.value; renderProtections(); };
+            el('banSearch').oninput = (e) => { banQuery = e.target.value; renderBans(); };
+            el('refreshBtn').onclick = () => loadStatus().then(() => showToast('Veriler güncellendi.')).catch((e) => showToast(e.message, true));
+            el('reloadPlayersBtn').onclick = () => loadPlayers().then(() => showToast('Oyuncu listesi güncellendi.'));
+            el('logoutBtn').onclick = () => logout(true);
+
+            el('btnAllDefault').onclick = () => {
+                workingConfig.Protections = workingConfig.Protections || {};
+                MODULES.forEach((m) => { workingConfig.Protections[m.key] = true; });
+                markDirty(true);
+                updateStats();
+                renderProtections();
+            };
+
+            el('btnAllLog').onclick = () => {
+                workingConfig.Protections = workingConfig.Protections || {};
+                MODULES.forEach((m) => {
+                    workingConfig.Protections[m.key] = (m.type === 'toggle') ? true : 'log';
+                });
+                markDirty(true);
+                updateStats();
+                renderProtections();
+            };
+
+            el('cfgServerName').oninput = (e) => { workingConfig.ServerName = e.target.value; markDirty(true); };
+            el('cfgAcePerm').oninput = (e) => { workingConfig.AcePermission = e.target.value; markDirty(true); };
+            el('cfgScreenshot').onchange = (e) => { workingConfig.ScreenCaptureEnabled = (e.target.value === 'true'); markDirty(true); };
+            el('cfgWebhook').oninput = () => { pendingWebhookClear = false; markDirty(true); };
+            el('clearWebhookBtn').onclick = () => {
+                pendingWebhookClear = true;
+                el('cfgWebhook').value = '';
+                markDirty(true);
+                renderWebhookForm();
+            };
+
+            el('discardBtn').onclick = () => {
+                workingConfig = cloneConfig(serverState.config || {});
+                pendingWebhookClear = false;
+                markDirty(false);
+                updateStats();
+                renderProtections();
+                renderThresholds();
+                renderWebhookForm();
+                showToast('Kaydedilmemiş değişiklikler geri alındı.');
+            };
+
+            el('saveConfigBtn').onclick = async () => {
+                const payload = cloneConfig(workingConfig);
+                delete payload.HasDiscordWebhook;
+                const typedWebhook = el('cfgWebhook').value.trim();
+                if (pendingWebhookClear) {
+                    payload.DiscordWebhook = '';
+                } else if (typedWebhook) {
+                    payload.DiscordWebhook = typedWebhook;
+                } else {
+                    delete payload.DiscordWebhook;
+                }
+
+                el('saveConfigBtn').disabled = true;
+                try {
+                    await apiFetch('/api/config', { method: 'POST', body: JSON.stringify({ config: payload }) });
+                    markDirty(false);
+                    pendingWebhookClear = false;
+                    await loadStatus();
+                    showToast('Yapılandırma kaydedildi ve istemcilere senkronize edildi.');
+                } catch (err) {
+                    showToast(err.message, true);
+                } finally {
+                    el('saveConfigBtn').disabled = false;
+                }
+            };
+
+            document.querySelectorAll('[data-clear]').forEach((btn) => {
+                btn.onclick = async () => {
+                    const type = btn.dataset.clear;
+                    btn.disabled = true;
+                    try {
+                        const data = await apiFetch('/api/clear', { method: 'POST', body: JSON.stringify({ type }) });
+                        showToast(`${data.cleared ?? 0} adet entity güvenle temizlendi.`);
+                    } catch (e) {
+                        showToast(e.message, true);
+                    } finally {
+                        btn.disabled = false;
+                    }
+                };
+            });
+
+            el('lookupForm').onsubmit = (e) => {
+                e.preventDefault();
+                runLookup(el('lookupInput').value);
+            };
+
+            el('modalCancelBtn').onclick = closeModal;
+            el('actionModal').onclick = (e) => { if (e.target === el('actionModal')) closeModal(); };
+            el('modalForm').onsubmit = async (e) => {
+                e.preventDefault();
+                if (!modalContext) return;
+                const reason = el('modalReasonInput').value.trim();
+                try {
+                    if (modalContext.mode === 'kick') {
+                        await apiFetch('/api/kick', { method: 'POST', body: JSON.stringify({ playerId: modalContext.id, reason }) });
+                        showToast(`${modalContext.name} sunucudan atıldı.`);
+                        closeModal();
+                        loadPlayers();
+                    } else if (modalContext.mode === 'ban') {
+                        const duration = Number(el('modalDurationSelect').value) || 0;
+                        await apiFetch('/api/ban', { method: 'POST', body: JSON.stringify({ playerId: modalContext.id, reason, duration }) });
+                        showToast(`${modalContext.name} yasaklandı.`);
+                        closeModal();
+                        loadStatus();
+                    } else if (modalContext.mode === 'scan') {
+                        await apiFetch('/api/player/scan', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                license: modalContext.license,
+                                status: el('modalStatusInput').value,
+                                note: reason
+                            })
+                        });
+                        showToast('Tarama notu kaydedildi.');
+                        closeModal();
+                        runLookup(el('lookupInput').value || modalContext.license);
+                    }
+                } catch (err) {
+                    showToast(err.message, true);
+                }
+            };
+
+            if (authToken) {
+                enterDashboard();
             }
-        }
-
-        // Toast Bildirim Gösterici
-        function showToast(msg, type = "success") {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toastMsg');
-            const iconWrapper = document.getElementById('toastIconWrapper');
-            const icon = document.getElementById('toastIcon');
-
-            toastMsg.innerText = msg;
-            if (type === "success") {
-                toast.className = "fixed bottom-6 right-6 z-50 transform translate-y-0 opacity-100 transition-all duration-300 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-emerald-500/30 flex items-center gap-3 font-medium text-sm";
-                iconWrapper.className = "w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0";
-                icon.setAttribute('data-lucide', 'check-circle');
-            } else if (type === "error") {
-                toast.className = "fixed bottom-6 right-6 z-50 transform translate-y-0 opacity-100 transition-all duration-300 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-red-500/30 flex items-center gap-3 font-medium text-sm";
-                iconWrapper.className = "w-8 h-8 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center flex-shrink-0";
-                icon.setAttribute('data-lucide', 'alert-circle');
-            } else {
-                toast.className = "fixed bottom-6 right-6 z-50 transform translate-y-0 opacity-100 transition-all duration-300 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-brand-500/30 flex items-center gap-3 font-medium text-sm";
-                iconWrapper.className = "w-8 h-8 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center flex-shrink-0";
-                icon.setAttribute('data-lucide', 'info');
-            }
-
-            lucide.createIcons();
-
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-24', 'opacity-0');
-            }, 3500);
-        }
-
-        window.onload = init;
+        })();
     </script>
 </body>
 </html>

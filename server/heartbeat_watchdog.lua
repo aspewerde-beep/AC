@@ -1,5 +1,5 @@
 -- =========================================================================
--- ONLY AC v3.0.0 (ULTIMATE EDITION) - ISTEMCI THREAD VE DONDURMA BEKÇİSİ
+-- 465 AC v4.2.0 - İSTEMCİ THREAD FREEZE & HANDSHAKE BEKÇİSİ
 -- =========================================================================
 
 local playerJoinTimes = {}
@@ -14,34 +14,32 @@ AddEventHandler("playerDropped", function()
     playerJoinTimes[src] = nil
 end)
 
-if Config.Protections.AntiThreadFreeze then
-    CreateThread(function()
-        while true do
-            Wait(10000)
+CreateThread(function()
+    while true do
+        Wait(10000)
+        if ONLY_AC_Shared.IsModuleEnabled("AntiThreadFreeze") then
             local currentTime = os.time()
-            local players = GetPlayers()
+            local handshakeTimeout = Config.HandshakeTimeoutSeconds or 40
+            local heartbeatTimeout = Config.HeartbeatTimeoutSeconds or 30
 
-            for _, playerId in ipairs(players) do
+            for _, playerId in ipairs(GetPlayers()) do
                 local src = tonumber(playerId)
                 if src and src > 0 and not ONLY_AC.IsBypass(src) then
                     local lastBeat = ONLY_AC.GetLastHeartbeat(src)
                     local joinTime = playerJoinTimes[src] or currentTime
 
-                    -- 1. Handshake Zaman Aşımı Kontrolü (Client script yüklenmedi veya engellendi)
                     if not lastBeat then
-                        if (currentTime - joinTime) > (Config.HandshakeTimeoutSeconds or 35) then
-                            ONLY_AC.Detect(src, "İstemci Başlatılamadı / Handshake Eksik (AC Bypass Girişimi)", ("Girişten itibaren %s sn geçti"):format(currentTime - joinTime), "kick")
+                        if (currentTime - joinTime) > handshakeTimeout then
+                            ONLY_AC.Detect(src, "İstemci Başlatılamadı / Handshake Eksik", ("Girişten itibaren %s sn geçti"):format(currentTime - joinTime), "kick", "AntiThreadFreeze")
                         end
                     else
-                        -- 2. Heartbeat Sinyal Kesintisi Kontrolü (Thread donduruldu / loop durduruldu)
                         local diff = currentTime - lastBeat
-                        local maxTimeout = Config.HeartbeatTimeoutSeconds or 30
-                        if diff > maxTimeout then
-                            ONLY_AC.Detect(src, "Anti-Cheat Döngüsü Donduruldu / Durduruldu (Thread Freeze)", ("Son sinyal: %s sn önce"):format(diff), "kick")
+                        if diff > heartbeatTimeout then
+                            ONLY_AC.Detect(src, "İstemci Koruma Döngüsü Donduruldu (Thread Freeze)", ("Son sinyal: %s sn önce"):format(diff), "kick", "AntiThreadFreeze")
                         end
                     end
                 end
             end
         end
-    end)
-end
+    end
+end)

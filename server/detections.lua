@@ -1,259 +1,238 @@
 -- =========================================================================
--- ONLY AC v4.1.0 (ENTERPRISE EDITION) - SUNUCU TARAFLI DOĞRUDAN TESPİTLER
--- (ENTITY, EXPLOSION, PARTICLE, CRASHER, PED SPAM, MASS DAMAGE & EVENT GUARDS)
--- Standartlar: FeloxAC v4.1 (Vanity, South, Sound Crashers & Object Whitelist)
+-- 465 AC v4.2.0 - SUNUCU TARAFLI DÜNYA, CRASHER, OBJE & EVENT KORUMALARI
+-- Tek Birleştirilmiş entityCreating, Milisaniye Pencereli Spam & Troll Kalkanı
 -- =========================================================================
 
-local playerExplosions = {}
-local playerEntitySpawns = {}
-local playerParticles = {}
-local playerPedSpawns = {}
-local playerDamageTargets = {}
-local playerWeaponPickups = {}
-local playerSpeechSpam = {}
+local rateBuckets = {
+    entity = {},
+    ped = {},
+    vehicle = {},
+    explosion = {},
+    particle = {},
+    speech = {},
+    fire = {}
+}
 
--- 1. ENTITY SPAWN KORUMASI (Yasaklı Obje / Araç / NPC & Spam Tespiti & Obje Whitelist)
-if Config.Protections.AntiEntitySpam then
-    AddEventHandler("entityCreating", function(entity)
-        if not DoesEntityExist(entity) then return end
+-- Tekrarı önleyen ortak milisaniye tabanlı hız sınırı denetleyicisi
+local function checkRate(bucketName, src, maxCount, windowSec)
+    local nowMs = GetGameTimer()
+    local winMs = (windowSec or 5) * 1000
+    local bucket = rateBuckets[bucketName]
+    local rec = bucket[src]
 
-        local owner = NetworkGetEntityOwner(entity)
-        if not owner or owner <= 0 then return end
+    if not rec or (nowMs - rec.ts) > winMs then
+        bucket[src] = { count = 1, ts = nowMs }
+        return false, 1
+    end
 
-        -- Bypass yetkisi kontrolü
-        if ONLY_AC.IsBypass(owner) then return end
+    rec.count = rec.count + 1
+    return rec.count > maxCount, rec.count
+end
 
-        local model = GetEntityModel(entity)
+-- 1. BİRLEŞTİRİLMİŞ ENTITY, PED, ARAÇ SPAWN & MONEY DROP KORUMASI
+AddEventHandler("entityCreating", function(entity)
+    if not DoesEntityExist(entity) then return end
 
-        -- 🛡️ GÜVENLİ OBJE KONTROLÜ (Object Whitelist - FeloxAC v2.0 Standardı)
-        -- Telefon, defter, şemsiye, yiyecek gibi masum RP objeleri kontrolü atlar
-        if Config.ObjectWhitelist and Config.ObjectWhitelist[model] then
+    local owner = NetworkGetEntityOwner(entity)
+    if not owner or owner <= 0 or ONLY_AC.IsBypass(owner) then return end
+
+    -- Yalnızca script/network tarafından üretilen entity'ler (popType >= 6);
+    -- OneSync trafik/NPC sahiplik geçişlerini (popType <= 5) asla false-ban yapmaz.
+    local popType = GetEntityPopulationType and GetEntityPopulationType(entity) or 6
+    if popType <= 5 then return end
+
+    local model = GetEntityModel(entity)
+    local entityType = GetEntityType(entity) -- 1: Ped, 2: Vehicle, 3: Object
+
+    -- Güvenli RP obje beyaz listesi
+    if Config.ObjectWhitelist and Config.ObjectWhitelist[model] then
+        return
+    end
+
+    -- Yasaklı para paketi / drop objeleri (AntiMoneyDrop)
+    if ONLY_AC_Shared.IsModuleEnabled("AntiMoneyDrop") and Config.MoneyDropModels and Config.MoneyDropModels[model] then
+        CancelEvent()
+        ONLY_AC.Detect(owner, "Sahte Para / Drop Objesi Engellendi (Anti-MoneyDrop)", ("Model Hash: %s"):format(model), "ban", "AntiMoneyDrop")
+        return
+    end
+
+    -- Yasaklı model listesi (Prop / Ağır Araç)
+    if ONLY_AC_Shared.IsModuleEnabled("AntiEntitySpam") and Config.BlacklistedModels and Config.BlacklistedModels[model] then
+        CancelEvent()
+        ONLY_AC.Detect(owner, "Yasaklı Model Spawn Girişimi", ("Model Hash: %s"):format(model), "ban", "AntiEntitySpam")
+        return
+    end
+
+    -- NPC / Ped spam koruması
+    if entityType == 1 and ONLY_AC_Shared.IsModuleEnabled("AntiPedSpam") then
+        local hit, count = checkRate("ped", owner, Config.MaxPedSpawnsPerWindow or 4, Config.PedWindowSeconds or 5)
+        if hit then
+            CancelEvent()
+            ONLY_AC.Detect(owner, "Toplu NPC Basma (Ped Spam)", ("%s sn içinde %s ped"):format(Config.PedWindowSeconds or 5, count), "ban", "AntiPedSpam")
             return
         end
+    end
 
-        -- Yasaklı Model Kontrolü
-        if Config.BlacklistedModels and Config.BlacklistedModels[model] then
+    -- Araç spawn hız koruması
+    if entityType == 2 and ONLY_AC_Shared.IsModuleEnabled("AntiVehicleSpawn") then
+        local hit, count = checkRate("vehicle", owner, Config.MaxEntitySpawnsPerWindow or 6, Config.EntityWindowSeconds or 5)
+        if hit then
             CancelEvent()
-            ONLY_AC.Detect(owner, "Yasaklı Model Spawn Etme Girişimi", ("Model Hash: %s"):format(model), "ban")
+            ONLY_AC.Detect(owner, "Yetkisiz Toplu Araç Spawn (Anti-VehicleSpawn)", ("%s sn içinde %s araç"):format(Config.EntityWindowSeconds or 5, count), "ban", "AntiVehicleSpawn")
             return
         end
+    end
 
-        -- Entity Spam Kontrolü (Crasher Koruması)
-        local currentTime = os.time()
-        if not playerEntitySpawns[owner] then
-            playerEntitySpawns[owner] = { count = 1, timestamp = currentTime }
-        else
-            local record = playerEntitySpawns[owner]
-            if (currentTime - record.timestamp) <= (Config.EntityWindowSeconds or 5) then
-                record.count = record.count + 1
-                if record.count > (Config.MaxEntitySpawnsPerWindow or 6) then
-                    CancelEvent()
-                    ONLY_AC.Detect(owner, "Toplu Obje / Araç Basma (Entity Spam / Crasher)", ("%s saniyede %s entity"):format(Config.EntityWindowSeconds, record.count), "ban")
-                    return
-                end
-            else
-                record.count = 1
-                record.timestamp = currentTime
-            end
-        end
-    end)
-end
-
--- 2. PATLAMA KORUMASI (Blacklisted Explosions & Explosion Spam)
-if Config.Protections.AntiExplosionSpam then
-    AddEventHandler("explosionEvent", function(sender, ev)
-        local src = sender
-        if not src or src <= 0 then return end
-
-        -- Bypass kontrolü
-        if ONLY_AC.IsBypass(src) then return end
-
-        local expType = ev.explosionType
-
-        -- Yasaklı Patlama Türü Kontrolü
-        if Config.BlacklistedExplosions and Config.BlacklistedExplosions[expType] then
+    -- Genel entity crasher spam koruması
+    if ONLY_AC_Shared.IsModuleEnabled("AntiEntitySpam") then
+        local hit, count = checkRate("entity", owner, Config.MaxEntitySpawnsPerWindow or 6, Config.EntityWindowSeconds or 5)
+        if hit then
             CancelEvent()
-            ONLY_AC.Detect(src, "Yasaklı Patlama Türü Oluşturuldu", ("Patlama Tipi: %s"):format(expType), "ban")
+            ONLY_AC.Detect(owner, "Toplu Entity / Obje Spamı (Crasher)", ("%s sn içinde %s entity"):format(Config.EntityWindowSeconds or 5, count), "ban", "AntiEntitySpam")
             return
-        end
-
-        -- Patlama Spam Kontrolü
-        local currentTime = os.time()
-        if not playerExplosions[src] then
-            playerExplosions[src] = { count = 1, timestamp = currentTime }
-        else
-            local record = playerExplosions[src]
-            if (currentTime - record.timestamp) <= (Config.ExplosionWindowSeconds or 5) then
-                record.count = record.count + 1
-                if record.count > (Config.MaxExplosionsPerWindow or 3) then
-                    CancelEvent()
-                    ONLY_AC.Detect(src, "Toplu Patlama Oluşturma (Explosion Spam)", ("%s saniyede %s patlama"):format(Config.ExplosionWindowSeconds, record.count), "ban")
-                    return
-                end
-            else
-                record.count = 1
-                record.timestamp = currentTime
-            end
-        end
-    end)
-end
-
--- 3. PARTİKÜL / EFEKT SPAM KORUMASI (ptFxEvent Crasher Koruması)
-if Config.Protections.AntiParticleSpam then
-    AddEventHandler("ptFxEvent", function(sender, data)
-        local src = sender
-        if not src or src <= 0 then return end
-        if ONLY_AC.IsBypass(src) then return end
-
-        local currentTime = os.time()
-        if not playerParticles[src] then
-            playerParticles[src] = { count = 1, timestamp = currentTime }
-        else
-            local record = playerParticles[src]
-            if (currentTime - record.timestamp) <= (Config.ParticleWindowSeconds or 3) then
-                record.count = record.count + 1
-                if record.count > (Config.MaxParticlePerWindow or 4) then
-                    CancelEvent()
-                    ONLY_AC.Detect(src, "Partikül / Efekt Spamı (FPS Düşürme / Crasher)", ("%s saniyede %s efekt"):format(Config.ParticleWindowSeconds, record.count), "kick")
-                    return
-                end
-            else
-                record.count = 1
-                record.timestamp = currentTime
-            end
-        end
-    end)
-end
-
--- 4. UZAKTAN ANİMASYON DONDURMA KORUMASI (Anti Clear Tasks)
-if Config.Protections.AntiClearTasks then
-    AddEventHandler("clearPedTasksEvent", function(sender, data)
-        local src = sender
-        if not src or src <= 0 then return end
-        if ONLY_AC.IsBypass(src) then return end
-
-        if data and data.pedId and data.pedId ~= GetPlayerPed(src) then
-            CancelEvent()
-            ONLY_AC.Detect(src, "Uzaktan Oyuncu Dondurma (ClearPedTasks Abuse)", "Hedef ped üzerinde yetkisiz işlem", "ban")
-        end
-    end)
-end
-
--- 5. TOPLU NPC BASMA KORUMASI (Anti Ped Spam)
-if Config.Protections.AntiPedSpam then
-    AddEventHandler("entityCreating", function(entity)
-        if not DoesEntityExist(entity) then return end
-        local entityType = GetEntityType(entity)
-        if entityType ~= 1 then return end -- 1 = Ped
-
-        local owner = NetworkGetEntityOwner(entity)
-        if not owner or owner <= 0 then return end
-        if ONLY_AC.IsBypass(owner) then return end
-
-        local currentTime = os.time()
-        if not playerPedSpawns[owner] then
-            playerPedSpawns[owner] = { count = 1, timestamp = currentTime }
-        else
-            local record = playerPedSpawns[owner]
-            if (currentTime - record.timestamp) <= (Config.PedWindowSeconds or 5) then
-                record.count = record.count + 1
-                if record.count > (Config.MaxPedSpawnsPerWindow or 4) then
-                    CancelEvent()
-                    ONLY_AC.Detect(owner, "Toplu NPC Basma (Ped Spam)", ("%s saniyede %s ped"):format(Config.PedWindowSeconds or 5, record.count), "ban")
-                    return
-                end
-            else
-                record.count = 1
-                record.timestamp = currentTime
-            end
-        end
-    end)
-end
-
--- 6. TOPLU HASAR / KILL-ALL KORUMASI (Mass Damage / Rapid Multi-Target Hit)
-AddEventHandler("weaponDamageEvent", function(sender, data)
-    local attacker = sender
-    if not attacker or attacker <= 0 then return end
-    if ONLY_AC.IsBypass(attacker) then return end
-
-    local targetEntity = NetworkGetEntityFromNetworkId(data.hitGlobalId)
-    if not DoesEntityExist(targetEntity) or not IsPedAPlayer(targetEntity) then return end
-
-    local targetPlayer = NetworkGetEntityOwner(targetEntity)
-    if not targetPlayer or targetPlayer <= 0 or targetPlayer == attacker then return end
-
-    local currentTime = os.time()
-    if not playerDamageTargets[attacker] then
-        playerDamageTargets[attacker] = { targets = { [targetPlayer] = true }, timestamp = currentTime }
-    else
-        local record = playerDamageTargets[attacker]
-        if (currentTime - record.timestamp) <= 2 then
-            record.targets[targetPlayer] = true
-            local targetCount = 0
-            for _ in pairs(record.targets) do
-                targetCount = targetCount + 1
-            end
-            if targetCount >= 5 then
-                CancelEvent()
-                ONLY_AC.Detect(attacker, "Toplu Hasar / Kill-All Hilesi (Mass Damage)", ("2 saniyede %s farklı oyuncuya hasar verildi"):format(targetCount), "ban")
-                return
-            end
-        else
-            playerDamageTargets[attacker] = { targets = { [targetPlayer] = true }, timestamp = currentTime }
         end
     end
 end)
 
--- 7. CRASHER SAVUNMASI (Vanity, South & Sound Crasher Filtresi)
-if Config.Protections.AntiCrasher then
-    -- Ses & Konuşma Spamı ile İstemci Çökertme (Vanity Crasher)
-    AddEventHandler("playPedAmbientSpeechEvent", function(sender, data)
-        local src = sender
-        if not src or src <= 0 then return end
-        if ONLY_AC.IsBypass(src) then return end
+-- 2. PATLAMA KORUMASI (Yasaklı Patlama Türleri, Büyük Ölçek & Spam)
+AddEventHandler("explosionEvent", function(sender, ev)
+    local src = sender
+    if not src or src <= 0 or ONLY_AC.IsBypass(src) then return end
+    if not ONLY_AC_Shared.IsModuleEnabled("AntiExplosionSpam") then return end
 
-        local currentTime = os.time()
-        if not playerSpeechSpam[src] then
-            playerSpeechSpam[src] = { count = 1, timestamp = currentTime }
-        else
-            local record = playerSpeechSpam[src]
-            if (currentTime - record.timestamp) <= 1 then
-                record.count = record.count + 1
-                if record.count > 12 then
-                    CancelEvent()
-                    ONLY_AC.Detect(src, "Ses / Konuşma Crasher Saldırısı (Vanity Crasher)", ("1 saniyede %s ambient speech paketi"):format(record.count), "ban")
-                    return
-                end
-            else
-                record.count = 1
-                record.timestamp = currentTime
+    local expType = ev and ev.explosionType
+    if Config.BlacklistedExplosions and expType and Config.BlacklistedExplosions[expType] then
+        CancelEvent()
+        ONLY_AC.Detect(src, "Yasaklı Patlama Türü", ("Patlama Tipi: %s"):format(expType), "ban", "AntiExplosionSpam")
+        return
+    end
+
+    if ev and ev.damageScale and ev.damageScale > 2.5 then
+        CancelEvent()
+        ONLY_AC.Detect(src, "Modifiye Patlama Ölçeği (Explosion Damage Scale)", ("Ölçek: %.1f"):format(ev.damageScale), "ban", "AntiExplosionSpam")
+        return
+    end
+
+    local hit, count = checkRate("explosion", src, Config.MaxExplosionsPerWindow or 3, Config.ExplosionWindowSeconds or 5)
+    if hit then
+        CancelEvent()
+        ONLY_AC.Detect(src, "Toplu Patlama Spamı (Explosion Flood)", ("%s sn içinde %s patlama"):format(Config.ExplosionWindowSeconds or 5, count), "ban", "AntiExplosionSpam")
+    end
+end)
+
+-- 3. PARTİKÜL / EFEKT SPAM KORUMASI
+AddEventHandler("ptFxEvent", function(sender, data)
+    local src = sender
+    if not src or src <= 0 or ONLY_AC.IsBypass(src) then return end
+    if not ONLY_AC_Shared.IsModuleEnabled("AntiParticleSpam") then return end
+
+    if data and data.scale and data.scale > 5.0 then
+        CancelEvent()
+        ONLY_AC.Detect(src, "Dev Ölçekli Partikül Crasher Girişimi", ("Ölçek: %.1f"):format(data.scale), "kick", "AntiParticleSpam")
+        return
+    end
+
+    local hit, count = checkRate("particle", src, Config.MaxParticlePerWindow or 4, Config.ParticleWindowSeconds or 3)
+    if hit then
+        CancelEvent()
+        ONLY_AC.Detect(src, "Partikül / Efekt Spamı (FPS Crasher)", ("%s sn içinde %s efekt"):format(Config.ParticleWindowSeconds or 3, count), "kick", "AntiParticleSpam")
+    end
+end)
+
+-- 4. UZAKTAN OYUNCU DONDURMA KORUMASI (ClearPedTasks)
+AddEventHandler("clearPedTasksEvent", function(sender, data)
+    local src = sender
+    if not src or src <= 0 or ONLY_AC.IsBypass(src) then return end
+    if not ONLY_AC_Shared.IsModuleEnabled("AntiClearTasks") then return end
+
+    if data and data.pedId and data.pedId ~= GetPlayerPed(src) then
+        CancelEvent()
+        ONLY_AC.Detect(src, "Uzaktan Oyuncu Dondurma / Araçtan Atma (ClearPedTasks)", "Başka ped üzerinde yetkisiz görev silme", "ban", "AntiClearTasks")
+    end
+end)
+
+-- 5. CRASHER & TROLL EVENT SAVUNMASI (Ambient Speech, Fire, Weapon Troll)
+AddEventHandler("playPedAmbientSpeechEvent", function(sender, data)
+    local src = sender
+    if not src or src <= 0 or ONLY_AC.IsBypass(src) then return end
+    if not ONLY_AC_Shared.IsModuleEnabled("AntiCrasher") then return end
+
+    local hit, count = checkRate("speech", src, 12, 1)
+    if hit then
+        CancelEvent()
+        ONLY_AC.Detect(src, "Ses / Konuşma Crasher Saldırısı", ("1 saniyede %s paket"):format(count), "ban", "AntiCrasher")
+    end
+end)
+
+AddEventHandler("fireEvent", function(sender, data)
+    local src = sender
+    if not src or src <= 0 or ONLY_AC.IsBypass(src) then return end
+    if not ONLY_AC_Shared.IsModuleEnabled("AntiCrasher") then return end
+
+    local hit, count = checkRate("fire", src, 8, 3)
+    if hit then
+        CancelEvent()
+        ONLY_AC.Detect(src, "Toplu Yangın Çıkarma / Fire Crasher", ("3 sn içinde %s ateş"):format(count), "kick", "AntiCrasher")
+    end
+end)
+
+AddEventHandler("giveWeaponEvent", function(sender, data)
+    local src = sender
+    if not src or src <= 0 or ONLY_AC.IsBypass(src) then return end
+    if not ONLY_AC_Shared.IsModuleEnabled("AntiBlacklistedWeapons") then return end
+
+    if data and ((data.pedId and data.pedId ~= GetPlayerPed(src)) or (data.weaponType and Config.BlacklistedWeapons and Config.BlacklistedWeapons[data.weaponType])) then
+        CancelEvent()
+        ONLY_AC.Detect(src, "Yetkisiz Ağ Silah Verme / Yasaklı Silah (GiveWeaponEvent)", ("Silah Hash: %s"):format(tostring(data.weaponType)), "ban", "AntiBlacklistedWeapons")
+    end
+end)
+
+AddEventHandler("removeAllWeaponsEvent", function(sender, data)
+    local src = sender
+    if not src or src <= 0 or ONLY_AC.IsBypass(src) then return end
+    if not ONLY_AC_Shared.IsModuleEnabled("AntiCrasher") then return end
+
+    if data and data.pedId and data.pedId ~= GetPlayerPed(src) then
+        CancelEvent()
+        ONLY_AC.Detect(src, "Uzaktan Silah Silme Trolü (RemoveAllWeaponsEvent)", "Başka oyuncunun silahlarını silme girişimi", "ban", "AntiCrasher")
+    end
+end)
+
+-- 6. ARAÇ MAGNETO / SÜRÜCÜLÜ ARAÇ ÇEKME KONTROLÜ
+AddEventHandler("requestControlEvent", function(sender, entityNetId)
+    local src = sender
+    if not src or src <= 0 or ONLY_AC.IsBypass(src) then return end
+    if not ONLY_AC_Shared.IsModuleEnabled("AntiVehicleMagneto") then return end
+    if not entityNetId or entityNetId <= 0 then return end
+
+    local entity = NetworkGetEntityFromNetworkId(entityNetId)
+    if DoesEntityExist(entity) and GetEntityType(entity) == 2 then
+        local driver = GetPedInVehicleSeat(entity, -1)
+        if driver and driver ~= 0 and IsPedAPlayer(driver) and driver ~= GetPlayerPed(src) then
+            local dist = #(GetEntityCoords(GetPlayerPed(src)) - GetEntityCoords(entity))
+            if dist > 45.0 then
+                CancelEvent()
+                ONLY_AC.Detect(src, "Uzaktan Araç Kontrolü / Magneto Saldırısı", ("Sürücülü araca %.1fm uzaktan müdahale"):format(dist), "kick", "AntiVehicleMagneto")
             end
         end
-    end)
-end
+    end
+end)
 
--- 8. YASAKLI SİLAH / OBJE TOPLAMA KORUMASI (Anti Weapon Pickup & Money Drop)
-if Config.Protections.AntiWeaponPickup or Config.Protections.AntiMoneyDrop then
-    AddEventHandler("gameEventTriggered", function(eventName, args)
-        if eventName == "CEventNetworkPlayerCollectedPickup" then
-            local player = args[1]
-            if player and player > 0 and not ONLY_AC.IsBypass(player) then
-                if Config.Protections.AntiWeaponPickup then
-                    print(("^3[ONLY AC GÜVENLİK]^0 Oyuncu %s şüpheli bir yer pickup'ı topladı."):format(player))
-                end
+-- 7. PICKUP TOPLAMA İZLEME
+AddEventHandler("gameEventTriggered", function(eventName, args)
+    if eventName == "CEventNetworkPlayerCollectedPickup" and args and args[1] then
+        local player = args[1]
+        if player and player > 0 and not ONLY_AC.IsBypass(player) then
+            if ONLY_AC_Shared.IsModuleEnabled("AntiWeaponPickup") then
+                print(("^3[465 AC GÜVENLİK]^0 Oyuncu %s yerden pickup topladı (Type/Args kaydedildi)."):format(player))
             end
         end
-    end)
-end
+    end
+end)
 
--- Temizlik döngüsü
 AddEventHandler("playerDropped", function()
     local src = source
-    playerExplosions[src] = nil
-    playerEntitySpawns[src] = nil
-    playerParticles[src] = nil
-    playerPedSpawns[src] = nil
-    playerDamageTargets[src] = nil
-    playerWeaponPickups[src] = nil
-    playerSpeechSpam[src] = nil
+    for _, bucket in pairs(rateBuckets) do
+        bucket[src] = nil
+    end
 end)

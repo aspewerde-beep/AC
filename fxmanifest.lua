@@ -3,12 +3,13 @@ game 'gta5'
 lua54 'yes'
 
 name 'ONLY_AC'
-author 'ONLY AC Team'
-description 'ONLY AC v4.2.0 Ultimate Intelligence - Gelişmiş Anti-Cheat & Web Dashboard'
+author '465 AC Team'
+description '465 AC v4.2.0 - FiveM Anticheat & Dahili Web Yönetim Paneli'
 version '4.2.0'
 
 shared_scripts {
-    'config.lua'
+    'config.lua',
+    'shared/utils.lua'
 }
 
 client_scripts {

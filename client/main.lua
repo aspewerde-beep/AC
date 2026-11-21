@@ -1,107 +1,129 @@
 -- =========================================================================
--- ONLY AC v3.0.0 (ULTIMATE EDITION) - İSTEMCİ ANA MODÜL & GÜVENLİK
--- Gelişmiş Nonce Koruması, Geliştirilmiş Heartbeat, Enjeksiyon & Ped Denetimi
+-- 465 AC v4.2.0 - İSTEMCİ ANA MODÜL & GÜVENLİK ÇEKİRDEĞİ
+-- Kapsüllenmiş Oturum Anahtarı, Anti-Replay Nonce, Adaptif Heartbeat & Muafiyet
 -- =========================================================================
 
-ONLY_AC_Client = {}
 local sessionToken = nil
-local activeProtections = {}
 local isInitialized = false
 local reportNonce = 0
+local lastReportTimes = {}
+local teleportGraceUntil = 0
 
--- Sunucuya doğrulanmış tespit bildirimi gönder (Nonce ile korumalı)
-function ONLY_AC_Client.Report(reason, details)
+-- Harici scriptler (garaj, ev, admin tp) için geçici ışınlanma muafiyeti
+exports("AllowTeleport", function(durationMs)
+    local ms = tonumber(durationMs) or 5000
+    local target = GetGameTimer() + math.min(math.max(ms, 500), 30000)
+    if target > teleportGraceUntil then
+        teleportGraceUntil = target
+    end
+end)
+
+-- Sunucu tarafından tetiklenen geçici ışınlanma muafiyeti
+RegisterNetEvent("onlyac:client:allowTeleport", function(durationMs)
+    local ms = tonumber(durationMs) or 5000
+    local target = GetGameTimer() + math.min(math.max(ms, 500), 30000)
+    if target > teleportGraceUntil then
+        teleportGraceUntil = target
+    end
+end)
+
+-- İç istemci modülleri arası güvenli köprü (Token dışarıya açılmaz)
+ONLY_AC_Client = {}
+
+function ONLY_AC_Client.Report(moduleName, reason, details)
     if not sessionToken then return end
+    if moduleName and ONLY_AC_Shared and not ONLY_AC_Shared.IsModuleEnabled(moduleName) then
+        return
+    end
+
+    -- Spam / çoklu rapor koruması (aynı modülden 3.5 sn içinde tek bildirim)
+    local now = GetGameTimer()
+    local key = tostring(moduleName or reason)
+    if lastReportTimes[key] and (now - lastReportTimes[key]) < 3500 then
+        return
+    end
+    lastReportTimes[key] = now
+
     reportNonce = reportNonce + 1
-    TriggerServerEvent("onlyac:server:reportDetection", sessionToken, reason, details, reportNonce)
+    TriggerServerEvent("onlyac:server:reportDetection", sessionToken, reason, details, reportNonce, moduleName)
 end
 
--- Handshake yanıtı (Sunucudan token ve aktif korumaları al)
-RegisterNetEvent("onlyac:client:handshakeResponse", function(token, protections)
+function ONLY_AC_Client.HasTeleportGrace()
+    return GetGameTimer() < teleportGraceUntil
+end
+
+function ONLY_AC_Client.GrantSpawnGrace()
+    local sec = (Config and Config.SpawningGracePeriodSeconds) or 18
+    local target = GetGameTimer() + (sec * 1000)
+    if target > teleportGraceUntil then
+        teleportGraceUntil = target
+    end
+end
+
+function ONLY_AC_Client.IsReady()
+    return isInitialized
+end
+
+-- Handshake yanıtı: token ve sanitize edilmiş yapılandırmayı al
+RegisterNetEvent("onlyac:client:handshakeResponse", function(token, syncedConfig)
     sessionToken = token
-    activeProtections = protections or {}
+    if type(syncedConfig) == "table" then
+        for k, v in pairs(syncedConfig) do
+            Config[k] = v
+        end
+    end
     isInitialized = true
 end)
 
--- Başlangıçta sunucudan token ve yapılandırma talep et
+-- Canlı yapılandırma senkronizasyonu (Web Paneli veya /465ac_protect sonrası)
+RegisterNetEvent("onlyac:client:syncProtections", function(protections)
+    if type(protections) == "table" then
+        Config.Protections = protections
+    end
+end)
+
+-- Sunucudan temizlik tetiklendiğinde yerel bilgi
 CreateThread(function()
     while not isInitialized do
         TriggerServerEvent("onlyac:client:requestHandshake")
-        Wait(3000)
+        Wait(2500)
     end
 
-    -- Geliştirilmiş Heartbeat Döngüsü: Sunucuya periyodik koordinat, can ve model bilgisi iletir
     while true do
-        Wait(Config.HeartbeatInterval or 10000)
+        Wait((Config and Config.HeartbeatInterval) or 10000)
         if sessionToken then
             local ped = PlayerPedId()
-            local coords = GetEntityCoords(ped)
-            local health = GetEntityHealth(ped)
-            local model = GetEntityModel(ped)
+            local coords = DoesEntityExist(ped) and GetEntityCoords(ped) or vector3(0.0, 0.0, 0.0)
+            local health = DoesEntityExist(ped) and GetEntityHealth(ped) or 0
+            local armor = DoesEntityExist(ped) and GetPedArmour(ped) or 0
+            local model = DoesEntityExist(ped) and GetEntityModel(ped) or 0
+            local inVeh = DoesEntityExist(ped) and IsPedInAnyVehicle(ped, false) or false
 
             TriggerServerEvent("onlyac:client:heartbeat", sessionToken, {
                 coords = { x = coords.x, y = coords.y, z = coords.z },
                 health = health,
-                model = model
+                armor = armor,
+                model = model,
+                inVehicle = inVeh
             })
         end
     end
 end)
 
--- Anti-Resource Stop (Hile menüsü veya executor ile script durdurulursa sunucuya derhal bildir)
+-- Anti-Resource Stop (Script durdurulursa bildir)
 AddEventHandler("onResourceStop", function(resourceName)
     if resourceName == GetCurrentResourceName() then
-        if sessionToken then
+        if ONLY_AC_Shared.IsModuleEnabled("AntiResourceStop") and sessionToken then
             TriggerServerEvent("onlyac:server:resourceStopped", sessionToken)
         end
-        ONLY_AC_Client.Report("Anti-Cheat Kaynağı Durduruldu (Resource Stop)", ("Kaynak: %s"):format(resourceName))
     end
 end)
 
--- Yetkisiz Resource Başlatma / Enjeksiyon Tespiti (Resource Injection)
+-- Yetkisiz Resource Başlatma / Enjeksiyon Tespiti
 AddEventHandler("onClientResourceStart", function(resourceName)
-    -- Oyuncu oyuna girdikten sonra habersizce başlatılan harici resource'ları yakala
     if isInitialized and resourceName ~= GetCurrentResourceName() then
-        if Config and Config.Protections and Config.Protections.AntiResourceInjection then
+        if ONLY_AC_Shared.IsModuleEnabled("AntiResourceInjection") and sessionToken then
             TriggerServerEvent("onlyac:server:suspiciousResourceStart", sessionToken, resourceName)
         end
     end
 end)
-
--- Yetkisiz Ped / Karakter Değişimi Denetimi (AntiPedChange)
-CreateThread(function()
-    while not isInitialized do
-        Wait(1000)
-    end
-
-    local allowedPeds = {
-        [`mp_m_freemode_01`] = true,
-        [`mp_f_freemode_01`] = true
-    }
-
-    while true do
-        Wait(3000)
-        if Config and Config.Protections and Config.Protections.AntiPedChange then
-            local ped = PlayerPedId()
-            if DoesEntityExist(ped) and not IsEntityDead(ped) then
-                local currentModel = GetEntityModel(ped)
-                if not allowedPeds[currentModel] then
-                    ONLY_AC_Client.Report("Yetkisiz Karakter Modeli (Anti-PedChange)", ("İzinsiz Model Hash: %s"):format(currentModel))
-                end
-            end
-        end
-    end
-end)
-
--- Fonksiyon ve değişken dışa aktarımı
-function ONLY_AC_Client.IsReady()
-    return isInitialized
-end
-
-function ONLY_AC_Client.GetProtections()
-    return activeProtections
-end
-
-function ONLY_AC_Client.GetSessionToken()
-    return sessionToken
-end
