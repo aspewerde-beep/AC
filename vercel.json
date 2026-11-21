@@ -8,15 +8,13 @@
     { "source": "/index", "destination": "/", "statusCode": 301 },
     { "source": "/index.html", "destination": "/", "statusCode": 301 },
     { "source": "/index.php", "destination": "/", "statusCode": 301 },
+    { "source": "/baslangic", "destination": "/", "statusCode": 301 },
+    { "source": "/nasil-calisir.html", "destination": "/nasil-calisir", "statusCode": 301 },
+    { "source": "/yapilandirma.html", "destination": "/yapilandirma", "statusCode": 301 },
+    { "source": "/guvence.html", "destination": "/guvence", "statusCode": 301 },
+    { "source": "/sss.html", "destination": "/sss", "statusCode": 301 },
     { "source": "/en.html", "destination": "/en", "statusCode": 301 },
     { "source": "/docs.html", "destination": "/docs", "statusCode": 301 }
-  ],
-  "rewrites": [
-    { "source": "/baslangic", "destination": "/" },
-    { "source": "/nasil-calisir", "destination": "/" },
-    { "source": "/yapilandirma", "destination": "/" },
-    { "source": "/guvence", "destination": "/" },
-    { "source": "/sss", "destination": "/" }
   ],
   "headers": [
     {

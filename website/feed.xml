@@ -3,7 +3,7 @@
   <channel>
     <title>465 AC — FiveM Anticheat</title>
     <link>https://www.465.lol/</link>
-    <description>FiveM sunucuları için 0.00ms resmon hedefli sunucu taraflı FiveM anticheat ve dahili web yönetim sistemi.</description>
+    <description>FiveM sunucuları için 0.00ms resmon hedefli sunucu taraflı anticheat ve dahili web yönetim altyapısı.</description>
     <language>tr-tr</language>
     <atom:link href="https://www.465.lol/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
@@ -11,7 +11,14 @@
       <link>https://www.465.lol/</link>
       <guid>https://www.465.lol/</guid>
       <pubDate>Sat, 21 Nov 2026 08:00:00 +0000</pubDate>
-      <description>56+ koruma modülü, anti-noclip, anti-aimbot, multi-crasher filtresi ve dahili FXServer HTTP web yönetim paneli.</description>
+      <description>56+ koruma modülü, anti-noclip, anti-aimbot, multi-crasher filtresi ve dahili web yönetim paneli.</description>
+    </item>
+    <item>
+      <title>465 AC — 56+ Aktif Koruma Modülü ve Filtre Arama</title>
+      <link>https://www.465.lol/yapilandirma</link>
+      <guid>https://www.465.lol/yapilandirma</guid>
+      <pubDate>Sat, 21 Nov 2026 08:00:00 +0000</pubDate>
+      <description>Hareket, silah, araç, world crasher, enjeksiyon ve yönetim kategorilerinde 56+ aktif savunma modülü.</description>
     </item>
     <item>
       <title>465 AC English Overview — FiveM Anticheat</title>
@@ -21,11 +28,11 @@
       <description>0.00ms resmon server-authoritative FiveM anticheat with 56+ modules for QBCore, QBox, ESX and Standalone servers.</description>
     </item>
     <item>
-      <title>465 AC Kurulum ve Mimari Dokümantasyonu</title>
+      <title>465 AC Kurulum ve Kullanım Dokümantasyonu</title>
       <link>https://www.465.lol/docs</link>
       <guid>https://www.465.lol/docs</guid>
       <pubDate>Sat, 21 Nov 2026 08:00:00 +0000</pubDate>
-      <description>server.cfg kurulum adımları, esnek modül profilleri ve FXServer dahili web paneli rehberi.</description>
+      <description>Harici veritabanı gerektirmeyen entegrasyon adımları, esnek modül profilleri ve dahili web paneli rehberi.</description>
     </item>
   </channel>
 </rss>
