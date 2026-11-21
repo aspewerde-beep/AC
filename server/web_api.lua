@@ -214,13 +214,13 @@ SetHttpHandler(function(req, res)
         end
 
         local bans = BanSystem.GetBans and BanSystem.GetBans() or {}
-        local stats = ONLY_AC.Stats or { totalDetections = 0, totalBans = 0, totalKicks = 0, startTime = os.time() }
+        local stats = AC465.Stats or { totalDetections = 0, totalBans = 0, totalKicks = 0, startTime = os.time() }
         local statusData = {
             serverName = Config.ServerName or "465 AC",
             version = Config.Version or "4.2.0",
             config = buildSafeStatusConfig(),
             bans = bans,
-            recentLogs = ONLY_AC.RecentLogs or {},
+            recentLogs = AC465.RecentLogs or {},
             playerCount = #GetPlayers(),
             stats = {
                 totalDetections = stats.totalDetections or 0,
@@ -240,7 +240,7 @@ SetHttpHandler(function(req, res)
             return
         end
 
-        local stats = ONLY_AC.Stats or { totalDetections = 0, totalBans = 0, totalKicks = 0, startTime = os.time() }
+        local stats = AC465.Stats or { totalDetections = 0, totalBans = 0, totalKicks = 0, startTime = os.time() }
         local statsData = {
             totalDetections = stats.totalDetections or 0,
             totalBans = stats.totalBans or 0,
@@ -269,8 +269,8 @@ SetHttpHandler(function(req, res)
                     id = src,
                     name = GetPlayerName(src) or "Bilinmeyen",
                     ping = GetPlayerPing(src) or 0,
-                    bypass = (ONLY_AC.IsBypassed and ONLY_AC.IsBypassed(src)) or false,
-                    threat = (ONLY_AC.ThreatScores and ONLY_AC.ThreatScores[src] and ONLY_AC.ThreatScores[src].score) or 0,
+                    bypass = (AC465.IsBypassed and AC465.IsBypassed(src)) or false,
+                    threat = (AC465.ThreatScores and AC465.ThreatScores[src] and AC465.ThreatScores[src].score) or 0,
                     identifiers = ids
                 })
             end
@@ -297,8 +297,8 @@ SetHttpHandler(function(req, res)
             if target and GetPlayerName(target) then
                 local reason = data.reason or "Yetkili tarafindan web panelden atildiniz."
                 DropPlayer(target, ("\n[465 AC] Sunucudan Atildiniz!\nSebep: %s"):format(reason))
-                if ONLY_AC.Stats then
-                    ONLY_AC.Stats.totalKicks = (ONLY_AC.Stats.totalKicks or 0) + 1
+                if AC465.Stats then
+                    AC465.Stats.totalKicks = (AC465.Stats.totalKicks or 0) + 1
                 end
                 sendResponse(res, 200, { success = true, message = ("ID %s basariyla sunucudan atildi."):format(target) })
             else
@@ -328,8 +328,8 @@ SetHttpHandler(function(req, res)
                 local duration = tonumber(data.duration)
                 if duration and duration <= 0 then duration = nil end
                 local banRecord = BanSystem.AddBan(target, reason, duration, "Web Panel")
-                if ONLY_AC.Stats then
-                    ONLY_AC.Stats.totalBans = (ONLY_AC.Stats.totalBans or 0) + 1
+                if AC465.Stats then
+                    AC465.Stats.totalBans = (AC465.Stats.totalBans or 0) + 1
                 end
                 sendResponse(res, 200, { success = true, ban = banRecord })
             else
@@ -445,8 +445,8 @@ SetHttpHandler(function(req, res)
                 end
             end
 
-            if ONLY_AC and ONLY_AC.BroadcastProtections then
-                ONLY_AC.BroadcastProtections()
+            if AC465 and AC465.BroadcastProtections then
+                AC465.BroadcastProtections()
             end
 
             -- Sadece güvenli ayarları kalıcı runtime_config.json olarak kaydet (şifre asla diske yazılmaz)
@@ -555,8 +555,8 @@ SetHttpHandler(function(req, res)
             local count = 0
 
             if targetType == "vehicles" or targetType == "peds" or targetType == "props" or targetType == "all" then
-                if ONLY_AC and ONLY_AC.ClearEntities then
-                    count = ONLY_AC.ClearEntities(targetType)
+                if AC465 and AC465.ClearEntities then
+                    count = AC465.ClearEntities(targetType)
                 end
             else
                 sendResponse(res, 400, { success = false, message = "Gecersiz temizleme turu" })
@@ -578,7 +578,7 @@ CreateThread(function()
     if runtimeData and runtimeData ~= "" then
         local success, decoded = pcall(json.decode, runtimeData)
         if success and type(decoded) == "table" then
-            local blockedKeys = { WebPanelPassword = true, WebPanelPort = true, Version = true, LegacyAcePermission = true }
+            local blockedKeys = { WebPanelPassword = true, WebPanelPort = true, Version = true }
             for k, v in pairs(decoded) do
                 if not blockedKeys[k] then
                     if k == "DiscordWebhook" then

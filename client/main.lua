@@ -19,7 +19,7 @@ exports("AllowTeleport", function(durationMs)
 end)
 
 -- Sunucu tarafından tetiklenen geçici ışınlanma muafiyeti
-RegisterNetEvent("onlyac:client:allowTeleport", function(durationMs)
+RegisterNetEvent("ac465:client:allowTeleport", function(durationMs)
     local ms = tonumber(durationMs) or 5000
     local target = GetGameTimer() + math.min(math.max(ms, 500), 30000)
     if target > teleportGraceUntil then
@@ -28,11 +28,11 @@ RegisterNetEvent("onlyac:client:allowTeleport", function(durationMs)
 end)
 
 -- İç istemci modülleri arası güvenli köprü (Token dışarıya açılmaz)
-ONLY_AC_Client = {}
+AC465_Client = {}
 
-function ONLY_AC_Client.Report(moduleName, reason, details)
+function AC465_Client.Report(moduleName, reason, details)
     if not sessionToken then return end
-    if moduleName and ONLY_AC_Shared and not ONLY_AC_Shared.IsModuleEnabled(moduleName) then
+    if moduleName and AC465_Shared and not AC465_Shared.IsModuleEnabled(moduleName) then
         return
     end
 
@@ -45,14 +45,14 @@ function ONLY_AC_Client.Report(moduleName, reason, details)
     lastReportTimes[key] = now
 
     reportNonce = reportNonce + 1
-    TriggerServerEvent("onlyac:server:reportDetection", sessionToken, reason, details, reportNonce, moduleName)
+    TriggerServerEvent("ac465:server:reportDetection", sessionToken, reason, details, reportNonce, moduleName)
 end
 
-function ONLY_AC_Client.HasTeleportGrace()
+function AC465_Client.HasTeleportGrace()
     return GetGameTimer() < teleportGraceUntil
 end
 
-function ONLY_AC_Client.GrantSpawnGrace()
+function AC465_Client.GrantSpawnGrace()
     local sec = (Config and Config.SpawningGracePeriodSeconds) or 18
     local target = GetGameTimer() + (sec * 1000)
     if target > teleportGraceUntil then
@@ -60,12 +60,12 @@ function ONLY_AC_Client.GrantSpawnGrace()
     end
 end
 
-function ONLY_AC_Client.IsReady()
+function AC465_Client.IsReady()
     return isInitialized
 end
 
 -- Handshake yanıtı: token ve sanitize edilmiş yapılandırmayı al
-RegisterNetEvent("onlyac:client:handshakeResponse", function(token, syncedConfig)
+RegisterNetEvent("ac465:client:handshakeResponse", function(token, syncedConfig)
     sessionToken = token
     if type(syncedConfig) == "table" then
         for k, v in pairs(syncedConfig) do
@@ -76,7 +76,7 @@ RegisterNetEvent("onlyac:client:handshakeResponse", function(token, syncedConfig
 end)
 
 -- Canlı yapılandırma senkronizasyonu (Web Paneli veya /465ac_protect sonrası)
-RegisterNetEvent("onlyac:client:syncProtections", function(protections)
+RegisterNetEvent("ac465:client:syncProtections", function(protections)
     if type(protections) == "table" then
         Config.Protections = protections
     end
@@ -85,7 +85,7 @@ end)
 -- Sunucudan temizlik tetiklendiğinde yerel bilgi
 CreateThread(function()
     while not isInitialized do
-        TriggerServerEvent("onlyac:client:requestHandshake")
+        TriggerServerEvent("ac465:client:requestHandshake")
         Wait(2500)
     end
 
@@ -99,7 +99,7 @@ CreateThread(function()
             local model = DoesEntityExist(ped) and GetEntityModel(ped) or 0
             local inVeh = DoesEntityExist(ped) and IsPedInAnyVehicle(ped, false) or false
 
-            TriggerServerEvent("onlyac:client:heartbeat", sessionToken, {
+            TriggerServerEvent("ac465:client:heartbeat", sessionToken, {
                 coords = { x = coords.x, y = coords.y, z = coords.z },
                 health = health,
                 armor = armor,
@@ -113,8 +113,8 @@ end)
 -- Anti-Resource Stop (Script durdurulursa bildir)
 AddEventHandler("onResourceStop", function(resourceName)
     if resourceName == GetCurrentResourceName() then
-        if ONLY_AC_Shared.IsModuleEnabled("AntiResourceStop") and sessionToken then
-            TriggerServerEvent("onlyac:server:resourceStopped", sessionToken)
+        if AC465_Shared.IsModuleEnabled("AntiResourceStop") and sessionToken then
+            TriggerServerEvent("ac465:server:resourceStopped", sessionToken)
         end
     end
 end)
@@ -122,8 +122,8 @@ end)
 -- Yetkisiz Resource Başlatma / Enjeksiyon Tespiti
 AddEventHandler("onClientResourceStart", function(resourceName)
     if isInitialized and resourceName ~= GetCurrentResourceName() then
-        if ONLY_AC_Shared.IsModuleEnabled("AntiResourceInjection") and sessionToken then
-            TriggerServerEvent("onlyac:server:suspiciousResourceStart", sessionToken, resourceName)
+        if AC465_Shared.IsModuleEnabled("AntiResourceInjection") and sessionToken then
+            TriggerServerEvent("ac465:server:suspiciousResourceStart", sessionToken, resourceName)
         end
     end
 end)

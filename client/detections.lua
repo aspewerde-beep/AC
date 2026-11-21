@@ -53,14 +53,14 @@ local function camForwardVector(rot)
 end
 
 CreateThread(function()
-    while not ONLY_AC_Client.IsReady() do
+    while not AC465_Client.IsReady() do
         Wait(400)
     end
 
-    ONLY_AC_Client.GrantSpawnGrace()
+    AC465_Client.GrantSpawnGrace()
 
     AddEventHandler("playerSpawned", function()
-        ONLY_AC_Client.GrantSpawnGrace()
+        AC465_Client.GrantSpawnGrace()
     end)
 
     -- =====================================================================
@@ -109,11 +109,11 @@ CreateThread(function()
                     local playerId = _PlayerId()
 
                     -- Rapid Fire kontrolü
-                    if ONLY_AC_Shared.IsModuleEnabled("AntiRapidFire") and lastShotTime > 0 then
+                    if AC465_Shared.IsModuleEnabled("AntiRapidFire") and lastShotTime > 0 then
                         local diff = now - lastShotTime
                         if diff < 55 and not rapidFireWhitelist[currentWeapon] then
                             if addStrike("rapid_fire", 2) then
-                                ONLY_AC_Client.Report("AntiRapidFire", "Seri Ateş Hilesi (Rapid Fire)", ("Ateş Aralığı: %s ms | Silah: %s"):format(diff, currentWeapon))
+                                AC465_Client.Report("AntiRapidFire", "Seri Ateş Hilesi (Rapid Fire)", ("Ateş Aralığı: %s ms | Silah: %s"):format(diff, currentWeapon))
                             end
                         else
                             clearStrike("rapid_fire")
@@ -121,27 +121,27 @@ CreateThread(function()
                     end
 
                     -- Sınırsız Şarjör / Mermi (Infinite Ammo / Clip)
-                    if ONLY_AC_Shared.IsModuleEnabled("AntiInfiniteAmmo") and not ignoredAmmoWeapons[currentWeapon] then
+                    if AC465_Shared.IsModuleEnabled("AntiInfiniteAmmo") and not ignoredAmmoWeapons[currentWeapon] then
                         local maxClip = GetMaxAmmoInClip(ped, currentWeapon, true)
                         local _, ammoInClip = GetAmmoInClip(ped, currentWeapon)
                         if maxClip > 0 and ammoInClip > (maxClip + 2) then
-                            ONLY_AC_Client.Report("AntiInfiniteAmmo", "Sınırsız Şarjör / Mermi Hilesi (Infinite Ammo)", ("Şarjör: %s | Limit: %s"):format(ammoInClip, maxClip))
+                            AC465_Client.Report("AntiInfiniteAmmo", "Sınırsız Şarjör / Mermi Hilesi (Infinite Ammo)", ("Şarjör: %s | Limit: %s"):format(ammoInClip, maxClip))
                         end
                     end
 
                     -- Hasar Çarpanı & RPF Manipülasyonu
-                    if ONLY_AC_Shared.IsModuleEnabled("AntiDamageModifier") or ONLY_AC_Shared.IsModuleEnabled("AntiRPF") then
+                    if AC465_Shared.IsModuleEnabled("AntiDamageModifier") or AC465_Shared.IsModuleEnabled("AntiRPF") then
                         local wMod = GetPlayerWeaponDamageModifier(playerId)
                         local mMod = GetPlayerMeleeWeaponDamageModifier(playerId)
                         local wcMod = GetWeaponDamageModifier(currentWeapon)
                         if wMod > 1.08 or mMod > 1.08 or wcMod > 1.15 then
-                            ONLY_AC_Client.Report("AntiDamageModifier", "Silah / RPF Hasar Çarpanı Hilesi", ("WeaponMod: %.2f | MeleeMod: %.2f | RPFMod: %.2f"):format(wMod, mMod, wcMod))
+                            AC465_Client.Report("AntiDamageModifier", "Silah / RPF Hasar Çarpanı Hilesi", ("WeaponMod: %.2f | MeleeMod: %.2f | RPFMod: %.2f"):format(wMod, mMod, wcMod))
                         end
                     end
 
                     -- Aimbot Kamera Snap Analizi (360 Derece Wrap Korumalı)
                     local rot = GetGameplayCamRot(2)
-                    if ONLY_AC_Shared.IsModuleEnabled("AntiAimbot") and prevRot then
+                    if AC465_Shared.IsModuleEnabled("AntiAimbot") and prevRot then
                         local threshold = Config.AimbotAngleThreshold or 18.0
                         local maxWindow = Config.AimbotCheckWindow or 5
                         local maxSnaps = Config.AimbotSnapCount or 4
@@ -155,7 +155,7 @@ CreateThread(function()
                                 if hit then snaps = snaps + 1 end
                             end
                             if snaps >= maxSnaps then
-                                ONLY_AC_Client.Report("AntiAimbot", "Aimbot Tespiti (Kamera Snap Analizi)", ("Son %s atışta %s ani sıçrama"):format(maxWindow, snaps))
+                                AC465_Client.Report("AntiAimbot", "Aimbot Tespiti (Kamera Snap Analizi)", ("Son %s atışta %s ani sıçrama"):format(maxWindow, snaps))
                                 shotWindow = {}
                             end
                         end
@@ -163,7 +163,7 @@ CreateThread(function()
                     prevRot = rot
 
                     -- Silent Aim (Kamera Bakış Yönü vs Hedef Yönü Doğrulama)
-                    if ONLY_AC_Shared.IsModuleEnabled("AntiSilentAim") then
+                    if AC465_Shared.IsModuleEnabled("AntiSilentAim") then
                         local hasTarget, entity = GetEntityPlayerIsFreeAimingAt(playerId)
                         if not hasTarget or not DoesEntityExist(entity) then
                             local camPos = GetGameplayCamCoord()
@@ -192,7 +192,7 @@ CreateThread(function()
                                 silentMissCount = silentMissCount + 1
                                 if silentMissCount >= 2 then
                                     silentMissCount = 0
-                                    ONLY_AC_Client.Report("AntiSilentAim", "Silent Aim Tespiti (Bakış Açısı Dışı Vuruş)", "Kamera bakış konisi dışında ardışık isabet")
+                                    AC465_Client.Report("AntiSilentAim", "Silent Aim Tespiti (Bakış Açısı Dışı Vuruş)", "Kamera bakış konisi dışında ardışık isabet")
                                 end
                             elseif silentMissCount > 0 then
                                 silentMissCount = silentMissCount - 1
@@ -222,16 +222,16 @@ CreateThread(function()
                 local currentCoords = _GetEntityCoords(ped)
                 local distance = #(currentCoords - lastCoords)
                 local inVehicle = IsPedInAnyVehicle(ped, false)
-                local isGrace = ONLY_AC_Client.HasTeleportGrace()
-                local inExcludeZone = ONLY_AC_Shared.IsInExcludeZone(currentCoords)
+                local isGrace = AC465_Client.HasTeleportGrace()
+                local inExcludeZone = AC465_Shared.IsInExcludeZone(currentCoords)
                 local isAttachedToOther = IsEntityAttached(ped) or IsEntityAttachedToAnyPed(ped)
 
                 -- 1) Teleport, Yaya Hız & Noclip (Grace / EMS Carry / ExcludeZone hariç + Çoklu Doğrulama)
                 if not isGrace and not inExcludeZone and not isAttachedToOther and not IsPedFalling(ped) and not IsPedInParachuteFreeFall(ped) then
-                    if ONLY_AC_Shared.IsModuleEnabled("AntiTeleport") then
+                    if AC465_Shared.IsModuleEnabled("AntiTeleport") then
                         if distance > (Config.MaxTeleportDistance or 90.0) and GetInteriorFromEntity(ped) == 0 then
                             if addStrike("teleport", 2) then
-                                ONLY_AC_Client.Report("AntiTeleport", "Işınlanma (Teleport) Tespiti", ("Ardışık %.2f metre sıçrama"):format(distance))
+                                AC465_Client.Report("AntiTeleport", "Işınlanma (Teleport) Tespiti", ("Ardışık %.2f metre sıçrama"):format(distance))
                             end
                         else
                             clearStrike("teleport")
@@ -239,32 +239,32 @@ CreateThread(function()
                     end
 
                     if not inVehicle and not IsPedRagdoll(ped) then
-                        if ONLY_AC_Shared.IsModuleEnabled("AntiSpeedHack") then
+                        if AC465_Shared.IsModuleEnabled("AntiSpeedHack") then
                             if distance > (Config.MaxFootSpeed or 16.5) and _GetEntitySpeed(ped) > (Config.MaxFootSpeed or 16.5) then
                                 if addStrike("foot_speed") then
-                                    ONLY_AC_Client.Report("AntiSpeedHack", "Yaya Hız Hilesi (SpeedHack)", ("Hız: %.2f m/s"):format(_GetEntitySpeed(ped)))
+                                    AC465_Client.Report("AntiSpeedHack", "Yaya Hız Hilesi (SpeedHack)", ("Hız: %.2f m/s"):format(_GetEntitySpeed(ped)))
                                 end
                             else
                                 clearStrike("foot_speed")
                             end
                         end
 
-                        if ONLY_AC_Shared.IsModuleEnabled("AntiNoclip") then
+                        if AC465_Shared.IsModuleEnabled("AntiNoclip") then
                             local heightAboveGround = GetEntityHeightAboveGround(ped)
                             if heightAboveGround > 4.5 and distance > 14.5 and not IsPedClimbing(ped) and not IsPedDiving(ped) and not IsPedSwimming(ped) then
                                 if addStrike("noclip") then
-                                    ONLY_AC_Client.Report("AntiNoclip", "Uçma Hilesi (Noclip / Fly)", ("Yükseklik: %.2fm | Mesafe: %.2fm"):format(heightAboveGround, distance))
+                                    AC465_Client.Report("AntiNoclip", "Uçma Hilesi (Noclip / Fly)", ("Yükseklik: %.2fm | Mesafe: %.2fm"):format(heightAboveGround, distance))
                                 end
                             else
                                 clearStrike("noclip")
                             end
                         end
 
-                        if ONLY_AC_Shared.IsModuleEnabled("AntiGroundNoclip") then
+                        if AC465_Shared.IsModuleEnabled("AntiGroundNoclip") then
                             local spd = _GetEntitySpeed(ped)
                             if spd > 19.5 and not IsPedJumpingOutOfVehicle(ped) and GetInteriorFromEntity(ped) == 0 then
                                 if addStrike("ground_noclip") then
-                                    ONLY_AC_Client.Report("AntiGroundNoclip", "Yerde Yürüyüş Noclip Bypass", ("Hız: %.2f m/s"):format(spd))
+                                    AC465_Client.Report("AntiGroundNoclip", "Yerde Yürüyüş Noclip Bypass", ("Hız: %.2f m/s"):format(spd))
                                 end
                             else
                                 clearStrike("ground_noclip")
@@ -274,11 +274,11 @@ CreateThread(function()
                 end
 
                 -- 2) Dikey Fırlatma (Anti-Launch Player)
-                if not isGrace and not inVehicle and not isAttachedToOther and ONLY_AC_Shared.IsModuleEnabled("AntiLaunchPlayer") then
+                if not isGrace and not inVehicle and not isAttachedToOther and AC465_Shared.IsModuleEnabled("AntiLaunchPlayer") then
                     local vel = _GetEntityVelocity(ped)
                     if vel.z > (Config.MaxPlayerZVelocity or 34.0) then
                         _SetEntityVelocity(ped, 0.0, 0.0, 0.0)
-                        ONLY_AC_Client.Report("AntiLaunchPlayer", "Karakter Fırlatma Hilesi (Anti-Launch)", ("Z İvmesi: %.2f m/s"):format(vel.z))
+                        AC465_Client.Report("AntiLaunchPlayer", "Karakter Fırlatma Hilesi (Anti-Launch)", ("Z İvmesi: %.2f m/s"):format(vel.z))
                     end
                 end
 
@@ -289,49 +289,49 @@ CreateThread(function()
                         local vehClass = GetVehicleClass(veh)
                         local isAircraft = (vehClass == 14 or vehClass == 15 or vehClass == 16)
 
-                        if ONLY_AC_Shared.IsModuleEnabled("AntiSpeedHack") and not inExcludeZone and not isGrace then
+                        if AC465_Shared.IsModuleEnabled("AntiSpeedHack") and not inExcludeZone and not isGrace then
                             local speedKMH = _GetEntitySpeed(veh) * 3.6
                             if speedKMH > (Config.MaxVehicleSpeedKMH or 360.0) then
                                 if addStrike("veh_speed") then
-                                    ONLY_AC_Client.Report("AntiSpeedHack", "Aşırı Araç Hızı (Vehicle SpeedHack)", ("Hız: %.1f km/s"):format(speedKMH))
+                                    AC465_Client.Report("AntiSpeedHack", "Aşırı Araç Hızı (Vehicle SpeedHack)", ("Hız: %.1f km/s"):format(speedKMH))
                                 end
                             else
                                 clearStrike("veh_speed")
                             end
                         end
 
-                        if ONLY_AC_Shared.IsModuleEnabled("AntiVehicleModifiers") then
+                        if AC465_Shared.IsModuleEnabled("AntiVehicleModifiers") then
                             local topMod = GetVehicleTopSpeedModifier(veh)
                             if topMod and topMod > (Config.MaxVehicleSpeedModifier or 1.65) then
                                 SetVehicleCheatPowerIncrease(veh, 1.0)
-                                ONLY_AC_Client.Report("AntiVehicleModifiers", "Araç Güç / Hız Çarpanı Hilesi", ("Çarpan: %.2f"):format(topMod))
+                                AC465_Client.Report("AntiVehicleModifiers", "Araç Güç / Hız Çarpanı Hilesi", ("Çarpan: %.2f"):format(topMod))
                             end
                         end
 
-                        if ONLY_AC_Shared.IsModuleEnabled("AntiVehicleFly") and not isAircraft and not inExcludeZone and not isGrace then
+                        if AC465_Shared.IsModuleEnabled("AntiVehicleFly") and not isAircraft and not inExcludeZone and not isGrace then
                             local hAbove = GetEntityHeightAboveGround(veh)
                             local spd = _GetEntitySpeed(veh)
                             if hAbove > 25.0 and spd > 22.0 and IsEntityInAir(veh) then
                                 if addStrike("car_fly", 2) then
-                                    ONLY_AC_Client.Report("AntiVehicleFly", "Araç Uçurma Hilesi (Car Fly)", ("Yükseklik: %.1fm | Hız: %.1f m/s"):format(hAbove, spd))
+                                    AC465_Client.Report("AntiVehicleFly", "Araç Uçurma Hilesi (Car Fly)", ("Yükseklik: %.1fm | Hız: %.1f m/s"):format(hAbove, spd))
                                 end
                             else
                                 clearStrike("car_fly")
                             end
                         end
 
-                        if ONLY_AC_Shared.IsModuleEnabled("AntiLaunchVehicle") and not isAircraft and not isGrace then
+                        if AC465_Shared.IsModuleEnabled("AntiLaunchVehicle") and not isAircraft and not isGrace then
                             local vVel = _GetEntityVelocity(veh)
                             if vVel.z > (Config.MaxVehicleZVelocity or 40.0) then
                                 _SetEntityVelocity(veh, 0.0, 0.0, 0.0)
-                                ONLY_AC_Client.Report("AntiLaunchVehicle", "Araç Fırlatma Hilesi (Anti-Launch Vehicle)", ("Z İvmesi: %.2f m/s"):format(vVel.z))
+                                AC465_Client.Report("AntiLaunchVehicle", "Araç Fırlatma Hilesi (Anti-Launch Vehicle)", ("Z İvmesi: %.2f m/s"):format(vVel.z))
                             end
                         end
 
-                        if ONLY_AC_Shared.IsModuleEnabled("AntiVehicleGodmode") then
+                        if AC465_Shared.IsModuleEnabled("AntiVehicleGodmode") then
                             if not _GetEntityCanBeDamaged(veh) then
                                 _SetEntityCanBeDamaged(veh, true)
-                                ONLY_AC_Client.Report("AntiVehicleGodmode", "Araç Ölümsüzlüğü (Vehicle Godmode)", "Hasar almama aktif")
+                                AC465_Client.Report("AntiVehicleGodmode", "Araç Ölümsüzlüğü (Vehicle Godmode)", "Hasar almama aktif")
                             end
                         end
                     end
@@ -341,29 +341,29 @@ CreateThread(function()
                 local curHealth = _GetEntityHealth(ped)
                 local curArmor = _GetPedArmour(ped)
 
-                if ONLY_AC_Shared.IsModuleEnabled("AntiGodmode") then
+                if AC465_Shared.IsModuleEnabled("AntiGodmode") then
                     if _GetPlayerInvincible(playerId) then
                         _SetPlayerInvincible(playerId, false)
-                        ONLY_AC_Client.Report("AntiGodmode", "Ölümsüzlük Hilesi (Native Godmode)", "GetPlayerInvincible aktif")
+                        AC465_Client.Report("AntiGodmode", "Ölümsüzlük Hilesi (Native Godmode)", "GetPlayerInvincible aktif")
                     end
                     if not _GetEntityCanBeDamaged(ped) and not isGrace and not inExcludeZone then
                         _SetEntityCanBeDamaged(ped, true)
-                        ONLY_AC_Client.Report("AntiGodmode", "Hasar Almama Hilesi (Demi-God)", "CanBeDamaged kapalı")
+                        AC465_Client.Report("AntiGodmode", "Hasar Almama Hilesi (Demi-God)", "CanBeDamaged kapalı")
                     end
                     if curHealth > (Config.MaxHealth or 200) then
                         SetEntityHealth(ped, Config.MaxHealth or 200)
-                        ONLY_AC_Client.Report("AntiGodmode", "Maksimum Üstü Can Hilesi", ("Can: %s"):format(curHealth))
+                        AC465_Client.Report("AntiGodmode", "Maksimum Üstü Can Hilesi", ("Can: %s"):format(curHealth))
                     end
                 end
 
-                if ONLY_AC_Shared.IsModuleEnabled("AntiArmorHack") and curArmor > (Config.MaxArmor or 100) then
+                if AC465_Shared.IsModuleEnabled("AntiArmorHack") and curArmor > (Config.MaxArmor or 100) then
                     SetPedArmour(ped, Config.MaxArmor or 100)
-                    ONLY_AC_Client.Report("AntiArmorHack", "Maksimum Üstü Zırh Hilesi (Armor Modifier)", ("Zırh: %s"):format(curArmor))
+                    AC465_Client.Report("AntiArmorHack", "Maksimum Üstü Zırh Hilesi (Armor Modifier)", ("Zırh: %s"):format(curArmor))
                 end
 
-                if ONLY_AC_Shared.IsModuleEnabled("AntiLegitGodmode") and not isGrace and not inExcludeZone then
+                if AC465_Shared.IsModuleEnabled("AntiLegitGodmode") and not isGrace and not inExcludeZone then
                     if lastHealth < 125 and curHealth >= 195 then
-                        ONLY_AC_Client.Report("AntiLegitGodmode", "Anlık Can Yenileme (Fast Regen / Legit Godmode)", ("Eski: %s -> Yeni: %s"):format(lastHealth, curHealth))
+                        AC465_Client.Report("AntiLegitGodmode", "Anlık Can Yenileme (Fast Regen / Legit Godmode)", ("Eski: %s -> Yeni: %s"):format(lastHealth, curHealth))
                     end
                 end
 
@@ -399,14 +399,14 @@ CreateThread(function()
             Wait(2500)
             local ped = _PlayerPedId()
             local playerId = _PlayerId()
-            local isGrace = ONLY_AC_Client.HasTeleportGrace()
+            local isGrace = AC465_Client.HasTeleportGrace()
 
             -- Anti-Native Hook
-            if ONLY_AC_Shared.IsModuleEnabled("AntiNativeHook") then
+            if AC465_Shared.IsModuleEnabled("AntiNativeHook") then
                 for _, item in ipairs(checkNatives) do
                     local info = debug.getinfo(item.fn())
                     if info and (info.what ~= "C" or (info.source and info.source ~= "=[C]")) then
-                        ONLY_AC_Client.Report("AntiNativeHook", "İstemci Fonksiyon Bütünlük İhlali (Native Hook)", ("Hedef: %s (%s)"):format(item.name, tostring(info.what)))
+                        AC465_Client.Report("AntiNativeHook", "İstemci Fonksiyon Bütünlük İhlali (Native Hook)", ("Hedef: %s (%s)"):format(item.name, tostring(info.what)))
                         break
                     end
                 end
@@ -414,16 +414,16 @@ CreateThread(function()
                     local c1 = _GetEntityCoords(ped)
                     local c2 = GetEntityCoords(ped)
                     if #(c1 - c2) > 2.5 then
-                        ONLY_AC_Client.Report("AntiNativeHook", "Koordinat Fonksiyon Manipülasyonu", ("Fark: %.1fm"):format(#(c1 - c2)))
+                        AC465_Client.Report("AntiNativeHook", "Koordinat Fonksiyon Manipülasyonu", ("Fark: %.1fm"):format(#(c1 - c2)))
                     end
                 end
             end
 
             -- Global Executor / Menu Değişken Denetimi
-            if ONLY_AC_Shared.IsModuleEnabled("AntiNUIDevTools") or ONLY_AC_Shared.IsModuleEnabled("AntiMenuDetection") then
+            if AC465_Shared.IsModuleEnabled("AntiNUIDevTools") or AC465_Shared.IsModuleEnabled("AntiMenuDetection") then
                 for _, gVar in ipairs(suspiciousGlobals) do
                     if _G[gVar] ~= nil then
-                        ONLY_AC_Client.Report("AntiMenuDetection", "Hile Menüsü / Executor Değişkeni Tespiti", ("Modül: %s"):format(gVar))
+                        AC465_Client.Report("AntiMenuDetection", "Hile Menüsü / Executor Değişkeni Tespiti", ("Modül: %s"):format(gVar))
                         break
                     end
                 end
@@ -431,85 +431,85 @@ CreateThread(function()
 
             if DoesEntityExist(ped) and not _IsEntityDead(ped) then
                 -- Yasaklı Ağır Silahlar
-                if ONLY_AC_Shared.IsModuleEnabled("AntiBlacklistedWeapons") and Config.BlacklistedWeapons then
+                if AC465_Shared.IsModuleEnabled("AntiBlacklistedWeapons") and Config.BlacklistedWeapons then
                     for wHash, _ in pairs(Config.BlacklistedWeapons) do
                         if HasPedGotWeapon(ped, wHash, false) then
                             RemoveAllPedWeapons(ped, true)
-                            ONLY_AC_Client.Report("AntiBlacklistedWeapons", "Yasaklı Ağır Silah Tespiti", ("Silah Hash: %s"):format(wHash))
+                            AC465_Client.Report("AntiBlacklistedWeapons", "Yasaklı Ağır Silah Tespiti", ("Silah Hash: %s"):format(wHash))
                             break
                         end
                     end
                 end
 
                 -- Görünmezlik (Invisibility / Alpha)
-                if ONLY_AC_Shared.IsModuleEnabled("AntiInvisibility") and not isGrace then
+                if AC465_Shared.IsModuleEnabled("AntiInvisibility") and not isGrace then
                     local vis = _IsEntityVisible(ped)
                     local alpha = _GetEntityAlpha(ped)
                     if not vis or alpha < 50 then
                         SetEntityVisible(ped, true, false)
                         ResetEntityAlpha(ped)
-                        ONLY_AC_Client.Report("AntiInvisibility", "Görünmezlik Hilesi (Ghostmode)", ("Visible: %s | Alpha: %s"):format(tostring(vis), alpha))
+                        AC465_Client.Report("AntiInvisibility", "Görünmezlik Hilesi (Ghostmode)", ("Visible: %s | Alpha: %s"):format(tostring(vis), alpha))
                     end
                 end
 
                 -- Süper Zıplama & No-Collision
-                if ONLY_AC_Shared.IsModuleEnabled("AntiSuperJump") and IsPedDoingSuperJump(playerId) then
-                    ONLY_AC_Client.Report("AntiSuperJump", "Süper Zıplama Hilesi (Super Jump)", "IsPedDoingSuperJump aktif")
+                if AC465_Shared.IsModuleEnabled("AntiSuperJump") and IsPedDoingSuperJump(playerId) then
+                    AC465_Client.Report("AntiSuperJump", "Süper Zıplama Hilesi (Super Jump)", "IsPedDoingSuperJump aktif")
                 end
-                if ONLY_AC_Shared.IsModuleEnabled("AntiNoCollision") and GetEntityCollisionDisabled(ped) and not isGrace then
+                if AC465_Shared.IsModuleEnabled("AntiNoCollision") and GetEntityCollisionDisabled(ped) and not isGrace then
                     SetEntityCollision(ped, true, true)
-                    ONLY_AC_Client.Report("AntiNoCollision", "Duvar Geçişi Hilesi (No-Collision)", "Çarpışma devre dışı")
+                    AC465_Client.Report("AntiNoCollision", "Duvar Geçişi Hilesi (No-Collision)", "Çarpışma devre dışı")
                 end
 
                 -- Termal & Gece Görüşü
-                if ONLY_AC_Shared.IsModuleEnabled("AntiNightThermalVision") then
+                if AC465_Shared.IsModuleEnabled("AntiNightThermalVision") then
                     if GetUsingnightvision() then
                         SetNightvision(false)
-                        ONLY_AC_Client.Report("AntiNightThermalVision", "Gece Görüşü Hilesi (Night Vision)", "Yetkisiz vizyon")
+                        AC465_Client.Report("AntiNightThermalVision", "Gece Görüşü Hilesi (Night Vision)", "Yetkisiz vizyon")
                     end
                     if GetUsingseethrough() then
                         SetSeethrough(false)
-                        ONLY_AC_Client.Report("AntiNightThermalVision", "Termal Görüş Hilesi (Thermal Vision)", "Yetkisiz vizyon")
+                        AC465_Client.Report("AntiNightThermalVision", "Termal Görüş Hilesi (Thermal Vision)", "Yetkisiz vizyon")
                     end
                 end
 
                 -- Freecam / Spectate
-                if ONLY_AC_Shared.IsModuleEnabled("AntiSpectate") and not isGrace and _NetworkIsInSpectatorMode() then
-                    ONLY_AC_Client.Report("AntiSpectate", "Yetkisiz İzleyici / Freecam Modu", "Spectator Mode aktif")
+                if AC465_Shared.IsModuleEnabled("AntiSpectate") and not isGrace and _NetworkIsInSpectatorMode() then
+                    AC465_Client.Report("AntiSpectate", "Yetkisiz İzleyici / Freecam Modu", "Spectator Mode aktif")
                 end
 
                 -- Anti-Taser / No-Ragdoll
-                if ONLY_AC_Shared.IsModuleEnabled("AntiRagdoll") and IsPedBeingStunned(ped, 0) and not IsPedRagdoll(ped) then
-                    ONLY_AC_Client.Report("AntiRagdoll", "Taser / Ragdoll Engelleme Hilesi", "No-Ragdoll aktif")
+                if AC465_Shared.IsModuleEnabled("AntiRagdoll") and IsPedBeingStunned(ped, 0) and not IsPedRagdoll(ped) then
+                    AC465_Client.Report("AntiRagdoll", "Taser / Ragdoll Engelleme Hilesi", "No-Ragdoll aktif")
                 end
 
                 -- Tiny / Giant Ped Hitbox Hilesi
-                if ONLY_AC_Shared.IsModuleEnabled("AntiTinyPed") then
+                if AC465_Shared.IsModuleEnabled("AntiTinyPed") then
                     local headPos = GetPedBoneCoords(ped, 31086, 0.0, 0.0, 0.0)
                     local footPos = _GetEntityCoords(ped)
                     local height = headPos.z - footPos.z
                     if height < 0.45 or height > 2.55 then
-                        ONLY_AC_Client.Report("AntiTinyPed", "Ped Boyut Değiştirme Hilesi (Hitbox)", ("Boy: %.2fm"):format(height))
+                        AC465_Client.Report("AntiTinyPed", "Ped Boyut Değiştirme Hilesi (Hitbox)", ("Boy: %.2fm"):format(height))
                     end
                 end
 
                 -- Yetkisiz Ped Modeli (Grace sonrası + WhitelistedPeds ile)
-                if ONLY_AC_Shared.IsModuleEnabled("AntiPedChange") and not isGrace and Config.WhitelistedPeds then
+                if AC465_Shared.IsModuleEnabled("AntiPedChange") and not isGrace and Config.WhitelistedPeds then
                     local model = GetEntityModel(ped)
                     if not Config.WhitelistedPeds[model] then
-                        ONLY_AC_Client.Report("AntiPedChange", "Yetkisiz Karakter Modeli (Ped Change)", ("Model Hash: %s"):format(model))
+                        AC465_Client.Report("AntiPedChange", "Yetkisiz Karakter Modeli (Ped Change)", ("Model Hash: %s"):format(model))
                     end
                 end
 
                 -- Sınırsız Stamina
-                if ONLY_AC_Shared.IsModuleEnabled("AntiInfiniteStamina") then
+                if AC465_Shared.IsModuleEnabled("AntiInfiniteStamina") then
                     if IsPedSprinting(ped) then
                         if not sprintStart then
                             sprintStart = GetGameTimer()
                         elseif ((GetGameTimer() - sprintStart) / 1000.0) > (Config.MaxConsecutiveSprintSeconds or 60) then
                             local rem = GetPlayerSprintStaminaRemaining(playerId)
                             if rem > 90.0 then
-                                ONLY_AC_Client.Report("AntiInfiniteStamina", "Sınırsız Stamina Hilesi", ("Stamina: %.1f%%"):format(rem))
+                                AC465_Client.Report("AntiInfiniteStamina", "Sınırsız Stamina Hilesi", ("Stamina: %.1f%%"):format(rem))
                                 sprintStart = nil
                             end
                         end
@@ -519,7 +519,7 @@ CreateThread(function()
                 end
 
                 -- Akıllı Anti-Attach (Yalnızca oyuncuya yapışan izinsiz CObject trol prop'larını temizle; EMS kucağa almayı bozmaz!)
-                if ONLY_AC_Shared.IsModuleEnabled("AntiAttach") then
+                if AC465_Shared.IsModuleEnabled("AntiAttach") then
                     local pool = GetGamePool and GetGamePool("CObject")
                     if pool then
                         for _, obj in ipairs(pool) do

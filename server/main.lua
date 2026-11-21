@@ -5,9 +5,9 @@
 
 math.randomseed(os.time() + math.floor(os.clock() * 1000))
 
-ONLY_AC = {}
-ONLY_AC.RecentLogs = {}
-ONLY_AC.Stats = {
+AC465 = {}
+AC465.RecentLogs = {}
+AC465.Stats = {
     totalDetections = 0,
     totalBans = 0,
     totalKicks = 0,
@@ -32,16 +32,13 @@ AddEventHandler("txAdmin:events:adminAuth", function(data)
     end
 end)
 
--- Yetkili / Bypass kontrolü (465ac.bypass + legacy onlyac.bypass + AutoTxAdminBypass)
-function ONLY_AC.IsBypass(src)
+-- Yetkili / Bypass kontrolü (465ac.bypass + AutoTxAdminBypass)
+function AC465.IsBypass(src)
     if not src or src == 0 then return true end
     if Config.AcePermission and Config.AcePermission ~= "" and IsPlayerAceAllowed(src, Config.AcePermission) then
         return true
     end
-    if Config.LegacyAcePermission and Config.LegacyAcePermission ~= "" and IsPlayerAceAllowed(src, Config.LegacyAcePermission) then
-        return true
-    end
-    if ONLY_AC_Shared.IsModuleEnabled("AutoTxAdminBypass") then
+    if AC465_Shared.IsModuleEnabled("AutoTxAdminBypass") then
         if txAdminBypass[src] or IsPlayerAceAllowed(src, "txadmin.all") or IsPlayerAceAllowed(src, "command") then
             return true
         end
@@ -49,23 +46,23 @@ function ONLY_AC.IsBypass(src)
     return false
 end
 
-function ONLY_AC.GetLastHeartbeat(src)
+function AC465.GetLastHeartbeat(src)
     return playerLastHeartbeat[src]
 end
 
-function ONLY_AC.AllowTeleport(src, durationMs)
+function AC465.AllowTeleport(src, durationMs)
     local ms = tonumber(durationMs) or 5000
     teleportGraceUntil[src] = GetGameTimer() + math.min(math.max(ms, 500), 30000)
-    TriggerClientEvent("onlyac:client:allowTeleport", src, ms)
+    TriggerClientEvent("ac465:client:allowTeleport", src, ms)
 end
 
 -- Tüm istemcilere canlı koruma profillerini senkronize et
-function ONLY_AC.BroadcastProtections()
-    TriggerClientEvent("onlyac:client:syncProtections", -1, Config.Protections)
+function AC465.BroadcastProtections()
+    TriggerClientEvent("ac465:client:syncProtections", -1, Config.Protections)
 end
 
 -- Ortak güvenli harita temizliği (Hem komut hem Web Panel kullanır)
-function ONLY_AC.ClearEntities(targetType)
+function AC465.ClearEntities(targetType)
     targetType = (targetType and tostring(targetType):lower()) or "all"
     local count = 0
 
@@ -111,7 +108,7 @@ function ONLY_AC.ClearEntities(targetType)
     return count
 end
 
-function ONLY_AC.SendDiscordLog(src, reason, details, action, screenshotUrl)
+function AC465.SendDiscordLog(src, reason, details, action, screenshotUrl)
     if not Config.DiscordWebhook or Config.DiscordWebhook == "" or Config.DiscordWebhook:sub(1, 4) ~= "http" then
         return
     end
@@ -151,10 +148,10 @@ end
 
 local function executeAction(src, reason, action)
     if action == "ban" then
-        ONLY_AC.Stats.totalBans = ONLY_AC.Stats.totalBans + 1
+        AC465.Stats.totalBans = AC465.Stats.totalBans + 1
         BanSystem.AddBan(src, reason)
     elseif action == "kick" then
-        ONLY_AC.Stats.totalKicks = ONLY_AC.Stats.totalKicks + 1
+        AC465.Stats.totalKicks = AC465.Stats.totalKicks + 1
         if GetPlayerName(src) then
             DropPlayer(src, ("\n[465 AC v4.2.0] Sunucudan Atıldınız!\nSebep: %s"):format(reason))
         end
@@ -162,18 +159,18 @@ local function executeAction(src, reason, action)
 end
 
 -- Tespit & Modül Aksiyon Çözümleyici (off | log | kick | ban)
-function ONLY_AC.Detect(src, reason, details, customActionOrModule, moduleName)
-    if not src or src <= 0 or ONLY_AC.IsBypass(src) then
+function AC465.Detect(src, reason, details, customActionOrModule, moduleName)
+    if not src or src <= 0 or AC465.IsBypass(src) then
         return
     end
 
     local action
     if moduleName then
-        action = ONLY_AC_Shared.GetModuleAction(moduleName, customActionOrModule)
+        action = AC465_Shared.GetModuleAction(moduleName, customActionOrModule)
     elseif customActionOrModule == "off" or customActionOrModule == "log" or customActionOrModule == "kick" or customActionOrModule == "ban" then
         action = customActionOrModule
     elseif customActionOrModule and Config.Protections[customActionOrModule] ~= nil then
-        action = ONLY_AC_Shared.GetModuleAction(customActionOrModule)
+        action = AC465_Shared.GetModuleAction(customActionOrModule)
     else
         action = Config.DefaultAction or "ban"
     end
@@ -196,16 +193,16 @@ function ONLY_AC.Detect(src, reason, details, customActionOrModule, moduleName)
         action:upper(), playerName, src, reason, details or "Yok"
     ))
 
-    ONLY_AC.Stats.totalDetections = ONLY_AC.Stats.totalDetections + 1
-    table.insert(ONLY_AC.RecentLogs, 1, {
+    AC465.Stats.totalDetections = AC465.Stats.totalDetections + 1
+    table.insert(AC465.RecentLogs, 1, {
         time = os.date("%H:%M:%S"),
         player = playerName .. " (ID " .. src .. ")",
         reason = reason,
         details = details or "Yok",
         action = action
     })
-    if #ONLY_AC.RecentLogs > 60 then
-        table.remove(ONLY_AC.RecentLogs, #ONLY_AC.RecentLogs)
+    if #AC465.RecentLogs > 60 then
+        table.remove(AC465.RecentLogs, #AC465.RecentLogs)
     end
 
     -- screenshot-basic varsa ban/kick öncesi kısa süre içinde ekran görüntüsü dene
@@ -216,24 +213,24 @@ function ONLY_AC.Detect(src, reason, details, customActionOrModule, moduleName)
                 if handled then return end
                 handled = true
                 local imgUrl = (type(data) == "string" and data:sub(1, 4) == "http") and data or nil
-                ONLY_AC.SendDiscordLog(src, reason, details, action, imgUrl)
+                AC465.SendDiscordLog(src, reason, details, action, imgUrl)
                 executeAction(src, reason, action)
             end)
         end)
         if not ok then
-            ONLY_AC.SendDiscordLog(src, reason, details, action, nil)
+            AC465.SendDiscordLog(src, reason, details, action, nil)
             executeAction(src, reason, action)
             return
         end
         SetTimeout(1100, function()
             if not handled then
                 handled = true
-                ONLY_AC.SendDiscordLog(src, reason, details, action, nil)
+                AC465.SendDiscordLog(src, reason, details, action, nil)
                 executeAction(src, reason, action)
             end
         end)
     else
-        ONLY_AC.SendDiscordLog(src, reason, details, action, nil)
+        AC465.SendDiscordLog(src, reason, details, action, nil)
         executeAction(src, reason, action)
     end
 end
@@ -244,21 +241,21 @@ local function generateToken(src)
     return token
 end
 
-RegisterNetEvent("onlyac:client:requestHandshake", function()
+RegisterNetEvent("ac465:client:requestHandshake", function()
     local src = source
     local token = generateToken(src)
     clientNonces[src] = 0
     playerLastHeartbeat[src] = os.time()
-    TriggerClientEvent("onlyac:client:handshakeResponse", src, token, ONLY_AC_Shared.BuildClientConfig())
+    TriggerClientEvent("ac465:client:handshakeResponse", src, token, AC465_Shared.BuildClientConfig())
 end)
 
 -- Sunucu Taraflı Heartbeat & Fizik / Ölümsüzlük Cross-Check
-RegisterNetEvent("onlyac:client:heartbeat", function(token, data)
+RegisterNetEvent("ac465:client:heartbeat", function(token, data)
     local src = source
     if not clientTokens[src] or clientTokens[src] ~= token then return end
     playerLastHeartbeat[src] = os.time()
 
-    if ONLY_AC.IsBypass(src) then return end
+    if AC465.IsBypass(src) then return end
 
     local ped = GetPlayerPed(src)
     if not DoesEntityExist(ped) then return end
@@ -269,48 +266,48 @@ RegisterNetEvent("onlyac:client:heartbeat", function(token, data)
         local srvCoords = GetEntityCoords(ped)
         local cliCoords = vector3(tonumber(data.coords.x) or 0, tonumber(data.coords.y) or 0, tonumber(data.coords.z) or 0)
         local diff = #(srvCoords - cliCoords)
-        if diff > 160.0 and not ONLY_AC_Shared.IsInExcludeZone(srvCoords) then
-            ONLY_AC.Detect(src, "Koordinat Sahteciliği (Coords Desync / Spoofing)", ("Fark: %.1f metre"):format(diff), "kick", "AntiTeleport")
+        if diff > 160.0 and not AC465_Shared.IsInExcludeZone(srvCoords) then
+            AC465.Detect(src, "Koordinat Sahteciliği (Coords Desync / Spoofing)", ("Fark: %.1f metre"):format(diff), "kick", "AntiTeleport")
             return
         end
     end
 
     -- 2. Doğrudan FXServer Otorite Kontrolleri (İstemci scripti manipüle edilse bile çalışır)
-    if ONLY_AC_Shared.IsModuleEnabled("AntiGodmode") and GetPlayerInvincible and GetPlayerInvincible(src) then
-        ONLY_AC.Detect(src, "Sunucu Doğrulamalı Ölümsüzlük (Server-Side Invincible)", "GetPlayerInvincible == true", nil, "AntiGodmode")
+    if AC465_Shared.IsModuleEnabled("AntiGodmode") and GetPlayerInvincible and GetPlayerInvincible(src) then
+        AC465.Detect(src, "Sunucu Doğrulamalı Ölümsüzlük (Server-Side Invincible)", "GetPlayerInvincible == true", nil, "AntiGodmode")
     end
 end)
 
-RegisterNetEvent("onlyac:server:reportDetection", function(token, reason, details, nonce, moduleName)
+RegisterNetEvent("ac465:server:reportDetection", function(token, reason, details, nonce, moduleName)
     local src = source
     if not clientTokens[src] or clientTokens[src] ~= token then
-        ONLY_AC.Detect(src, "Geçersiz Güvenlik Belirteci (Token Sahteciliği)", "Token mismatch", "ban")
+        AC465.Detect(src, "Geçersiz Güvenlik Belirteci (Token Sahteciliği)", "Token mismatch", "ban")
         return
     end
 
     if nonce ~= nil then
         local lastNonce = clientNonces[src] or 0
         if type(nonce) ~= "number" or nonce <= lastNonce then
-            ONLY_AC.Detect(src, "Geçersiz Rapor Sıralaması (Nonce Replay)", ("Nonce: %s | Son: %s"):format(tostring(nonce), tostring(lastNonce)), "ban")
+            AC465.Detect(src, "Geçersiz Rapor Sıralaması (Nonce Replay)", ("Nonce: %s | Son: %s"):format(tostring(nonce), tostring(lastNonce)), "ban")
             return
         end
         clientNonces[src] = nonce
     end
 
-    ONLY_AC.Detect(src, reason or "Şüpheli İstemci Aktivitesi", details, nil, moduleName)
+    AC465.Detect(src, reason or "Şüpheli İstemci Aktivitesi", details, nil, moduleName)
 end)
 
-RegisterNetEvent("onlyac:server:resourceStopped", function(token)
+RegisterNetEvent("ac465:server:resourceStopped", function(token)
     local src = source
     if clientTokens[src] and clientTokens[src] == token then
-        ONLY_AC.Detect(src, "Anti-Cheat Kaynağı Durduruldu (Resource Stop)", "İstemci script durdurma sinyali", "kick", "AntiResourceStop")
+        AC465.Detect(src, "Anti-Cheat Kaynağı Durduruldu (Resource Stop)", "İstemci script durdurma sinyali", "kick", "AntiResourceStop")
     end
 end)
 
-RegisterNetEvent("onlyac:server:suspiciousResourceStart", function(token, resourceName)
+RegisterNetEvent("ac465:server:suspiciousResourceStart", function(token, resourceName)
     local src = source
     if clientTokens[src] and clientTokens[src] == token then
-        ONLY_AC.Detect(src, "Yetkisiz Resource Enjeksiyonu", ("Başlatılan Paket: %s"):format(tostring(resourceName)), "kick", "AntiResourceInjection")
+        AC465.Detect(src, "Yetkisiz Resource Enjeksiyonu", ("Başlatılan Paket: %s"):format(tostring(resourceName)), "kick", "AntiResourceInjection")
     end
 end)
 
@@ -319,8 +316,8 @@ if Config.HoneypotEvents then
     for _, eventName in ipairs(Config.HoneypotEvents) do
         RegisterNetEvent(eventName, function()
             local src = source
-            if ONLY_AC_Shared.IsModuleEnabled("AntiHoneypotEvents") then
-                ONLY_AC.Detect(src, "Bal Küpü (Honeypot Event) Tetiklendi", ("Event: %s"):format(eventName), "ban", "AntiHoneypotEvents")
+            if AC465_Shared.IsModuleEnabled("AntiHoneypotEvents") then
+                AC465.Detect(src, "Bal Küpü (Honeypot Event) Tetiklendi", ("Event: %s"):format(eventName), "ban", "AntiHoneypotEvents")
             end
         end)
     end
@@ -331,8 +328,8 @@ if Config.EventTriggerGuard and Config.EventTriggerGuard.Enabled and Config.Even
     for _, evName in ipairs(Config.EventTriggerGuard.WatchedEvents) do
         AddEventHandler(evName, function()
             local src = source
-            if not src or src <= 0 or ONLY_AC.IsBypass(src) then return end
-            if not ONLY_AC_Shared.IsModuleEnabled("AntiDupe") then return end
+            if not src or src <= 0 or AC465.IsBypass(src) then return end
+            if not AC465_Shared.IsModuleEnabled("AntiDupe") then return end
 
             local nowMs = GetGameTimer()
             local rec = eventRateTracker[src]
@@ -342,7 +339,7 @@ if Config.EventTriggerGuard and Config.EventTriggerGuard.Enabled and Config.Even
                 rec.count = rec.count + 1
                 if rec.count > (Config.EventTriggerGuard.MaxTriggersPerSecond or 8) then
                     CancelEvent()
-                    ONLY_AC.Detect(src, "Event Flooding / Ekonomi Dupe Girişimi", ("Event: %s (%s/sn)"):format(evName, rec.count), "ban", "AntiDupe")
+                    AC465.Detect(src, "Event Flooding / Ekonomi Dupe Girişimi", ("Event: %s (%s/sn)"):format(evName, rec.count), "ban", "AntiDupe")
                 end
             end
         end)
@@ -358,11 +355,11 @@ AddEventHandler("playerDropped", function()
     txAdminBypass[src] = nil
     actionLocks[src] = nil
     eventRateTracker[src] = nil
-    if ONLY_AC.ThreatScores then ONLY_AC.ThreatScores[src] = nil end
+    if AC465.ThreatScores then AC465.ThreatScores[src] = nil end
 end)
 
 -- =========================================================================
--- YETKİLİ KOMUTLARI (/465ac_* ve geriye dönük /onlyac_*)
+-- YETKİLİ KOMUTLARI (/465ac_*)
 -- =========================================================================
 local function replyCmd(src, msg, color)
     if src == 0 then
@@ -373,7 +370,7 @@ local function replyCmd(src, msg, color)
 end
 
 local function cmdCheck(src, args)
-    if src ~= 0 and not ONLY_AC.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
+    if src ~= 0 and not AC465.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
     local target = tonumber(args[1])
     if not target or not GetPlayerName(target) then return replyCmd(src, "Kullanım: /465ac_check <oyuncu_id>", {255, 220, 80}) end
     local ped = GetPlayerPed(target)
@@ -386,43 +383,39 @@ local function cmdCheck(src, args)
     ))
 end
 RegisterCommand("465ac_check", cmdCheck, false)
-RegisterCommand("onlyac_check", cmdCheck, false)
 
 local function cmdStats(src)
-    if src ~= 0 and not ONLY_AC.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
-    local up = os.time() - (ONLY_AC.Stats.startTime or os.time())
+    if src ~= 0 and not AC465.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
+    local up = os.time() - (AC465.Stats.startTime or os.time())
     replyCmd(src, ("[465 AC v4.2.0] Uptime: %sh %sd %ss | Tespit: %s | Ban: %s | Kick: %s | Aktif: %s"):format(
         math.floor(up / 3600), math.floor((up % 3600) / 60), up % 60,
-        ONLY_AC.Stats.totalDetections, ONLY_AC.Stats.totalBans, ONLY_AC.Stats.totalKicks, #GetPlayers()
+        AC465.Stats.totalDetections, AC465.Stats.totalBans, AC465.Stats.totalKicks, #GetPlayers()
     ))
 end
 RegisterCommand("465ac_stats", cmdStats, false)
-RegisterCommand("onlyac_stats", cmdStats, false)
 
 local function cmdKick(src, args)
-    if src ~= 0 and not ONLY_AC.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
+    if src ~= 0 and not AC465.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
     local target = tonumber(args[1])
     if not target or not GetPlayerName(target) then return replyCmd(src, "Kullanım: /465ac_kick <id> <sebep>", {255, 220, 80}) end
     table.remove(args, 1)
     local reason = table.concat(args, " ")
-    ONLY_AC.Detect(target, "Yetkili Komutu (Kick)", reason ~= "" and reason or "Yetkili tarafından atıldınız", "kick")
+    AC465.Detect(target, "Yetkili Komutu (Kick)", reason ~= "" and reason or "Yetkili tarafından atıldınız", "kick")
 end
 RegisterCommand("465ac_kick", cmdKick, false)
-RegisterCommand("onlyac_kick", cmdKick, false)
 
 local function cmdBan(src, args)
-    if src ~= 0 and not ONLY_AC.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
+    if src ~= 0 and not AC465.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
     local target = tonumber(args[1])
     if not target or not GetPlayerName(target) then return replyCmd(src, "Kullanım: /465ac_ban <id> <sebep>", {255, 220, 80}) end
     table.remove(args, 1)
     local reason = table.concat(args, " ")
-    ONLY_AC.Detect(target, "Yetkili Komutu (Ban)", reason ~= "" and reason or "Yetkili tarafından yasaklandınız", "ban")
+    AC465.Detect(target, "Yetkili Komutu (Ban)", reason ~= "" and reason or "Yetkili tarafından yasaklandınız", "ban")
 end
 RegisterCommand("465ac_ban", cmdBan, false)
-RegisterCommand("onlyac_ban", cmdBan, false)
 
 local function cmdProtect(src, args)
-    if src ~= 0 and not ONLY_AC.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
+    if src ~= 0 and not AC465.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
     local moduleName = args[1]
     local state = args[2] and args[2]:lower()
     local valMap = { on = true, ["true"] = true, ban = "ban", kick = "kick", log = "log", off = "off", ["false"] = "off" }
@@ -433,22 +426,20 @@ local function cmdProtect(src, args)
         return replyCmd(src, ("Modül bulunamadı: %s"):format(moduleName), {255, 80, 80})
     end
     Config.Protections[moduleName] = valMap[state]
-    ONLY_AC.BroadcastProtections()
+    AC465.BroadcastProtections()
     replyCmd(src, ("'%s' modülü '%s' olarak güncellendi."):format(moduleName, tostring(state)))
 end
 RegisterCommand("465ac_protect", cmdProtect, false)
-RegisterCommand("onlyac_protect", cmdProtect, false)
 
 local function cmdClear(src, args)
-    if src ~= 0 and not ONLY_AC.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
+    if src ~= 0 and not AC465.IsBypass(src) then return replyCmd(src, "Yetkiniz yok!", {255, 80, 80}) end
     local targetType = args[1] and args[1]:lower() or "all"
-    local cleared = ONLY_AC.ClearEntities(targetType)
+    local cleared = AC465.ClearEntities(targetType)
     replyCmd(src, ("[Harita Temizliği] %s kategorisinde %s adet sahipsiz entity temizlendi."):format(targetType:upper(), cleared))
 end
 RegisterCommand("465ac_clear", cmdClear, false)
-RegisterCommand("onlyac_clear", cmdClear, false)
 
 -- Exports (Harici script uyumluluğu)
-exports("DetectPlayer", function(src, reason, details, action, moduleName) ONLY_AC.Detect(src, reason, details, action, moduleName) end)
-exports("AllowTeleport", function(src, durationMs) ONLY_AC.AllowTeleport(src, durationMs) end)
-exports("GetStats", function() return ONLY_AC.Stats end)
+exports("DetectPlayer", function(src, reason, details, action, moduleName) AC465.Detect(src, reason, details, action, moduleName) end)
+exports("AllowTeleport", function(src, durationMs) AC465.AllowTeleport(src, durationMs) end)
+exports("GetStats", function() return AC465.Stats end)

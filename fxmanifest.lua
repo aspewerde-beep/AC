@@ -2,7 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
 
-name 'ONLY_AC'
+name '465_AC'
 author '465 AC Team'
 description '465 AC v4.2.0 - FiveM Anticheat & Dahili Web Yönetim Paneli'
 version '4.2.0'

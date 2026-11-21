@@ -14,7 +14,7 @@ Config.DiscordWebhook = "" -- Discord Webhook URL'nizi buraya girin
 Config.ServerName = "465 AC Security"
 Config.EmbedColor = 9227186 -- Mint Emerald (#8ccbb2)
 
--- Web Yönetim Paneli Ayarları (Tarayıcı: http://SUNUCU_IP:PORT/ONLY_AC/)
+-- Web Yönetim Paneli Ayarları (Tarayıcı: http://SUNUCU_IP:PORT/465_AC/)
 Config.WebPanelEnabled = true
 Config.WebPanelPassword = "admin" -- Lütfen üretim ortamında güçlü bir şifreyle değiştirin
 
@@ -23,7 +23,6 @@ Config.DefaultAction = "ban"
 
 -- Yetkili Muafiyet (Bypass) İzni (server.cfg: add_ace group.admin 465ac.bypass allow)
 Config.AcePermission = "465ac.bypass"
-Config.LegacyAcePermission = "onlyac.bypass" -- Eski kurulumlarla geriye dönük uyumluluk
 
 -- Ekran Görüntüsü Kanıtı (screenshot-basic kurulu ise otomatik çalışır)
 Config.ScreenCaptureEnabled = true

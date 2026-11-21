@@ -199,7 +199,7 @@ function BanSystem.GetBans()
 end
 
 local function handleUnbanCmd(source, args)
-    if source ~= 0 and (not ONLY_AC or not ONLY_AC.IsBypass(source)) then
+    if source ~= 0 and (not AC465 or not AC465.IsBypass(source)) then
         print("^1[465 AC] Bu komutu kullanma yetkiniz yok.^0")
         return
     end
@@ -212,10 +212,9 @@ local function handleUnbanCmd(source, args)
     print(removed and ("^2[465 AC] %s ID'li ban kaydı kaldırıldı.^0"):format(targetId) or ("^1[465 AC] %s ID'li ban bulunamadı.^0"):format(targetId))
 end
 RegisterCommand("465ac_unban", handleUnbanCmd, false)
-RegisterCommand("onlyac_unban", handleUnbanCmd, false)
 
 local function handleTempbanCmd(source, args)
-    if source ~= 0 and (not ONLY_AC or not ONLY_AC.IsBypass(source)) then
+    if source ~= 0 and (not AC465 or not AC465.IsBypass(source)) then
         print("^1[465 AC] Bu komutu kullanma yetkiniz yok.^0")
         return
     end
@@ -235,7 +234,6 @@ local function handleTempbanCmd(source, args)
     print(("^2[465 AC]^0 %s (ID %s) %s saat yasaklandı. Sebep: %s"):format(GetPlayerName(target) or "Bilinmeyen", target, hours, reason))
 end
 RegisterCommand("465ac_tempban", handleTempbanCmd, false)
-RegisterCommand("onlyac_tempban", handleTempbanCmd, false)
 
 CreateThread(loadBans)
 

@@ -168,9 +168,9 @@ function Intelligence.EvaluateConnection(src, ids)
 
     Intelligence.RecordPlayer(src, ids)
     local riskScore, factors, altAccounts = Intelligence.CalculateRiskScore(src, ids)
-    if ONLY_AC then
-        ONLY_AC.ThreatScores = ONLY_AC.ThreatScores or {}
-        ONLY_AC.ThreatScores[src] = { score = riskScore, factors = factors }
+    if AC465 then
+        AC465.ThreatScores = AC465.ThreatScores or {}
+        AC465.ThreatScores[src] = { score = riskScore, factors = factors }
     end
 
     if Config.ThreatScoring and Config.ThreatScoring.AutoBanAltAccounts then
@@ -182,9 +182,9 @@ function Intelligence.EvaluateConnection(src, ids)
     end
 
     if Config.ThreatScoring and Config.ThreatScoring.Enabled and riskScore >= (Config.ThreatScoring.MinThreatAlertScore or 45) then
-        if ONLY_AC and ONLY_AC.SendDiscordLog then
+        if AC465 and AC465.SendDiscordLog then
             local factorStr = table.concat(factors, "\n- ")
-            ONLY_AC.SendDiscordLog(src, "Yüksek Riskli Oyuncu Girişi (Tehdit Analizi)", ("Risk Puanı: %s / 100\n\nNedenler:\n- %s"):format(riskScore, factorStr), "log", nil)
+            AC465.SendDiscordLog(src, "Yüksek Riskli Oyuncu Girişi (Tehdit Analizi)", ("Risk Puanı: %s / 100\n\nNedenler:\n- %s"):format(riskScore, factorStr), "log", nil)
         end
     end
 
@@ -245,7 +245,7 @@ function Intelligence.AddScanNote(license, note, status, adminName)
 end
 
 local function handleLookupCmd(src, args)
-    if src ~= 0 and (not ONLY_AC or not ONLY_AC.IsBypass(src)) then
+    if src ~= 0 and (not AC465 or not AC465.IsBypass(src)) then
         TriggerClientEvent("chat:addMessage", src, { color = {255, 0, 0}, args = {"465 AC", "Bu komutu kullanma yetkiniz yok!"} })
         return
     end
@@ -276,10 +276,9 @@ local function handleLookupCmd(src, args)
     if src == 0 then print(out) else TriggerClientEvent("chat:addMessage", src, { color = {0, 220, 255}, args = {"465 AC", out} }) end
 end
 RegisterCommand("465ac_lookup", handleLookupCmd, false)
-RegisterCommand("onlyac_lookup", handleLookupCmd, false)
 
 local function handleScanCmd(src, args)
-    if src ~= 0 and (not ONLY_AC or not ONLY_AC.IsBypass(src)) then
+    if src ~= 0 and (not AC465 or not AC465.IsBypass(src)) then
         TriggerClientEvent("chat:addMessage", src, { color = {255, 0, 0}, args = {"465 AC", "Bu komutu kullanma yetkiniz yok!"} })
         return
     end
@@ -300,10 +299,9 @@ local function handleScanCmd(src, args)
     if Intelligence.AddScanNote(ids.license, note, status, adminName) then
         local msg = ("[465 AC Scan] %s (ID %s) için '%s' notu kaydedildi."):format(GetPlayerName(target), target, status)
         if src == 0 then print(msg) else TriggerClientEvent("chat:addMessage", src, { color = {0, 255, 128}, args = {"465 AC", msg} }) end
-        ONLY_AC.SendDiscordLog(target, "Harici Tarama Sonucu İşlendi", ("Yetkili: %s\nDurum: **%s**\nNot: %s"):format(adminName, status, note), "log", nil)
+        AC465.SendDiscordLog(target, "Harici Tarama Sonucu İşlendi", ("Yetkili: %s\nDurum: **%s**\nNot: %s"):format(adminName, status, note), "log", nil)
     end
 end
 RegisterCommand("465ac_scan", handleScanCmd, false)
-RegisterCommand("onlyac_scan", handleScanCmd, false)
 
 exports("LookupPlayer", function(query) return Intelligence.Lookup(query) end)

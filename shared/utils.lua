@@ -3,7 +3,7 @@
 -- Modül bazlı Kapalı / Log / At / Ban çözümleme & Bölge / Gizlilik filtreleri
 -- =========================================================================
 
-ONLY_AC_Shared = {}
+AC465_Shared = {}
 
 local VALID_ACTIONS = {
     off = true,
@@ -13,7 +13,7 @@ local VALID_ACTIONS = {
 }
 
 -- Modül değerini ("off" | "log" | "kick" | "ban" | boolean) normalize et
-function ONLY_AC_Shared.GetModuleAction(moduleName, fallbackAction)
+function AC465_Shared.GetModuleAction(moduleName, fallbackAction)
     local protections = Config and Config.Protections
     if not protections then
         return "off"
@@ -39,13 +39,13 @@ function ONLY_AC_Shared.GetModuleAction(moduleName, fallbackAction)
     return "off"
 end
 
-function ONLY_AC_Shared.IsModuleEnabled(moduleName)
-    return ONLY_AC_Shared.GetModuleAction(moduleName) ~= "off"
+function AC465_Shared.IsModuleEnabled(moduleName)
+    return AC465_Shared.GetModuleAction(moduleName) ~= "off"
 end
 
 -- Koordinatın güvenli bölge (Exclude Zone) içinde olup olmadığını kontrol et
-function ONLY_AC_Shared.IsInExcludeZone(coords)
-    if not coords or not ONLY_AC_Shared.IsModuleEnabled("UseExcludeZones") or not Config.ExcludeZones then
+function AC465_Shared.IsInExcludeZone(coords)
+    if not coords or not AC465_Shared.IsModuleEnabled("UseExcludeZones") or not Config.ExcludeZones then
         return false, nil
     end
 
@@ -58,7 +58,7 @@ function ONLY_AC_Shared.IsInExcludeZone(coords)
 end
 
 -- İstemciye gönderilecek güvenli yapılandırma özeti (Webhook, şifre ve hassas sunucu ayarları gizlenir)
-function ONLY_AC_Shared.BuildClientConfig()
+function AC465_Shared.BuildClientConfig()
     return {
         Version = Config.Version,
         HeartbeatInterval = Config.HeartbeatInterval or 10000,
