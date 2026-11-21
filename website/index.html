@@ -40,7 +40,7 @@
   <meta name="twitter:image" content="https://www.465.lol/assets/og-banner.png">
   <meta name="twitter:image:alt" content="465 AC — FiveM Anti-Cheat">
 
-  <link rel="stylesheet" href="assets/app.min.css?v=18">
+  <link rel="stylesheet" href="assets/app.min.css?v=19">
 
   <script type="application/ld+json">
   {
@@ -121,6 +121,14 @@
         "mainEntity": [
           {
             "@type": "Question",
+            "name": "465 AC lisansı nasıl satın alınır ve teslimat nasıl yapılır?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Satın alma ve lisanslama resmi Discord sunucumuz (https://discord.gg/YYNvMMJZTm) üzerinden açılan destek bileti (ticket) ile yapılır; teslimat ve ilk kurulum aynı gün birebir tamamlanır."
+            }
+          },
+          {
+            "@type": "Question",
             "name": "465 AC harici veritabanı veya Node.js gerektirir mi?",
             "acceptedAnswer": {
               "@type": "Answer",
@@ -195,6 +203,7 @@
           <button type="button" data-lang-btn="en" onclick="set465Lang('en')">EN</button>
         </div>
         <a href="/docs" class="btn btn-dark btn-sm" data-i18n="nav_docs">Dokümantasyon ↗</a>
+        <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Satın Al ↗</a>
         <button type="button" class="mobile-toggle" id="mobileNavToggle" aria-label="Menüyü Aç">☰</button>
       </div>
     </header>
@@ -251,15 +260,15 @@
       </p>
 
       <div class="hero-cta hero-anim-4">
-        <a href="/nasil-calisir" data-route="nasil-calisir" class="btn btn-white btn-lg" data-i18n="hero_btn_explore">Nasıl çalışır ↓</a>
+        <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-lg">Satın Al • Discord ↗</a>
+        <a href="/nasil-calisir" data-route="nasil-calisir" class="btn btn-dark btn-lg" data-i18n="hero_btn_explore">Nasıl çalışır ↓</a>
         <a href="/docs" class="btn btn-dark btn-lg" data-i18n="hero_btn_docs">Dokümantasyon ↗</a>
-        <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-dark btn-lg">Discord ↗</a>
       </div>
 
       <div class="hero-trust-pills hero-anim-5">
         <span class="trust-pill">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span data-i18n="trust_1">Anında kurulum</span>
+          <span data-i18n="trust_1">Discord üzerinden hızlı satış &amp; kurulum</span>
         </span>
         <span class="trust-pill">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -580,8 +589,9 @@
             <div class="sq-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
-            <h3 style="margin:0 0 8px;font-size:17px;" data-i18n="g3_t">Sürekli destek</h3>
-            <p style="margin:0;font-size:13.5px;color:var(--text-muted);" data-i18n="g3_d">Kurulumda veya false-ban ayarlamasında sorun yaşadığında ekibimiz birebir yapılandırma desteği verir.</p>
+            <h3 style="margin:0 0 8px;font-size:17px;" data-i18n="g3_t">Satış &amp; 7/24 Discord desteği</h3>
+            <p style="margin:0 0 12px;font-size:13.5px;color:var(--text-muted);" data-i18n="g3_d">Lisans satın almak, kurulum yaptırmak veya false-ban ince ayarları için ekibimiz Discord üzerinden birebir hizmet verir.</p>
+            <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" style="font-size:12.5px;font-weight:700;color:var(--accent-bright);">Discord'dan Satın Al / Destek Al ↗</a>
           </div>
         </div>
       </div>
@@ -595,6 +605,16 @@
         </div>
 
         <div class="faq-list" data-reveal>
+          <div class="faq-item open">
+            <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <span>465 AC lisansı nasıl satın alınır ve teslimat nasıl yapılır?</span>
+              <span class="faq-plus">+</span>
+            </button>
+            <div class="faq-a">
+              Satın alma, fiyat bilgisi ve lisans teslimatı yalnızca resmi Discord sunucumuz (<a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" style="color:var(--accent-bright);text-decoration:underline;">discord.gg/YYNvMMJZTm</a>) üzerinden açılan ticket ile yapılır; ekibimiz ilk kurulumunuzu aynı gün birebir tamamlar.
+            </div>
+          </div>
+
           <div class="faq-item">
             <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
               <span>465 AC harici veritabanı veya Node.js gerektirir mi?</span>
@@ -663,11 +683,12 @@
     <div class="container">
       <div class="footer-cta-band">
         <div>
-          <div class="eyebrow left" style="margin-bottom:0;">FIVEM SUNUCU GÜVENLİĞİ</div>
-          <h3>Sunucunu kurumsal korumaya taşı.</h3>
+          <div class="eyebrow left" style="margin-bottom:0;">SATIN ALMA &amp; LİSANS</div>
+          <h3>465 AC lisansı ve kurulum için Discord'a katıl.</h3>
+          <p style="margin:6px 0 0;font-size:13.5px;color:var(--text-muted);">Fiyat bilgisi, canlı web panel önizlemesi ve hızlı kurulum için Discord'dan ticket açın.</p>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:10px;">
-          <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Discord'a Katıl ↗</a>
+          <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Satın Al • Discord ↗</a>
           <a href="/docs" class="btn btn-dark btn-sm">Kurulum Rehberi ↗</a>
         </div>
       </div>
@@ -705,7 +726,7 @@
             <li><a href="/docs">Kurulum Rehberi</a></li>
             <li><a href="/docs">Aksiyon Profilleri</a></li>
             <li><a href="/docs">Panel &amp; Yönetim</a></li>
-            <li><a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer">Discord Sunucusu ↗</a></li>
+            <li><a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer">Satın Al (Discord) ↗</a></li>
           </ul>
         </div>
 
@@ -718,17 +739,17 @@
               </div>
               <div>
                 <div style="font-size:13px;font-weight:700;color:#fff;">465 AC Altyapı</div>
-                <div style="font-size:11px;color:var(--text-dim);">Kurulum &amp; Destek</div>
+                <div style="font-size:11px;color:var(--text-dim);">Satın Alma, Lisans &amp; Destek</div>
               </div>
             </div>
             <div class="footer-kv-list">
               <div class="footer-kv"><span class="footer-kv-lbl">Performans</span><span class="footer-kv-val">0.00ms Resmon</span></div>
               <div class="footer-kv"><span class="footer-kv-lbl">Altyapı</span><span class="footer-kv-val">Zero External DB</span></div>
-              <div class="footer-kv"><span class="footer-kv-lbl">Uyumluluk</span><span class="footer-kv-val">QBCore / ESX / QBox</span></div>
+              <div class="footer-kv"><span class="footer-kv-lbl">Satış &amp; Destek</span><span class="footer-kv-val">Discord Ticket</span></div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
               <a href="/docs" class="btn btn-dark btn-sm">Doküman ↗</a>
-              <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Discord ↗</a>
+              <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Satın Al ↗</a>
             </div>
           </div>
         </div>
@@ -748,6 +769,6 @@
     </div>
   </footer>
 
-  <script src="assets/app.min.js?v=18" defer></script>
+  <script src="assets/app.min.js?v=19" defer></script>
 </body>
 </html>

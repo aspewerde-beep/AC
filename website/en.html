@@ -40,7 +40,7 @@
   <meta name="twitter:image" content="https://www.465.lol/assets/og-banner.png">
   <meta name="twitter:image:alt" content="465 AC — FiveM Anticheat">
 
-  <link rel="stylesheet" href="assets/app.min.css?v=18">
+  <link rel="stylesheet" href="assets/app.min.css?v=19">
 
   <script type="application/ld+json">
   {
@@ -113,6 +113,14 @@
       {
         "@type": "FAQPage",
         "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I purchase a 465 AC license and receive setup?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Licensing and onboarding are handled directly through support tickets in our official Discord server (https://discord.gg/YYNvMMJZTm), with same-day delivery and 1-on-1 setup assistance."
+            }
+          },
           {
             "@type": "Question",
             "name": "Does 465 AC require an external database or Node.js?",
@@ -189,6 +197,7 @@
           <button type="button" data-lang-btn="en" class="active" onclick="set465Lang('en')">EN</button>
         </div>
         <a href="/docs" class="btn btn-dark btn-sm">Docs ↗</a>
+        <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Purchase ↗</a>
         <button type="button" class="mobile-toggle" id="mobileNavToggle" aria-label="Open menu">☰</button>
       </div>
     </header>
@@ -245,15 +254,15 @@
       </p>
 
       <div class="hero-cta hero-anim-4">
-        <a href="#nasil-calisir" data-route="nasil-calisir" class="btn btn-white btn-lg">How it works ↓</a>
+        <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-lg">Purchase • Discord ↗</a>
+        <a href="#nasil-calisir" data-route="nasil-calisir" class="btn btn-dark btn-lg">How it works ↓</a>
         <a href="/docs" class="btn btn-dark btn-lg">Documentation ↗</a>
-        <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-dark btn-lg">Discord ↗</a>
       </div>
 
       <div class="hero-trust-pills hero-anim-5">
         <span class="trust-pill">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span>Instant setup</span>
+          <span>Direct licensing via Discord</span>
         </span>
         <span class="trust-pill">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -574,8 +583,9 @@
             <div class="sq-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
-            <h3 style="margin:0 0 8px;font-size:17px;">Dedicated support</h3>
-            <p style="margin:0;font-size:13.5px;color:var(--text-muted);">Our team assists directly with QBCore, ESX, and custom framework tuning as your server scales.</p>
+            <h3 style="margin:0 0 8px;font-size:17px;">Purchase &amp; 24/7 Discord support</h3>
+            <p style="margin:0 0 12px;font-size:13.5px;color:var(--text-muted);">Join our official Discord to purchase a license, request onboarding, or tune QBCore / ESX rules directly with our team.</p>
+            <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" style="font-size:12.5px;font-weight:700;color:var(--accent-bright);">Buy &amp; Open Ticket on Discord ↗</a>
           </div>
         </div>
       </div>
@@ -589,6 +599,16 @@
         </div>
 
         <div class="faq-list" data-reveal>
+          <div class="faq-item open">
+            <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <span>How do I purchase a 465 AC license and receive setup?</span>
+              <span class="faq-plus">+</span>
+            </button>
+            <div class="faq-a">
+              Licensing, pricing, and delivery are handled strictly through support tickets in our official Discord server (<a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" style="color:var(--accent-bright);text-decoration:underline;">discord.gg/YYNvMMJZTm</a>), including same-day 1-on-1 installation support.
+            </div>
+          </div>
+
           <div class="faq-item">
             <button type="button" class="faq-q" onclick="this.parentElement.classList.toggle('open')">
               <span>Does 465 AC require an external database or Node.js?</span>
@@ -657,11 +677,12 @@
     <div class="container">
       <div class="footer-cta-band">
         <div>
-          <div class="eyebrow left" style="margin-bottom:0;">FIVEM SERVER SECURITY</div>
-          <h3>Protect your community with enterprise FiveM Anticheat.</h3>
+          <div class="eyebrow left" style="margin-bottom:0;">PURCHASE &amp; LICENSING</div>
+          <h3>Get your 465 AC license via Discord.</h3>
+          <p style="margin:6px 0 0;font-size:13.5px;color:var(--text-muted);">Open a ticket for pricing, live web dashboard demo, and instant server onboarding.</p>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:10px;">
-          <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Join Discord ↗</a>
+          <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Purchase • Discord ↗</a>
           <a href="/docs" class="btn btn-dark btn-sm">Documentation ↗</a>
         </div>
       </div>
@@ -698,7 +719,7 @@
           <ul>
             <li><a href="/docs">Setup Guide</a></li>
             <li><a href="/docs">Action Profiles</a></li>
-            <li><a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer">Discord Server ↗</a></li>
+            <li><a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer">Purchase (Discord) ↗</a></li>
             <li><a href="/">Türkçe Sayfa</a></li>
           </ul>
         </div>
@@ -712,17 +733,17 @@
               </div>
               <div>
                 <div style="font-size:13px;font-weight:700;color:#fff;">465 AC Engine</div>
-                <div style="font-size:11px;color:var(--text-dim);">Docs &amp; Support</div>
+                <div style="font-size:11px;color:var(--text-dim);">Purchase, Licensing &amp; Support</div>
               </div>
             </div>
             <div class="footer-kv-list">
               <div class="footer-kv"><span class="footer-kv-lbl">Footprint</span><span class="footer-kv-val">0.00ms Resmon</span></div>
               <div class="footer-kv"><span class="footer-kv-lbl">Database</span><span class="footer-kv-val">Zero External DB</span></div>
-              <div class="footer-kv"><span class="footer-kv-lbl">Frameworks</span><span class="footer-kv-val">QBCore / ESX / QBox</span></div>
+              <div class="footer-kv"><span class="footer-kv-lbl">Sales &amp; Help</span><span class="footer-kv-val">Discord Ticket</span></div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
               <a href="/docs" class="btn btn-dark btn-sm">Docs ↗</a>
-              <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Discord ↗</a>
+              <a href="https://discord.gg/YYNvMMJZTm" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-sm">Buy Now ↗</a>
             </div>
           </div>
         </div>
@@ -742,6 +763,6 @@
     </div>
   </footer>
 
-  <script src="assets/app.min.js?v=18" defer></script>
+  <script src="assets/app.min.js?v=19" defer></script>
 </body>
 </html>
